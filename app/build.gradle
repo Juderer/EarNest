@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 26
     defaultConfig {
-        applicationId "com.example.lenovo.earnest"
+        applicationId "com.earnest"
         minSdkVersion 19
         targetSdkVersion 26
         versionCode 1
@@ -14,6 +14,16 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    sourceSets {
+        main {
+            res.srcDirs = [
+                    'src/main/res/layouts/home',
+                    'src/main/res/layouts/musicPlayer',
+                    'src/main/res/layouts',
+                    'src/main/res'
+            ]
         }
     }
 }
