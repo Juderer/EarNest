@@ -28,6 +28,8 @@ android {
     }
 }
 
+final APPCOMPAT_VERSION = '26.1.0'
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:26.0.0-beta1'
@@ -35,4 +37,9 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:0.5'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:2.2.2'
+
+    //material design依赖
+    compile "com.android.support:design:$APPCOMPAT_VERSION"
+    //recyclerview依赖
+    compile "com.android.support:recyclerview-v7:$APPCOMPAT_VERSION"
 }
