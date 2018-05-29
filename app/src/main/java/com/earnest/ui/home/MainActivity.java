@@ -1,4 +1,4 @@
-package com.earnest.home;
+package com.earnest.ui.home;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;

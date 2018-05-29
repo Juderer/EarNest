@@ -1,4 +1,4 @@
-package com.earnest.musicPlayer;
+package com.earnest.ui.musicPlayer;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
