@@ -1,4 +1,4 @@
-package com.earnest.model;
+package com.earnest.model.entities;
 
 import cn.bmob.v3.BmobUser;
 
