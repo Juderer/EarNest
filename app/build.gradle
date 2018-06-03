@@ -26,6 +26,7 @@ android {
             ]
         }
     }
+    useLibrary 'org.apache.http.legacy'
 }
 
 final APPCOMPAT_VERSION = '26.1.0'
@@ -42,4 +43,11 @@ dependencies {
     compile "com.android.support:design:$APPCOMPAT_VERSION"
     //recyclerview依赖
     compile "com.android.support:recyclerview-v7:$APPCOMPAT_VERSION"
+
+    //bmob依赖
+    compile 'cn.bmob.android:bmob-sdk:3.6.2'
+    compile 'cn.bmob.android:bmob-push:0.8'
+    compile 'cn.bmob.android:bmob-im:2.1.0@aar'
+    compile 'cn.bmob.android:bmob-sms:1.0.1'
+    compile 'cn.bmob.android:http-legacy:1.0'
 }
