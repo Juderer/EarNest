@@ -1,9 +1,12 @@
 package com.earnest.ui.musicPlayer;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -22,6 +25,9 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     //中部
     ImageView ivCD;
+    //动画
+    private ObjectAnimator discAnimation;
+    private boolean isPlaying = false;
 
     //功能栏
     ImageView ivFavoriate;
@@ -49,6 +55,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
         initUIControls();
+        setAnimations();
     }
 
     /////初始化UI
@@ -76,6 +83,13 @@ public class MusicPlayerActivity extends AppCompatActivity {
         ivPlay = (ImageView) findViewById(R.id.ivPlay);
         ivPlayNext = (ImageView) findViewById(R.id.ivPlayNext);
         ivPlayList = (ImageView) findViewById(R.id.ivPlayList);
+
+        //图片初始化
+        if(isPlaying) {
+            ivPlay.setImageResource(R.drawable.ic_pause);
+        } else {
+            ivPlay.setImageResource(R.drawable.ic_play);
+        }
 
         //设置监听事件
         setUIControlsOnClick();
@@ -138,19 +152,23 @@ public class MusicPlayerActivity extends AppCompatActivity {
         ivPlayLast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                switchMusic();
             }
         });
         ivPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if(!isPlaying) {
+                    playMusic();
+                } else {
+                    pauseMusic();
+                }
             }
         });
         ivPlayNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                switchMusic();
             }
         });
         ivPlayList.setOnClickListener(new View.OnClickListener() {
@@ -159,5 +177,38 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    //动画设置
+    private void setAnimations() {
+        discAnimation = ObjectAnimator.ofFloat(ivCD, "rotation", 0, 360);
+        discAnimation.setDuration(20000);
+        discAnimation.setInterpolator(new LinearInterpolator());
+        discAnimation.setRepeatCount(ValueAnimator.INFINITE);
+    }
+
+    //音乐控制方法，所有控制方法写在如下函数中
+    //播放音乐
+    private void playMusic() {
+        discAnimation.start();
+        ivPlay.setImageResource(R.drawable.ic_pause);
+        isPlaying = true;
+    }
+
+    //暂停音乐
+    private void pauseMusic() {
+        if (discAnimation != null && discAnimation.isRunning()) {
+            discAnimation.cancel();
+            float valueAvatar = (float) discAnimation.getAnimatedValue();
+            discAnimation.setFloatValues(valueAvatar, 360f + valueAvatar);
+        }
+        ivPlay.setImageResource(R.drawable.ic_play);
+        isPlaying = false;
+    }
+
+    //切换音乐
+    private void switchMusic() {
+        discAnimation.end();
+        playMusic();
     }
 }
