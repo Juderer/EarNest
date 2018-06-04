@@ -54,7 +54,7 @@
         </LinearLayout>
 
         <ImageView
-            android:id="@+id/ivMore"
+            android:id="@+id/ivShare"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -72,7 +72,7 @@
         >
 
         <ImageView
-            android:id="@+id/image_view_album"
+            android:id="@+id/ivCD"
             android:layout_width="240dp"
             android:layout_height="240dp"
             android:src="@drawable/default_record_album"
@@ -92,21 +92,25 @@
         >
 
         <ImageView
+            android:id="@+id/ivFavoriate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_favorite_no"/>
 
         <ImageView
+            android:id="@+id/ivDownload"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_download"/>
 
         <ImageView
+            android:id="@+id/ivReview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_review"/>
 
         <ImageView
+            android:id="@+id/ivMore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_list_item_action"/>
@@ -165,26 +169,31 @@
         android:gravity="center">
 
         <ImageView
+            android:id="@+id/ivPlayMode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_play_mode_shuffle"/>
 
         <ImageView
+            android:id="@+id/ivPlayLast"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_play_last"/>
 
         <ImageView
+            android:id="@+id/ivPlay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_play"/>
 
         <ImageView
+            android:id="@+id/ivPlayNext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_play_next"/>
 
         <ImageView
+            android:id="@+id/ivPlayList"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_play_list"/>
