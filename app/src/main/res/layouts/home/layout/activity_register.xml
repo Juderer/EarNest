@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.earnest.ui.home.StartActivity">
+
+
+    <ImageView
+        android:id="@+id/iv_Reister_Back"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:src="@drawable/ic_register_back"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="耳   窝"
+        android:textSize="50sp"
+        android:textColor="#ff0000"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp"/>
+
+    <EditText
+        android:id="@+id/et_Register_Phonenumber"
+        android:layout_width="280dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="40dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="2dp"
+        android:layout_toRightOf="@+id/view1"
+        android:ems="19"
+        android:hint="请输入手机号"
+        android:inputType="phone"
+        android:digits="0123456789"
+        android:maxLength="11"
+        android:padding="1dp"
+        android:textSize="12sp" >
+        <requestFocus />
+    </EditText>
+
+    <LinearLayout
+        android:layout_width="280dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp">
+
+        <EditText
+            android:id="@+id/et_VerifyCode"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="2dp"
+            android:layout_toRightOf="@+id/view2"
+            android:ems="8"
+            android:hint="验证码"
+            android:inputType="text"
+            android:padding="1dp"
+            android:textSize="12sp" >
+            <requestFocus />
+        </EditText>
+
+        <Button
+            android:id="@+id/btn_SendCode"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="3dp"
+            android:textSize="12sp"
+            android:text="发送验证码"
+            android:background="#00000000"/>
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/et_Password"
+        android:layout_width="280dp"
+        android:layout_height="40dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="2dp"
+        android:layout_toRightOf="@+id/view3"
+        android:ems="19"
+        android:hint="请输入密码"
+        android:inputType="textPassword"
+        android:padding="1dp"
+        android:textSize="12sp" >
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+id/btn_Register"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:text="注   册"
+        android:textSize="20sp"
+        android:textColor="@color/white"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp"
+        android:background="#ff0000"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="--其他登录方式--"
+        android:textSize="20sp"
+        android:layout_marginTop="50dp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="15dp">
+
+        <ImageView
+            android:id="@+id/iv_Register_QQ"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/qq"/>
+
+        <ImageView
+            android:id="@+id/iv_Register_Weixin"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/weixin"/>
+
+        <ImageView
+            android:id="@+id/iv_Register_Weibo"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="20dp"
+            android:src="@drawable/weibo"/>
+
+    </LinearLayout>
+
+</LinearLayout>
