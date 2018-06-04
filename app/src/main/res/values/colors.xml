@@ -12,4 +12,7 @@
     <!-- Theme - Dark Blue -->
     <color name="dark_blue.background">#484e51</color>
     <color name="dark_blue.gradientColor">#3d85ba</color>
+
+    <color name="musicPlayerPrimary">#3d85ba</color>
+    <color name="musicPlayerPrimaryDark">#3d85ba</color>
 </resources>

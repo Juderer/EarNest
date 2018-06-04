@@ -9,6 +9,12 @@
 
     </style>
 
+    <style name="MusicPlayerTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/musicPlayerPrimary</item>
+        <item name="colorPrimaryDark">@color/musicPlayerPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
 
+    </style>
 
 </resources>

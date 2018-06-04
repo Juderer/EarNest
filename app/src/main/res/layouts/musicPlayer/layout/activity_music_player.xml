@@ -7,7 +7,6 @@
     android:orientation="vertical"
     android:gravity="center_horizontal"
     android:background="@drawable/common_background_gradient_shape"
-    android:theme="@style/Theme.Design.NoActionBar"
     tools:context="com.earnest.ui.musicPlayer.MusicPlayerActivity">
 
     <RelativeLayout

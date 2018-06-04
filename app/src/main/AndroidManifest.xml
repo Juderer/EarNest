@@ -29,7 +29,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.musicPlayer.MusicPlayerActivity"></activity>
+        <activity
+            android:name=".ui.musicPlayer.MusicPlayerActivity"
+            android:theme="@style/MusicPlayerTheme">
+
+        </activity>
     </application>
 
 </manifest>
