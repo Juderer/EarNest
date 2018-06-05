@@ -22,10 +22,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".ui.home.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -34,7 +34,8 @@
             android:theme="@style/MusicPlayerTheme" />
         <activity android:name=".ui.home.MainActivity" />
         <activity android:name=".ui.home.RegisterActivity" />
-        <activity android:name=".ui.home.LoginActivity"></activity>
+        <activity android:name=".ui.home.LoginActivity"/>
+        <activity android:name=".ui.myMusic.LocalMusicActivity"></activity>
     </application>
 
 </manifest>

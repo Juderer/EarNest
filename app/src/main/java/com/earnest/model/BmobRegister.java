@@ -34,6 +34,8 @@ public class BmobRegister {
     private String verifyCode;
     private String password;
 
+    private boolean isCorrectVerifyCode = false;
+
     public BmobRegister(EditText etRegisterTel, EditText etVerifyCode, EditText etPasswd, Button btnSendCode) {
         this.et_Register_Phonenumber = etRegisterTel;
         this.et_VerifyCode = etVerifyCode;
@@ -73,13 +75,29 @@ public class BmobRegister {
     }
 
     public void register() {
-        String phoneNumber = et_Register_Phonenumber.getText().toString();
-        String password = et_Password.getText().toString();
+        phoneNumber = et_Register_Phonenumber.getText().toString();
+        password = et_Password.getText().toString();
 
         if (!checkInput(phoneNumber, password))
             return ;
-
         if (!checkVerifyCode())
+            return ;
+
+        BmobSMS.verifySmsCode(RegisterActivity.instance, phoneNumber, verifyCode, new VerifySMSCodeListener() {
+            @Override
+            public void done(cn.bmob.sms.exception.BmobException e) {
+                if(e == null) {     // 短信验证码已通过
+//                    Intent intent = new Intent(RegisterActivity.instance, LoginActivity.class);
+//                    RegisterActivity.instance.startActivity(intent);
+                    isCorrectVerifyCode = true;
+                }
+                else {
+                    Toast.makeText(RegisterActivity.instance, "验证失败", Toast.LENGTH_SHORT).show();
+                    et_VerifyCode.setText("");
+                }
+            }
+        });
+        if (!isCorrectVerifyCode)
             return ;
 
         MyUser user = new MyUser();
@@ -132,20 +150,6 @@ public class BmobRegister {
             Toast.makeText(RegisterActivity.instance, "验证码格式错误", Toast.LENGTH_SHORT).show();
             return false;
         }
-
-        BmobSMS.verifySmsCode(RegisterActivity.instance, phoneNumber, verifyCode, new VerifySMSCodeListener() {
-            @Override
-            public void done(cn.bmob.sms.exception.BmobException e) {
-                if(e == null) {     // 短信验证码已通过
-                    Intent intent = new Intent(RegisterActivity.instance, LoginActivity.class);
-                    RegisterActivity.instance.startActivity(intent);
-                }
-                else {
-                    Toast.makeText(RegisterActivity.instance, "验证失败", Toast.LENGTH_SHORT).show();
-                    et_VerifyCode.setText("");
-                }
-            }
-        });
 
         return true;
     }

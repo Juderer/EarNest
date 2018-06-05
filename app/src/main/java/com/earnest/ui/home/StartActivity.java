@@ -20,6 +20,8 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
     private Button btn_Start_Register;
     private Intent startIntent;
 
+    public static StartActivity instance = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,18 +29,17 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
         initView();
         Bmob.initialize(this, BmobManager.BmobAppID);
+        instance = this;
 
-        // 获取登录用户缓存
-        MyUser userInfo = BmobUser.getCurrentUser(MyUser.class);
-        if (userInfo != null) {
-            // 允许用户使用应用
-            startIntent = new Intent(StartActivity.this, MainActivity.class);
-            startActivity(startIntent);
-        }
-        else {
-            // 缓存用户对象为空时， 可打开用户登录、注册界面
-            Toast.makeText(this, "debug", Toast.LENGTH_SHORT).show();
-        }
+        // 检查用户是否已经登录过
+        BmobManager.checkUserInfo();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        // 检查用户是否已经登录过
+        BmobManager.checkUserInfo();
     }
 
     @Override
@@ -67,6 +68,4 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         btn_Start_Login.setOnClickListener(this);
         btn_Start_Register.setOnClickListener(this);
     }
-
-//    private void
 }

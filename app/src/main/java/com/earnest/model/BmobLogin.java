@@ -4,6 +4,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.earnest.ui.home.LoginActivity;
+import com.earnest.ui.home.StartActivity;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -47,6 +48,7 @@ public class BmobLogin {
                         @Override
                         public void run() {
                             LoginActivity.instance.finish();
+
                         }
                     };
                     Timer timer = new Timer();
