@@ -25,7 +25,7 @@
             android:layout_height="70dp"
             android:layout_marginLeft="2dp"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/zuichibi" />
+            android:src="@drawable/zuichibi"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
