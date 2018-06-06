@@ -17,9 +17,9 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="60dp"/>
 
-    <Button
-        android:id="@+id/btn_Start_Login"
-        android:layout_width="180dp"
+    <TextView
+        android:id="@+id/tv_Start_Login"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="手机号登录"
@@ -33,9 +33,9 @@
         android:layout_marginTop="5dp"
         android:background="@color/colorBottomMusicListDivider1"/>
 
-    <Button
-        android:id="@+id/btn_Start_Register"
-        android:layout_width="180dp"
+    <TextView
+        android:id="@+id/tv_Start_Register"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="注册"

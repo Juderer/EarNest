@@ -29,6 +29,9 @@
         <activity android:name=".ui.home.StartActivity"
                   android:exported="true">
 
+=======
+        <activity android:name=".ui.home.MainActivity">
+>>>>>>> f6478cf6d891831cb70884fe0f12b90a6511c8bb
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -48,6 +51,13 @@
             android:enabled="true"
             android:exported="true">
         </service>
+=======
+            android:theme="@style/MusicPlayerTheme" />
+        <activity android:name=".ui.home.StartActivity" />
+        <activity android:name=".ui.home.RegisterActivity" />
+        <activity android:name=".ui.home.LoginActivity" />
+        <activity android:name=".ui.myMusic.LocalMusicActivity" />
+>>>>>>> f6478cf6d891831cb70884fe0f12b90a6511c8bb
     </application>
 
 </manifest>
