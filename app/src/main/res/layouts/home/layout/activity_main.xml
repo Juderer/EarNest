@@ -45,8 +45,8 @@
             android:layout_height="70dp"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="2dp"
-            android:layout_centerVertical="true"
-            android:src="@drawable/zuichibi" />
+            android:src="@drawable/zuichibi"
+            android:layout_centerVertical="true" />
 
         <LinearLayout
             android:layout_width="wrap_content"

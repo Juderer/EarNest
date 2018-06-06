@@ -26,6 +26,8 @@ import com.earnest.model.entities.Song;
 import com.earnest.ui.musicPlayer.MusicPlayerActivity;
 import com.earnest.ui.myMusic.LocalMusicActivity;
 
+import org.apache.commons.logging.Log;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,13 +43,14 @@ public class MainActivity extends AppCompatActivity {
 
     ImageView ivBottomPlay;  //底栏播放暂停按钮
     boolean isChanged = false; //暂停状态
+    int playMode = 0; //顺序播放
 
     /* 底部音乐列表*/
     private ImageView ivBottomPlayerList;
     public List<Item_Song> list = new ArrayList<Item_Song>();
     private AlertDialog.Builder bottomListBuilder;
     private AlertDialog bottomAlertDialog;
-    Button btnBottomMusicListClose;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int positon, long id) {
                 //在这里面就是执行点击后要进行的操作
+
                /* if (alertDialog != null) {
 
                 }*/
@@ -135,6 +139,21 @@ public class MainActivity extends AppCompatActivity {
         bottomListBuilder = new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.BottomAlertDialog));
         bottomListBuilder.setView(layout);
         bottomAlertDialog = bottomListBuilder.create();
+
+        /* 更换播放模式 */
+        ImageView iv_bottomPlayerMode = (ImageView)layout.findViewById(R.id.iv_bottomPlayerMode);
+
+
+        /*  关闭歌曲列表 */
+        Button btnBottomMusicListClose = (Button)layout.findViewById(R.id.btn_bottomMusicListClose);
+        btnBottomMusicListClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomAlertDialog.dismiss();
+            }
+        });
+
+        //显示
         bottomAlertDialog.show();
 
         //设置大小、位置
@@ -145,15 +164,6 @@ public class MainActivity extends AppCompatActivity {
         bottomAlertDialog.getWindow().setAttributes(layoutParams);
         bottomAlertDialog.getWindow().setGravity(Gravity.BOTTOM);
         bottomAlertDialog.getWindow().setWindowAnimations(R.style.BottomDialogAnimation);
-
-        /*  关闭歌曲列表 */
-        btnBottomMusicListClose = (Button)findViewById(R.id.btn_bottomMusicListClose);
-        /*bottomMusicListClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                alertDialog.dismiss();
-            }
-        });*/
 
     }
 
