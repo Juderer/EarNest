@@ -10,10 +10,26 @@ import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.earnest.R;
+import com.earnest.event.PlayEvent;
+import com.earnest.model.entities.Song;
+import com.earnest.utils.MusicUtils;
+
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MusicPlayerActivity extends AppCompatActivity {
+    //hr:event声明和list声明
+    PlayEvent playEvent;
+    private List<Song> queue;
+
 
     //UI控件声明
 
@@ -27,7 +43,13 @@ public class MusicPlayerActivity extends AppCompatActivity {
     ImageView ivCD;
     //动画
     private ObjectAnimator discAnimation;
-    private boolean isPlaying = false;
+
+    //hr:定义三种播放状态
+    private static final int IDLE = 0;
+    private static final int PAUSE = 1;
+    private static final int START = 2;
+    private int currState = IDLE;
+    //private boolean isPlaying = false;
 
     //功能栏
     ImageView ivFavoriate;
@@ -56,6 +78,11 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
         initUIControls();
         setAnimations();
+
+        //hr:导入本地音乐数据
+        queue = new ArrayList<>();
+        queue=MusicUtils.getLocalMusicData(this);
+
     }
 
     /////初始化UI
@@ -85,10 +112,11 @@ public class MusicPlayerActivity extends AppCompatActivity {
         ivPlayList = (ImageView) findViewById(R.id.ivPlayList);
 
         //图片初始化
-        if(isPlaying) {
-            ivPlay.setImageResource(R.drawable.ic_pause);
-        } else {
+        //hr:if(isPlaying) {
+        if(true) {
             ivPlay.setImageResource(R.drawable.ic_play);
+        } else {
+            ivPlay.setImageResource(R.drawable.ic_pause);
         }
 
         //设置监听事件
@@ -153,22 +181,94 @@ public class MusicPlayerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 switchMusic();
+                //hr:event播放控制
+                playEvent = new PlayEvent();
+                playEvent.setAction(PlayEvent.Action.PREVIOUS);
+                playEvent.setQueue(queue);
+                EventBus.getDefault().post(playEvent);
+                switch (currState){
+                    case IDLE:
+                        currState=PAUSE;
+                        break;
+                    case START:
+                        currState=PAUSE;
+                        break;
+                    case PAUSE:
+                        break;
+                }
             }
         });
+
         ivPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!isPlaying) {
-                    playMusic();
-                } else {
-                    pauseMusic();
-                }
+//                if(!isPlaying) {
+//                    playMusic();
+//                    //hr:event播放控制
+//                    playEvent = new PlayEvent();
+//                    playEvent.setAction(PlayEvent.Action.PLAY);
+//                    playEvent.setQueue(queue);
+//                    EventBus.getDefault().post(playEvent);
+//                } else {
+//                    pauseMusic();
+//                    //hr:event播放控制
+//                    playEvent = new PlayEvent();
+//                    playEvent.setAction(PlayEvent.Action.STOP);
+//                    EventBus.getDefault().post(playEvent);
+//                }
+
+                //hr:修改播放状态选择
+                switch (currState) {
+            case IDLE:
+                playMusic();
+                //hr:event播放控制
+                playEvent = new PlayEvent();
+                playEvent.setAction(PlayEvent.Action.PLAY);
+                playEvent.setQueue(queue);
+                EventBus.getDefault().post(playEvent);
+                currState =PAUSE;
+                break;
+            case PAUSE:
+                pauseMusic();
+                //hr:event播放控制
+                playEvent = new PlayEvent();
+                playEvent.setAction(PlayEvent.Action.STOP);
+                EventBus.getDefault().post(playEvent);
+                currState = START;
+                break;
+            case START:
+                playMusic();
+                //hr:event播放控制
+                playEvent = new PlayEvent();
+                playEvent.setAction(PlayEvent.Action.RESUME);
+                playEvent.setQueue(queue);
+                EventBus.getDefault().post(playEvent);
+                currState = PAUSE;
+        }
+        Toast.makeText(getApplicationContext(),String.valueOf(currState),Toast.LENGTH_LONG).show();
+                android.util.Log.i("text",String.valueOf(currState));
+
             }
         });
         ivPlayNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 switchMusic();
+                //hr:event播放控制
+                playEvent = new PlayEvent();
+                playEvent.setAction(PlayEvent.Action.NEXT);
+                EventBus.getDefault().post(playEvent);
+                switch (currState){
+                    case IDLE:
+                        currState=PAUSE;
+                        break;
+                    case START:
+                        currState=PAUSE;
+                        break;
+                    case PAUSE:
+                        break;
+                }
+
             }
         });
         ivPlayList.setOnClickListener(new View.OnClickListener() {
@@ -192,7 +292,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
     private void playMusic() {
         discAnimation.start();
         ivPlay.setImageResource(R.drawable.ic_pause);
-        isPlaying = true;
+        //isPlaying = true;
     }
 
     //暂停音乐
@@ -203,7 +303,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
             discAnimation.setFloatValues(valueAvatar, 360f + valueAvatar);
         }
         ivPlay.setImageResource(R.drawable.ic_play);
-        isPlaying = false;
+        //isPlaying = false;
     }
 
     //切换音乐
