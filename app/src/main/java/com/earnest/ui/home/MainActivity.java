@@ -180,18 +180,6 @@ public class MainActivity extends AppCompatActivity {
         bottomAlertDialog.getWindow().setGravity(Gravity.BOTTOM);
         bottomAlertDialog.getWindow().setWindowAnimations(R.style.BottomDialogAnimation);
 
-<<<<<<< HEAD
-        /*  关闭歌曲列表 */
-        btnBottomMusicListClose = (Button) findViewById(R.id.btn_bottomMusicListClose);
-        /*bottomMusicListClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                alertDialog.dismiss();
-            }
-        });*/
-
-=======
->>>>>>> f6478cf6d891831cb70884fe0f12b90a6511c8bb
     }
 
     //底部音乐列表的适配器

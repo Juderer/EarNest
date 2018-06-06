@@ -245,8 +245,6 @@ public class MusicPlayerActivity extends AppCompatActivity {
                 EventBus.getDefault().post(playEvent);
                 currState = PAUSE;
         }
-        Toast.makeText(getApplicationContext(),String.valueOf(currState),Toast.LENGTH_LONG).show();
-                android.util.Log.i("text",String.valueOf(currState));
 
             }
         });
