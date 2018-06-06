@@ -17,24 +17,15 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.earnest.R;
 import com.earnest.model.entities.Item_Song;
-import com.earnest.model.entities.Song;
 import com.earnest.ui.musicPlayer.MusicPlayerActivity;
-import com.earnest.ui.myMusic.LocalMusicActivity;
-
-import org.apache.commons.logging.Log;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import static android.support.v7.app.AlertDialog.*;
-import static java.sql.DriverManager.println;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -50,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     public List<Item_Song> list = new ArrayList<Item_Song>();
     private AlertDialog.Builder bottomListBuilder;
     private AlertDialog bottomAlertDialog;
+    ImageView iv_bottomPlayerMode;
 
 
     @Override
@@ -141,7 +133,22 @@ public class MainActivity extends AppCompatActivity {
         bottomAlertDialog = bottomListBuilder.create();
 
         /* 更换播放模式 */
-        ImageView iv_bottomPlayerMode = (ImageView)layout.findViewById(R.id.iv_bottomPlayerMode);
+        iv_bottomPlayerMode = (ImageView)layout.findViewById(R.id.iv_bottomPlayerMode);
+        iv_bottomPlayerMode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(playMode == 0){
+                    iv_bottomPlayerMode.setImageResource(R.drawable.bottom_music_list_play_mode_shuffle);
+                    playMode = 1;
+                }else if(playMode == 1){
+                    iv_bottomPlayerMode.setImageResource(R.drawable.bottom_music_list_play_mode_loop);
+                    playMode = 2;
+                }else if(playMode == 2){
+                    iv_bottomPlayerMode.setImageResource(R.drawable.bottom_music_list_play_mode_list);
+                    playMode = 0;
+                }
+            }
+        });
 
 
         /*  关闭歌曲列表 */
@@ -152,6 +159,8 @@ public class MainActivity extends AppCompatActivity {
                 bottomAlertDialog.dismiss();
             }
         });
+
+        
 
         //显示
         bottomAlertDialog.show();
@@ -214,13 +223,13 @@ public class MainActivity extends AppCompatActivity {
             songs.musicname.setText(list.get(position).title);
             songs.singer.setText(list.get(position).singer);
 
-            //删除歌曲
-        /*songs.delete.setOnClickListener(new View.OnClickListener() {
+            //点击回收箱按钮从列表中删除歌曲
+        songs.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
             }
-        });*/
+        });
 
             return convertView;
         }
