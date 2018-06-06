@@ -1,7 +1,12 @@
 package com.earnest.ui.home;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,6 +27,11 @@ import android.widget.Toast;
 
 import com.earnest.R;
 import com.earnest.model.entities.Item_Song;
+<<<<<<< HEAD
+=======
+import com.earnest.model.entities.Song;
+import com.earnest.services.PlayerService;
+>>>>>>> af883b09ed2f33968b60454ebb3bc09460637586
 import com.earnest.ui.musicPlayer.MusicPlayerActivity;
 
 import java.util.ArrayList;
@@ -29,7 +39,8 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button btn ;
+    int REQUEST_READ_PHONE_STATE  = 0;
+    Button btn;
 
 
     ImageView ivBottomPlay;  //底栏播放暂停按钮
@@ -50,6 +61,15 @@ public class MainActivity extends AppCompatActivity {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
 
+        //hr:动态申请权限
+        if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+            ActivityCompat.requestPermissions(MainActivity.this,new String[] {Manifest.permission.READ_EXTERNAL_STORAGE} , 1);
+        }
+
+        //hr:开始服务
+        startService(new Intent(this, PlayerService.class));
+
+
         // 进入MainActivity后，需要结束StartActivity
         // 进入MainActivity的唯一路径就是从StartActivity中进入
         //StartActivity.instance.finish();
@@ -69,11 +89,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if(isChanged){
+                if (isChanged) {
                     //点击播放
                     ivBottomPlay.setImageResource(R.drawable.bottomplayerpause);
-                }else
-                {
+                } else {
                     //点击暂停
                     ivBottomPlay.setImageResource(R.drawable.bottomplayerplay);
                 }
@@ -82,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         /* 底栏歌曲列表按钮*/
-        ivBottomPlayerList = (ImageView)findViewById(R.id.iv_bottomPlayerList);
+        ivBottomPlayerList = (ImageView) findViewById(R.id.iv_bottomPlayerList);
         ivBottomPlayerList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,9 +115,9 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Item_Song> initData() {
         ArrayList<Item_Song> slist = new ArrayList<Item_Song>();
         Item_Song s;
-        for(int i=0;i<10;i++){
+        for (int i = 0; i < 10; i++) {
             s = new Item_Song();
-            s.setNum(String.valueOf(i+1));
+            s.setNum(String.valueOf(i + 1));
             s.setTitle("醉赤壁");
             s.setSinger("林俊杰");
             slist.add(s);
@@ -107,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /* 底部歌曲列表显示*/
-    protected void showBottomMusicList(){
+    protected void showBottomMusicList() {
         list = initData();
         Context context = MainActivity.this;
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -206,17 +225,17 @@ public class MainActivity extends AppCompatActivity {
             Songs songs = null;
             if (convertView == null) {
                 LayoutInflater inflater = LayoutInflater.from(mContext);
-                convertView = inflater.inflate(R.layout.item_bottom_music_list_item,null);
+                convertView = inflater.inflate(R.layout.item_bottom_music_list_item, null);
 
                 songs = new Songs();
-                songs.num = (TextView)convertView.findViewById(R.id.tv_bottomMusicListItemNumber);
-                songs.musicname = (TextView)convertView.findViewById(R.id.tv_bottomMusicListItemMusicName);
-                songs.singer = (TextView)convertView.findViewById(R.id.tv_bottomMusicListItemMusicSinger);
-                songs.delete = (ImageView)convertView.findViewById(R.id.iv_bottomMusicListItemDelete);
+                songs.num = (TextView) convertView.findViewById(R.id.tv_bottomMusicListItemNumber);
+                songs.musicname = (TextView) convertView.findViewById(R.id.tv_bottomMusicListItemMusicName);
+                songs.singer = (TextView) convertView.findViewById(R.id.tv_bottomMusicListItemMusicSinger);
+                songs.delete = (ImageView) convertView.findViewById(R.id.iv_bottomMusicListItemDelete);
 
                 convertView.setTag(songs);
-            }else{
-                songs = (Songs)convertView.getTag();
+            } else {
+                songs = (Songs) convertView.getTag();
             }
 
             songs.num.setText(list.get(position).num);
@@ -233,11 +252,23 @@ public class MainActivity extends AppCompatActivity {
 
             return convertView;
         }
-        class Songs{
+
+        class Songs {
             TextView num;
             TextView musicname;
             TextView singer;
             ImageView delete;
         }
     }
+
+    private void requestReadPhonePermission() {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
+            //在这里面处理需要权限的代码
+        } else {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, REQUEST_READ_PHONE_STATE);
+
+        }
+    }
+
+
 }

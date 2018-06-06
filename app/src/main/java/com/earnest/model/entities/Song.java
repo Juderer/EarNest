@@ -12,7 +12,7 @@ public class Song {
     private String album;
     private String year;
     private String type;
-    private String size;
+    private long size;
     private String fileUrl;
 
     public String getFileName() {
@@ -71,11 +71,11 @@ public class Song {
         this.type = type;
     }
 
-    public String getSize() {
+    public long getSize() {
         return size;
     }
 
-    public void setSize(String size) {
+    public void setSize(long size) {
         this.size = size;
     }
 
@@ -92,7 +92,7 @@ public class Song {
     }
 
     public Song(String fileName, String title, int duration, String singer,
-                String album, String year, String type, String size, String fileUrl) {
+                String album, String year, String type, long size, String fileUrl) {
         super();
         this.fileName = fileName;
         this.title = title;
