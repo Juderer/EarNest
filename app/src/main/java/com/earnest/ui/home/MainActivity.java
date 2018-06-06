@@ -27,11 +27,8 @@ import android.widget.Toast;
 
 import com.earnest.R;
 import com.earnest.model.entities.Item_Song;
-<<<<<<< HEAD
-=======
-import com.earnest.model.entities.Song;
+
 import com.earnest.services.PlayerService;
->>>>>>> af883b09ed2f33968b60454ebb3bc09460637586
 import com.earnest.ui.musicPlayer.MusicPlayerActivity;
 
 import java.util.ArrayList;
