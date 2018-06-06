@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#e20202</color>
+    <color name="colorPrimaryDark">#e20202</color>
+    <color name="colorAccent">#f4f4f4</color>
 
     <!-- Common -->
     <color name="transparent">#00000000</color>
@@ -21,8 +21,8 @@
     <color name="colorBottomMusicList">#f2f0f0</color>
 
     <!-- 本地音乐-->
-    <color name="colorLocalMusicTitle">#FF0000</color>
+    <color name="colorLocalMusicTitle">#e20202</color>
 
-    <color name="musicPlayerPrimary">#FF0000</color>
-    <color name="musicPlayerPrimaryDark">#FF0000</color>
+    <color name="musicPlayerPrimary">#3d85ba</color>
+    <color name="musicPlayerPrimaryDark">#3d85ba</color>
 </resources>

@@ -3,19 +3,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.earnest.ui.home.MainActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toorbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:layout_alignParentTop="true"
+        app:popupTheme="@style/Theme.AppCompat.Light">
+
+
+    </android.support.v7.widget.Toolbar>
 
     <Button
         android:id="@+id/btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/toorbar"
         android:text="btn" />
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/bottomPlayer"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:orientation="horizontal"
         android:layout_alignParentBottom="true"
         android:background="@color/colorBottomPlayer">
 
@@ -23,14 +36,16 @@
             android:id="@+id/iv_bottomPlayerImg"
             android:layout_width="70dp"
             android:layout_height="70dp"
+            android:layout_alignParentLeft="true"
             android:layout_marginLeft="2dp"
-            android:layout_gravity="center_vertical"
-            android:src="@drawable/zuichibi"/>
+            android:src="@drawable/zuichibi"
+            android:layout_centerVertical="true" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_toRightOf="@+id/iv_bottomPlayerImg"
             android:layout_marginLeft="10dp">
 
             <TextView
@@ -44,7 +59,7 @@
 
             <TextView
                 android:id="@+id/tv_bottomPlayerLyrics"
-                android:layout_width="200dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="确认过眼神，我遇上对的人" />
 
@@ -54,7 +69,8 @@
             android:id="@+id/iv_bottomPlayerPlay"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:layout_gravity="center_vertical"
+            android:layout_toLeftOf="@id/iv_bottomPlayerList"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:src="@drawable/bottomplayerpause" />
 
@@ -62,10 +78,12 @@
             android:id="@+id/iv_bottomPlayerList"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:layout_gravity="center_vertical"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:src="@drawable/bottomplayerlist" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

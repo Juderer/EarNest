@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
 
         // 进入MainActivity后，需要结束StartActivity
         // 进入MainActivity的唯一路径就是从StartActivity中进入
-        StartActivity.instance.finish();
+        //StartActivity.instance.finish();
 
         btn = (Button) findViewById(R.id.btn);
         btn.setOnClickListener(new View.OnClickListener() {
