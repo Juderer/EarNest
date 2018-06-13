@@ -46,13 +46,13 @@
                     android:id="@+id/ivMenuFind"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:src="@drawable/ic_menu_find"/>
+                    android:src="@drawable/ic_menu_find_nofocus"/>
 
                 <ImageView
                     android:id="@+id/ivMenuVideo"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    android:src="@drawable/ic_menu_video"/>
+                    android:src="@drawable/ic_menu_video_nofocus"/>
             </LinearLayout>
 
             <ImageView
