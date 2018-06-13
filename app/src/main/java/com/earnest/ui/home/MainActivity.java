@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
     int playMode = 0; //顺序播放
 
     /* 底部音乐列表*/
+    private View home_bottomMusicPlayer;
     private ImageView ivBottomPlayerList;
     public List<Item_Song> list = new ArrayList<Item_Song>();
     private AlertDialog.Builder bottomListBuilder;
@@ -80,6 +81,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        /* 点击底部播放器转换至播放界面 */
+        home_bottomMusicPlayer = (View)findViewById(R.id.home_bottomMusicPlayer);
+        home_bottomMusicPlayer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this,MusicPlayerActivity.class));
+            }
+        });
 
         /* 底栏播放按钮 */
         ivBottomPlay = (ImageView) findViewById(R.id.iv_bottomPlayerPlay);
