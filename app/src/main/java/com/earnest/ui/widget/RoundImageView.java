@@ -1,4 +1,4 @@
-package com.earnest.ui;
+package com.earnest.ui.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
