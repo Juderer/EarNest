@@ -20,6 +20,7 @@ android {
     sourceSets {
         main {
             res.srcDirs = [
+                    'src/main/res/layouts/myMusic',
                     'src/main/res/layouts/home',
                     'src/main/res/layouts/musicPlayer',
                     'src/main/res/layouts',

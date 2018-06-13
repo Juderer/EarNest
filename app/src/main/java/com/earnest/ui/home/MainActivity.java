@@ -30,6 +30,7 @@ import com.earnest.model.entities.Item_Song;
 
 import com.earnest.services.PlayerService;
 import com.earnest.ui.musicPlayer.MusicPlayerActivity;
+import com.earnest.ui.myMusic.LocalMusicActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, MusicPlayerActivity.class));
+                startActivity(new Intent(MainActivity.this, LocalMusicActivity.class));
             }
         });
 
@@ -136,11 +137,10 @@ public class MainActivity extends AppCompatActivity {
         bottomListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int positon, long id) {
+
                 //在这里面就是执行点击后要进行的操作
 
-               /* if (alertDialog != null) {
 
-                }*/
             }
         });
 
@@ -240,13 +240,12 @@ public class MainActivity extends AppCompatActivity {
             songs.singer.setText(list.get(position).singer);
 
             //点击回收箱按钮从列表中删除歌曲
-        songs.delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+            songs.delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
-            }
-        });
-
+                }
+            });
             return convertView;
         }
 

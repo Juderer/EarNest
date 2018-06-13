@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.earnest.ui.myMusic.LocalMusicActivity">
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/localMusicHead"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/colorLocalMusicTitle"
@@ -27,13 +27,16 @@
             android:text="本地音乐"
             android:textSize="25sp"
             android:textColor="@color/white"
-            android:layout_gravity="center_vertical"/>
+            android:layout_toRightOf="@id/imgbtn_localMusicBack"
+            android:layout_centerVertical="true"/>
 
-    </LinearLayout>
+    </RelativeLayout>
     
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/localMusicHead2"
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="50dp"
+        android:layout_below="@id/localMusicHead">
 
         <ImageView
             android:id="@+id/iv_localMusicPlayAll"
@@ -41,7 +44,7 @@
             android:layout_height="25dp"
             android:background="#00000000"
             android:src="@drawable/ic_local_music_play_all"
-            android:layout_gravity="center_vertical"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"/>
         
         <TextView
@@ -49,14 +52,16 @@
             android:layout_height="wrap_content"
             android:text="播放全部"
             android:textSize="20sp"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="5dp"/>
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/iv_localMusicPlayAll"
+            android:layout_marginLeft="10dp"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <ListView
         android:id="@+id/lv_localMusicList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></ListView>
+        android:layout_height="match_parent"
+        android:layout_below="@id/localMusicHead2"></ListView>
 
-</LinearLayout>
+</RelativeLayout>
