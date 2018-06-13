@@ -2,6 +2,12 @@ package com.earnest.ui.musicPlayer;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +21,9 @@ import android.widget.Toast;
 import com.earnest.R;
 import com.earnest.event.PlayEvent;
 import com.earnest.model.entities.Song;
+import com.earnest.ui.utils.DisplayUtil;
+import com.earnest.ui.utils.FastBlurUtil;
+import com.earnest.ui.widget.BackgourndAnimationLinearLayout;
 import com.earnest.utils.MusicUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -32,6 +41,8 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
 
     //UI控件声明
+    //重写的LinearLayout，实现动画
+    private BackgourndAnimationLinearLayout mRootLayout;
 
     //标题栏
     ImageView ivBack;
@@ -79,6 +90,9 @@ public class MusicPlayerActivity extends AppCompatActivity {
         initUIControls();
         setAnimations();
 
+        //根据音乐图片制作毛玻璃背景效果，并通过一个单独的线程进行切换显示
+        try2UpdateMusicPicBackground(R.drawable.timg);
+
         //hr:导入本地音乐数据
         queue = new ArrayList<>();
         queue=MusicUtils.getLocalMusicData(this);
@@ -88,6 +102,8 @@ public class MusicPlayerActivity extends AppCompatActivity {
     /////初始化UI
 
     private void initUIControls() {
+        //背景
+        mRootLayout = (BackgourndAnimationLinearLayout) findViewById(R.id.rootLayout);
         //标题栏
         ivBack = (ImageView) findViewById(R.id.ivBack);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
@@ -308,5 +324,82 @@ public class MusicPlayerActivity extends AppCompatActivity {
     private void switchMusic() {
         discAnimation.end();
         playMusic();
+        //根据音乐图片制作毛玻璃背景效果，并通过一个单独的线程进行切换显示
+        try2UpdateMusicPicBackground(R.drawable.timg);
+    }
+
+    //背景图片处理，以下请勿更改
+    private void try2UpdateMusicPicBackground(final int musicPicRes) {
+        if (mRootLayout.isNeed2UpdateBackground(musicPicRes)) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    final Drawable foregroundDrawable = getForegroundDrawable(musicPicRes);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            mRootLayout.setForeground(foregroundDrawable);
+                            mRootLayout.beginAnimation();
+                        }
+                    });
+                }
+            }).start();
+        }
+    }
+
+    private Drawable getForegroundDrawable(int musicPicRes) {
+        /*得到屏幕的宽高比，以便按比例切割图片一部分*/
+        final float widthHeightSize = (float) (DisplayUtil.getScreenWidth(MusicPlayerActivity.this)
+                * 1.0 / DisplayUtil.getScreenHeight(this) * 1.0);
+
+        Bitmap bitmap = getForegroundBitmap(musicPicRes);
+        int cropBitmapWidth = (int) (widthHeightSize * bitmap.getHeight());
+        int cropBitmapWidthX = (int) ((bitmap.getWidth() - cropBitmapWidth) / 2.0);
+
+        /*切割部分图片*/
+        Bitmap cropBitmap = Bitmap.createBitmap(bitmap, cropBitmapWidthX, 0, cropBitmapWidth,
+                bitmap.getHeight());
+        /*缩小图片*/
+        Bitmap scaleBitmap = Bitmap.createScaledBitmap(cropBitmap, bitmap.getWidth() / 50, bitmap
+                .getHeight() / 50, false);
+        /*模糊化*/
+        final Bitmap blurBitmap = FastBlurUtil.doBlur(scaleBitmap, 8, true);
+
+        final Drawable foregroundDrawable = new BitmapDrawable(blurBitmap);
+        /*加入灰色遮罩层，避免图片过亮影响其他控件*/
+        foregroundDrawable.setColorFilter(Color.GRAY, PorterDuff.Mode.MULTIPLY);
+        return foregroundDrawable;
+    }
+
+    private Bitmap getForegroundBitmap(int musicPicRes) {
+        int screenWidth = DisplayUtil.getScreenWidth(this);
+        int screenHeight = DisplayUtil.getScreenHeight(this);
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+
+        BitmapFactory.decodeResource(getResources(), musicPicRes, options);
+        int imageWidth = options.outWidth;
+        int imageHeight = options.outHeight;
+
+        if (imageWidth < screenWidth && imageHeight < screenHeight) {
+            return BitmapFactory.decodeResource(getResources(), musicPicRes);
+        }
+
+        int sample = 2;
+        int sampleX = imageWidth / DisplayUtil.getScreenWidth(this);
+        int sampleY = imageHeight / DisplayUtil.getScreenHeight(this);
+
+        if (sampleX > sampleY && sampleY > 1) {
+            sample = sampleX;
+        } else if (sampleY > sampleX && sampleX > 1) {
+            sample = sampleY;
+        }
+
+        options.inJustDecodeBounds = false;
+        options.inSampleSize = sample;
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
+
+        return BitmapFactory.decodeResource(getResources(), musicPicRes, options);
     }
 }

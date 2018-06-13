@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.earnest.ui.widget.BackgourndAnimationLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center_horizontal"
-    android:background="@drawable/common_background_gradient_shape"
-    tools:context="com.earnest.ui.musicPlayer.MusicPlayerActivity">
+    android:background="@drawable/ic_blackground"
+    tools:context="com.earnest.ui.musicPlayer.MusicPlayerActivity"
+    android:fitsSystemWindows="true"
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -69,7 +72,7 @@
         android:layout_weight="1"
         >
 
-        <com.earnest.ui.RoundImageView
+        <com.earnest.ui.widget.RoundImageView
             android:id="@+id/ivCD"
             android:layout_width="240dp"
             android:layout_height="240dp"
@@ -197,4 +200,4 @@
             android:src="@drawable/ic_play_list"/>
     </LinearLayout>
 
-</LinearLayout>
+</com.earnest.ui.widget.BackgourndAnimationLinearLayout>
