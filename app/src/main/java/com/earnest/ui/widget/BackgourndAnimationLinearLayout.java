@@ -9,17 +9,14 @@ import android.graphics.drawable.LayerDrawable;
 import android.util.AttributeSet;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 
 import com.earnest.R;
 
 /**
- * Created by AchillesL on 2016/11/18.
- */
-
-/**
- * 自定义一个控件，继承RelativeLayout
+ * 自定义一个控件，LinearLayout
+ * 技术借鉴https://www.jianshu.com/p/cb54990219d9
  * */
+
 public class BackgourndAnimationLinearLayout extends LinearLayout {
 
     private final int DURATION_ANIMATION = 500;

@@ -301,7 +301,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
         discAnimation.setRepeatCount(ValueAnimator.INFINITE);
     }
 
-    //音乐控制方法，所有控制方法写在如下函数中
+    //音乐控制方法，所有动画控制方法写在如下函数中
     //播放音乐
     private void playMusic() {
         discAnimation.start();
