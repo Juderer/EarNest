@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.earnest.ui.home.StartActivity">
 
 
@@ -18,37 +17,39 @@
         android:src="@drawable/ic_register_back"/>
 
     <TextView
+        android:id="@+id/register_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="耳   窝"
         android:textSize="50sp"
         android:textColor="#ff0000"
-        android:layout_gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/iv_Reister_Back"
         android:layout_marginTop="15dp"/>
 
     <EditText
         android:id="@+id/et_Register_Phonenumber"
         android:layout_width="280dp"
         android:layout_height="40dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="40dp"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="2dp"
-        android:layout_toRightOf="@+id/view1"
         android:ems="19"
         android:hint="请输入手机号"
         android:inputType="phone"
         android:digits="0123456789"
         android:maxLength="11"
         android:padding="1dp"
-        android:textSize="12sp" >
+        android:textSize="12sp"
+        android:layout_below="@id/register_title"
+        android:layout_marginTop="80dp"
+        android:layout_centerHorizontal="true">
         <requestFocus />
     </EditText>
 
     <LinearLayout
+        android:id="@+id/register_verify"
         android:layout_width="280dp"
         android:layout_height="40dp"
-        android:layout_gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/et_Register_Phonenumber"
         android:layout_marginTop="10dp">
 
         <EditText
@@ -63,7 +64,7 @@
             android:inputType="text"
             android:padding="1dp"
             android:textSize="12sp" >
-            <requestFocus />
+            <!--<requestFocus />-->
         </EditText>
 
         <Button
@@ -83,17 +84,15 @@
         android:id="@+id/et_Password"
         android:layout_width="280dp"
         android:layout_height="40dp"
-        android:layout_gravity="center_horizontal"
         android:layout_marginTop="10dp"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="2dp"
-        android:layout_toRightOf="@+id/view3"
         android:ems="19"
         android:hint="请输入密码"
         android:inputType="textPassword"
         android:padding="1dp"
-        android:textSize="12sp" >
-        <requestFocus />
+        android:textSize="12sp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/register_verify">
+        <!--<requestFocus />-->
     </EditText>
 
     <Button
@@ -103,7 +102,8 @@
         android:text="注   册"
         android:textSize="20sp"
         android:textColor="@color/white"
-        android:layout_gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/et_Password"
         android:layout_marginTop="15dp"
         android:background="#ff0000"/>
 
@@ -111,38 +111,43 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
         android:text="--其他登录方式--"
-        android:textSize="20sp"
-        android:layout_marginTop="50dp"/>
+        android:textSize="15sp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="70dp"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="15dp">
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp">
 
         <ImageView
             android:id="@+id/iv_Register_QQ"
-            android:layout_width="30dp"
+            android:layout_width="20dp"
             android:layout_height="30dp"
-            android:src="@drawable/qq"/>
+            android:src="@drawable/qq"
+            android:layout_gravity="center_vertical"/>
 
         <ImageView
             android:id="@+id/iv_Register_Weixin"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="25dp"
+            android:layout_height="20dp"
             android:layout_marginLeft="20dp"
-            android:src="@drawable/weixin"/>
+            android:src="@drawable/weixin"
+            android:layout_gravity="center_vertical"/>
 
         <ImageView
             android:id="@+id/iv_Register_Weibo"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_marginLeft="20dp"
-            android:src="@drawable/weibo"/>
+            android:src="@drawable/weibo"
+            android:layout_gravity="center_vertical"/>
 
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

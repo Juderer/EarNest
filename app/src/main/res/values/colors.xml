@@ -22,6 +22,7 @@
 
     <!-- 本地音乐-->
     <color name="colorLocalMusicTitle">#e20202</color>
+    <color name="colorLocalMusicdivider">#f2f0f0</color>
 
     <color name="musicPlayerPrimary">#3d85ba</color>
     <color name="musicPlayerPrimaryDark">#3d85ba</color>
