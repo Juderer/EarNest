@@ -185,7 +185,7 @@
             android:layout_height="25dp"
             android:layout_marginLeft="11dp"
             android:layout_centerVertical="true"
-            android:src="@drawable/delete"/>
+            android:src="@drawable/ic_local_music_more_action_delete"/>
 
         <TextView
             android:id="@+id/tv_localMusicMoreActionDelete"

@@ -17,6 +17,7 @@
 
     </style>
 
+    <!--弹窗进入、退出动画-->
     <style name="BottomDialogAnimation">
         <item name="android:windowEnterAnimation">@anim/dialog_enter</item>
         <item name="android:windowExitAnimation">@anim/dialog_exit</item>
