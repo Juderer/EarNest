@@ -63,7 +63,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/localMusicHead2"
-        ></ListView>
+        android:layout_above="@id/local_music_bottomMusicPlayer">
+    </ListView>
 
     <include
     android:id="@+id/local_music_bottomMusicPlayer"

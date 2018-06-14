@@ -27,12 +27,17 @@
 
         <TextView
             android:id="@+id/tv_bottomPlayerMusicName"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="30dp"
             android:layout_marginTop="10dp"
             android:textSize="20dp"
             android:textColor="@color/colorBottomPlayerMusicName"
-            android:text="醉赤壁" />
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+           
+            android:marqueeRepeatLimit="marquee_forever"
+            android:ellipsize="marquee"
+            android:text="醉赤壁vndanvakjvnkd" />
 
         <TextView
             android:id="@+id/tv_bottomPlayerLyrics"
