@@ -15,7 +15,7 @@
         android:layout_height="70dp"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="2dp"
-        android:src="@drawable/zuichibi"
+        android:src="@drawable/timg"
         android:layout_centerVertical="true" />
 
     <LinearLayout

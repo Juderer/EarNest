@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -40,7 +41,10 @@ public class MainActivity extends AppCompatActivity {
     int REQUEST_READ_PHONE_STATE  = 0;
     Button btn;
 
+    //ToorBar,ViewPager,Fragment
+    ViewPager viewPager;
 
+    //底部音乐栏部分
     ImageView ivBottomPlay;  //底栏播放暂停按钮
     boolean isChanged = false; //暂停状态
     int playMode = 0; //顺序播放
@@ -81,22 +85,38 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        initUIControls();
+    }
 
-        /* 点击底部播放器转换至播放界面 */
+    /////初始化UI
+
+    private void initUIControls() {
+        //ViewPager
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
+
+        //底部播放栏部分
         home_bottomMusicPlayer = (View)findViewById(R.id.home_bottomMusicPlayer);
+        ivBottomPlay = (ImageView) findViewById(R.id.iv_bottomPlayerPlay);
+        ivBottomPlayerList = (ImageView) findViewById(R.id.iv_bottomPlayerList);
+
+        //设置监听事件
+        setUIControlsOnClick();
+    }
+
+    private void setUIControlsOnClick() {
+
+        //底部播放栏部分
+        /* 点击底部播放器转换至播放界面 */
         home_bottomMusicPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(MainActivity.this,MusicPlayerActivity.class));
             }
         });
-
         /* 底栏播放按钮 */
-        ivBottomPlay = (ImageView) findViewById(R.id.iv_bottomPlayerPlay);
         ivBottomPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 if (isChanged) {
                     //点击播放
                     ivBottomPlay.setImageResource(R.drawable.bottomplayerpause);
@@ -107,16 +127,13 @@ public class MainActivity extends AppCompatActivity {
                 isChanged = !isChanged;
             }
         });
-
         /* 底栏歌曲列表按钮*/
-        ivBottomPlayerList = (ImageView) findViewById(R.id.iv_bottomPlayerList);
         ivBottomPlayerList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showBottomMusicList();
             }
         });
-
     }
 
     //底部音乐列表初始化数据
