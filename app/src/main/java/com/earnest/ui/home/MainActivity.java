@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -24,7 +23,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.earnest.R;
 import com.earnest.model.entities.Item_Song;
@@ -32,11 +30,10 @@ import com.earnest.model.entities.Item_Song;
 import com.earnest.services.PlayerService;
 import com.earnest.ui.adapter.BaseFragment;
 import com.earnest.ui.adapter.MainPagerAdapter;
-import com.earnest.ui.home.menuFragment.FindFragment;
-import com.earnest.ui.home.menuFragment.PlayFragment;
-import com.earnest.ui.home.menuFragment.VideoFragment;
+import com.earnest.ui.home.menuFragments.FindFragment;
+import com.earnest.ui.home.menuFragments.PlayFragment;
+import com.earnest.ui.home.menuFragments.VideoFragment;
 import com.earnest.ui.musicPlayer.MusicPlayerActivity;
-import com.earnest.ui.myMusic.LocalMusicActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,8 +51,11 @@ public class MainActivity extends AppCompatActivity {
 
     //ToorBar,ViewPager,Fragment
     ViewPager viewPager;
-    private static int pages = 3;
     BaseFragment[] fragments;
+    private final static int pages = 3;
+    private final static int PlayFragmentPosition = 0;
+    private final static int FindFragmentPosition = 1;
+    private final static int VideoFragmentPosition = 2;
 
     //底部音乐栏部分
     ImageView ivBottomPlay;  //底栏播放暂停按钮
@@ -98,9 +98,9 @@ public class MainActivity extends AppCompatActivity {
     private void initUIControls() {
         //Fragment
         fragments = new BaseFragment[pages];
-        fragments[0] = new PlayFragment();
-        fragments[1] = new FindFragment();
-        fragments[2] = new VideoFragment();
+        fragments[PlayFragmentPosition] = new PlayFragment();
+        fragments[FindFragmentPosition] = new FindFragment();
+        fragments[VideoFragmentPosition] = new VideoFragment();
         //ViewPager
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         inflateViewPager();
@@ -132,19 +132,19 @@ public class MainActivity extends AppCompatActivity {
         ivMenuPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setPageSelection(0);
+                setPageSelection(PlayFragmentPosition);
             }
         });
         ivMenuFind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setPageSelection(1);
+                setPageSelection(FindFragmentPosition);
             }
         });
         ivMenuVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setPageSelection(2);
+                setPageSelection(VideoFragmentPosition);
             }
         });
         ivMenuSearch.setOnClickListener(new View.OnClickListener() {
@@ -213,17 +213,17 @@ public class MainActivity extends AppCompatActivity {
     private void setPageSelection(int position) {
         viewPager.setCurrentItem(position);
         switch (position) {
-            case 0:
+            case PlayFragmentPosition:
                 ivMenuPlay.setImageResource(R.drawable.ic_menu_play);
                 ivMenuFind.setImageResource(R.drawable.ic_menu_find_nofocus);
                 ivMenuVideo.setImageResource(R.drawable.ic_menu_video_nofocus);
                 break;
-            case 1:
+            case FindFragmentPosition:
                 ivMenuPlay.setImageResource(R.drawable.ic_menu_play_nofocus);
                 ivMenuFind.setImageResource(R.drawable.ic_menu_find);
                 ivMenuVideo.setImageResource(R.drawable.ic_menu_video_nofocus);
                 break;
-            case 2:
+            case VideoFragmentPosition:
                 ivMenuPlay.setImageResource(R.drawable.ic_menu_play_nofocus);
                 ivMenuFind.setImageResource(R.drawable.ic_menu_find_nofocus);
                 ivMenuVideo.setImageResource(R.drawable.ic_menu_video);

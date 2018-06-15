@@ -1,4 +1,4 @@
-package com.earnest.ui.home.menuFragment;
+package com.earnest.ui.home.menuFragments;
 
 
 import android.os.Bundle;

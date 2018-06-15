@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.earnest.ui.home.menuFragment.PlayFragment">
+    tools:context="com.earnest.ui.home.menuFragments.PlayFragment">
 
     <RelativeLayout
         android:id="@+id/rlLocalMusic"
