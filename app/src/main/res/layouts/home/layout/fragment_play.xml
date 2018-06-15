@@ -1,0 +1,170 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.earnest.ui.home.menuFragment.PlayFragment">
+
+    <RelativeLayout
+        android:id="@+id/rlLocalMusic"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/menu.items.height"
+        android:layout_marginTop="@dimen/menu.items.spacing">
+
+        <ImageView
+            android:id="@+id/ivLocalMusic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="20dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_menu_play_localmusic"/>
+
+        <TextView
+            android:id="@+id/tvLocalMusic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/ivLocalMusic"
+            android:layout_centerVertical="true"
+            android:text="本地音乐"
+            android:textSize="@dimen/menu.items.textsize"
+            android:textColor="@color/black"/>
+
+        <ImageView
+            android:id="@+id/ivLocalMusicRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_right"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="60dp"
+        android:background="@android:color/darker_gray"/>
+
+    <RelativeLayout
+        android:id="@+id/rlDownloadMusic"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/menu.items.height"
+        android:layout_marginTop="@dimen/menu.items.spacing">
+
+        <ImageView
+            android:id="@+id/ivDownloadMusic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="20dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_menu_play_downloadmusic"/>
+
+        <TextView
+            android:id="@+id/tvDownloadMusic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/ivDownloadMusic"
+            android:layout_centerVertical="true"
+            android:text="下载管理"
+            android:textSize="@dimen/menu.items.textsize"
+            android:textColor="@color/black"/>
+
+        <ImageView
+            android:id="@+id/ivDownloadMusicRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_right"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="60dp"
+        android:background="@android:color/darker_gray"/>
+
+    <RelativeLayout
+        android:id="@+id/rlFavoriteMusic"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/menu.items.height"
+        android:layout_marginTop="@dimen/menu.items.spacing">
+
+        <ImageView
+            android:id="@+id/ivFavoriteMusic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="20dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_menu_play_favoritemusic"/>
+
+        <TextView
+            android:id="@+id/tvFavoriteMusic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/ivFavoriteMusic"
+            android:layout_centerVertical="true"
+            android:text="我的收藏"
+            android:textSize="@dimen/menu.items.textsize"
+            android:textColor="@color/black"/>
+
+        <ImageView
+            android:id="@+id/ivFavoriteMusicRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_right"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="60dp"
+        android:background="@android:color/darker_gray"/>
+
+    <RelativeLayout
+        android:id="@+id/rlRecentMusic"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/menu.items.height"
+        android:layout_marginTop="@dimen/menu.items.spacing">
+
+        <ImageView
+            android:id="@+id/ivRecentMusic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="20dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_menu_play_recentmusic"/>
+
+        <TextView
+            android:id="@+id/tvRecentMusic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/ivRecentMusic"
+            android:layout_centerVertical="true"
+            android:text="最近播放"
+            android:textSize="@dimen/menu.items.textsize"
+            android:textColor="@color/black"/>
+
+        <ImageView
+            android:id="@+id/ivRecentMusicRight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_right"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

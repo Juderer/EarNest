@@ -30,6 +30,11 @@ import com.earnest.R;
 import com.earnest.model.entities.Item_Song;
 
 import com.earnest.services.PlayerService;
+import com.earnest.ui.adapter.BaseFragment;
+import com.earnest.ui.adapter.MainPagerAdapter;
+import com.earnest.ui.home.menuFragment.FindFragment;
+import com.earnest.ui.home.menuFragment.PlayFragment;
+import com.earnest.ui.home.menuFragment.VideoFragment;
 import com.earnest.ui.musicPlayer.MusicPlayerActivity;
 import com.earnest.ui.myMusic.LocalMusicActivity;
 
@@ -39,10 +44,18 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     int REQUEST_READ_PHONE_STATE  = 0;
-    Button btn;
+
+    //顶部标题栏
+    ImageView ivMenuMy;
+    ImageView ivMenuPlay;
+    ImageView ivMenuFind;
+    ImageView ivMenuVideo;
+    ImageView ivMenuSearch;
 
     //ToorBar,ViewPager,Fragment
     ViewPager viewPager;
+    private static int pages = 3;
+    BaseFragment[] fragments;
 
     //底部音乐栏部分
     ImageView ivBottomPlay;  //底栏播放暂停按钮
@@ -77,22 +90,27 @@ public class MainActivity extends AppCompatActivity {
         // 进入MainActivity的唯一路径就是从StartActivity中进入
         //StartActivity.instance.finish();
 
-        btn = (Button) findViewById(R.id.btn);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, LocalMusicActivity.class));
-            }
-        });
-
         initUIControls();
     }
 
     /////初始化UI
 
     private void initUIControls() {
+        //Fragment
+        fragments = new BaseFragment[pages];
+        fragments[0] = new PlayFragment();
+        fragments[1] = new FindFragment();
+        fragments[2] = new VideoFragment();
         //ViewPager
         viewPager = (ViewPager) findViewById(R.id.viewPager);
+        inflateViewPager();
+
+        //顶部标题栏
+        ivMenuMy = (ImageView) findViewById(R.id.ivMenuMy);
+        ivMenuPlay = (ImageView) findViewById(R.id.ivMenuPlay);
+        ivMenuFind = (ImageView) findViewById(R.id.ivMenuFind);
+        ivMenuVideo = (ImageView) findViewById(R.id.ivMenuVideo);
+        ivMenuSearch = (ImageView) findViewById(R.id.ivMenuSearch);
 
         //底部播放栏部分
         home_bottomMusicPlayer = (View)findViewById(R.id.home_bottomMusicPlayer);
@@ -104,6 +122,37 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setUIControlsOnClick() {
+        //顶部标题栏
+        ivMenuMy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        ivMenuPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setPageSelection(0);
+            }
+        });
+        ivMenuFind.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setPageSelection(1);
+            }
+        });
+        ivMenuVideo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setPageSelection(2);
+            }
+        });
+        ivMenuSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
 
         //底部播放栏部分
         /* 点击底部播放器转换至播放界面 */
@@ -134,6 +183,55 @@ public class MainActivity extends AppCompatActivity {
                 showBottomMusicList();
             }
         });
+    }
+
+    //Viewpager与Fragment绑定，设置
+    private void inflateViewPager() {
+        MainPagerAdapter adapter = new MainPagerAdapter(getSupportFragmentManager(), fragments);
+        viewPager.setAdapter(adapter);
+        viewPager.setOffscreenPageLimit(adapter.getCount() - 1);
+        viewPager.setCurrentItem(0);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                setPageSelection(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+    }
+
+    //
+    private void setPageSelection(int position) {
+        viewPager.setCurrentItem(position);
+        switch (position) {
+            case 0:
+                ivMenuPlay.setImageResource(R.drawable.ic_menu_play);
+                ivMenuFind.setImageResource(R.drawable.ic_menu_find_nofocus);
+                ivMenuVideo.setImageResource(R.drawable.ic_menu_video_nofocus);
+                break;
+            case 1:
+                ivMenuPlay.setImageResource(R.drawable.ic_menu_play_nofocus);
+                ivMenuFind.setImageResource(R.drawable.ic_menu_find);
+                ivMenuVideo.setImageResource(R.drawable.ic_menu_video_nofocus);
+                break;
+            case 2:
+                ivMenuPlay.setImageResource(R.drawable.ic_menu_play_nofocus);
+                ivMenuFind.setImageResource(R.drawable.ic_menu_find_nofocus);
+                ivMenuVideo.setImageResource(R.drawable.ic_menu_video);
+                break;
+                default:
+                    break;
+        }
+
     }
 
     //底部音乐列表初始化数据
