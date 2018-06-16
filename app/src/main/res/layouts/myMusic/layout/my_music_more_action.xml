@@ -5,17 +5,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/localMusicMoreActionLayout"
+    android:id="@+id/myMusicMoreActionLayout"
     tools:context="com.earnest.ui.home.MainActivity">
 
     <RelativeLayout
-        android:id="@+id/localMusicMoreActionLayout_head"
+        android:id="@+id/myMusicMoreActionLayout_head"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/tv_localMusicMoreActionMusicName_label"
+            android:id="@+id/tv_myMusicMoreActionMusicName_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="歌曲："
@@ -24,77 +24,77 @@
             android:textSize="15sp"/>
 
         <TextView
-            android:id="@+id/tv_localMusicMoreActionMusicName"
+            android:id="@+id/tv_myMusicMoreActionMusicName"
             android:layout_width="190dp"
             android:layout_height="wrap_content"
             android:text="歌曲名称"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/tv_localMusicMoreActionMusicName_label"
+            android:layout_toRightOf="@id/tv_myMusicMoreActionMusicName_label"
             android:layout_marginLeft="5dp"
             android:textSize="15sp"/>
     </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/localMusicMoreActionLayout_head"
+        android:layout_height="0.5dp"
+        android:layout_below="@id/myMusicMoreActionLayout_head"
         android:layout_centerHorizontal="true"
-        android:background="@color/colorLocalMusicdivider"/>
+        android:background="@color/colorMyMusicdivider"/>
 
     <RelativeLayout
-        android:id="@+id/localMusicMoreActionPlayNext"
+        android:id="@+id/myMusicMoreActionPlayNext"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_below="@id/localMusicMoreActionLayout_head">
+        android:layout_below="@id/myMusicMoreActionLayout_head">
 
         <ImageView
-            android:id="@+id/img_localMusicMoreActionPlayNext"
+            android:id="@+id/img_myMusicMoreActionPlayNext"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginLeft="10dp"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_local_music_more_action_play_next"/>
+            android:src="@drawable/ic_my_music_more_action_play_next"/>
 
         <TextView
-            android:id="@+id/tv_localMusicMoreActionPlayNext"
+            android:id="@+id/tv_myMusicMoreActionPlayNext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="下一首播放"
             android:textSize="20sp"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/img_localMusicMoreActionPlayNext"
+            android:layout_toRightOf="@id/img_myMusicMoreActionPlayNext"
             android:layout_marginLeft="10dp"/>
 
     </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/localMusicMoreActionPlayNext"
+        android:layout_height="0.5dp"
+        android:layout_below="@id/myMusicMoreActionPlayNext"
         android:layout_centerHorizontal="true"
-        android:background="@color/colorLocalMusicdivider"/>
+        android:background="@color/colorMyMusicdivider"/>
 
     <RelativeLayout
-        android:id="@+id/localMusicMoreActionCollect"
+        android:id="@+id/myMusicMoreActionCollect"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_below="@id/localMusicMoreActionPlayNext">
+        android:layout_below="@id/myMusicMoreActionPlayNext">
 
         <ImageView
-            android:id="@+id/img_localMusicMoreActionCollect"
+            android:id="@+id/img_myMusicMoreActionCollect"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginLeft="13dp"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_local_music_more_action_collect"/>
+            android:src="@drawable/ic_my_music_more_action_collect"/>
 
         <TextView
-            android:id="@+id/tv_localMusicMoreActionCollect"
+            android:id="@+id/tv_myMusicMoreActionCollect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="收藏到歌单"
             android:textSize="20sp"
-            android:layout_toRightOf="@id/img_localMusicMoreActionCollect"
+            android:layout_toRightOf="@id/img_myMusicMoreActionCollect"
             android:layout_marginLeft="13dp"
             android:layout_centerVertical="true"/>
 
@@ -102,32 +102,32 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/localMusicMoreActionCollect"
+        android:layout_height="0.5dp"
+        android:layout_below="@id/myMusicMoreActionCollect"
         android:layout_centerHorizontal="true"
-        android:background="@color/colorLocalMusicdivider"/>
+        android:background="@color/colorMyMusicdivider"/>
 
     <RelativeLayout
-        android:id="@+id/localMusicMoreActionRemark"
+        android:id="@+id/myMusicMoreActionRemark"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_below="@id/localMusicMoreActionCollect">
+        android:layout_below="@id/myMusicMoreActionCollect">
 
         <ImageView
-            android:id="@+id/img_localMusicMoreActionRemark"
+            android:id="@+id/img_myMusicMoreActionRemark"
             android:layout_width="23dp"
             android:layout_height="23dp"
             android:layout_marginLeft="12dp"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_local_music_more_action_remark"/>
+            android:src="@drawable/ic_my_music_more_action_remark"/>
 
         <TextView
-            android:id="@+id/tv_localMusicMoreActionRemark"
+            android:id="@+id/tv_myMusicMoreActionRemark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="评论"
             android:textSize="20sp"
-            android:layout_toRightOf="@id/img_localMusicMoreActionRemark"
+            android:layout_toRightOf="@id/img_myMusicMoreActionRemark"
             android:layout_marginLeft="11dp"
             android:layout_centerVertical="true"/>
 
@@ -135,32 +135,32 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/localMusicMoreActionRemark"
+        android:layout_height="0.5dp"
+        android:layout_below="@id/myMusicMoreActionRemark"
         android:layout_centerHorizontal="true"
-        android:background="@color/colorLocalMusicdivider"/>
+        android:background="@color/colorMyMusicdivider"/>
 
     <RelativeLayout
-        android:id="@+id/localMusicMoreActionShare"
+        android:id="@+id/myMusicMoreActionShare"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_below="@id/localMusicMoreActionRemark">
+        android:layout_below="@id/myMusicMoreActionRemark">
 
         <ImageView
-            android:id="@+id/img_localMusicMoreActionShare"
+            android:id="@+id/img_myMusicMoreActionShare"
             android:layout_width="23dp"
             android:layout_height="23dp"
             android:layout_marginLeft="11dp"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_local_music_more_action_share"/>
+            android:src="@drawable/ic_my_music_more_action_share"/>
 
         <TextView
-            android:id="@+id/tv_localMusicMoreActionShare"
+            android:id="@+id/tv_myMusicMoreActionShare"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="分享"
             android:textSize="20sp"
-            android:layout_toRightOf="@id/img_localMusicMoreActionShare"
+            android:layout_toRightOf="@id/img_myMusicMoreActionShare"
             android:layout_marginLeft="11dp"
             android:layout_centerVertical="true"/>
 
@@ -168,32 +168,32 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/localMusicMoreActionShare"
+        android:layout_height="0.5dp"
+        android:layout_below="@id/myMusicMoreActionShare"
         android:layout_centerHorizontal="true"
-        android:background="@color/colorLocalMusicdivider"/>
+        android:background="@color/colorMyMusicdivider"/>
 
     <RelativeLayout
-        android:id="@+id/localMusicMoreActionDelete"
+        android:id="@+id/myMusicMoreActionDelete"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_below="@id/localMusicMoreActionShare">
+        android:layout_below="@id/myMusicMoreActionShare">
 
         <ImageView
-            android:id="@+id/img_localMusicMoreActionDelete"
+            android:id="@+id/img_myMusicMoreActionDelete"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginLeft="11dp"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_local_music_more_action_delete"/>
+            android:src="@drawable/ic_my_music_more_action_delete"/>
 
         <TextView
-            android:id="@+id/tv_localMusicMoreActionDelete"
+            android:id="@+id/tv_myMusicMoreActionDelete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="删除"
             android:textSize="20sp"
-            android:layout_toRightOf="@id/img_localMusicMoreActionDelete"
+            android:layout_toRightOf="@id/img_myMusicMoreActionDelete"
             android:layout_marginLeft="10dp"
             android:layout_centerVertical="true"/>
 

@@ -34,7 +34,6 @@ import com.earnest.ui.home.menuFragments.FindFragment;
 import com.earnest.ui.home.menuFragments.PlayFragment;
 import com.earnest.ui.home.menuFragments.VideoFragment;
 import com.earnest.ui.musicPlayer.MusicPlayerActivity;
-import com.earnest.ui.myMusic.LocalMusicActivity;
 
 import java.util.ArrayList;
 import java.util.List;

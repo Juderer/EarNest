@@ -8,14 +8,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.earnest.R;
 import com.earnest.ui.adapter.BaseFragment;
-import com.earnest.ui.home.MainActivity;
-import com.earnest.ui.myMusic.LocalMusicActivity;
-
-import static cn.bmob.v3.Bmob.getApplicationContext;
+import com.earnest.ui.myMusic.MyMusicActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -62,7 +58,7 @@ public class PlayFragment extends BaseFragment {
         rlLocalMusic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentlocalmusic = new Intent(getActivity(), LocalMusicActivity.class);
+                Intent intentlocalmusic = new Intent(getActivity(), MyMusicActivity.class);
                 intentlocalmusic.putExtra("label","本地音乐");
                 startActivity(intentlocalmusic);
             }
@@ -80,8 +76,8 @@ public class PlayFragment extends BaseFragment {
         rlFavoriteMusic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               //View view1 = View.inflate(getActivity().getApplicationContext(),R.layout.activity_local_music, null);
-                Intent intentFovourite = new Intent(getActivity(), LocalMusicActivity.class);
+               //View view1 = View.inflate(getActivity().getApplicationContext(),R.layout.activity_my_music, null);
+                Intent intentFovourite = new Intent(getActivity(), MyMusicActivity.class);
                 intentFovourite.putExtra("label","我的收藏");
                 startActivity(intentFovourite);
             }
@@ -91,7 +87,7 @@ public class PlayFragment extends BaseFragment {
         rlRecentMusic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentRecentMusic = new Intent(getActivity(), LocalMusicActivity.class);
+                Intent intentRecentMusic = new Intent(getActivity(), MyMusicActivity.class);
                 intentRecentMusic.putExtra("label","最近播放");
                 intentRecentMusic.putExtra("delete",1);
                 startActivity(intentRecentMusic);

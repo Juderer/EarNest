@@ -5,30 +5,30 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.earnest.ui.myMusic.LocalMusicActivity">
+    tools:context="com.earnest.ui.myMusic.MyMusicActivity">
 
     <RelativeLayout
-        android:id="@+id/localMusicHead"
+        android:id="@+id/myMusicHead"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/colorLocalMusicTitle"
+        android:background="@color/colorMyMusicTitle"
         android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/imgbtn_localMusicBack"
+            android:id="@+id/imgbtn_myMusicBack"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:src="@drawable/local_music_back"
+            android:src="@drawable/ic_my_music_back"
             android:background="#00000000"/>
 
         <TextView
-            android:id="@+id/tv_localMusicHeadLabel"
+            android:id="@+id/tv_myMusicHeadLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="本地音乐"
             android:textSize="25sp"
             android:textColor="@color/white"
-            android:layout_toRightOf="@id/imgbtn_localMusicBack"
+            android:layout_toRightOf="@id/imgbtn_myMusicBack"
             android:layout_centerVertical="true"/>
 
         <Button
@@ -46,41 +46,42 @@
     </RelativeLayout>
     
     <RelativeLayout
-        android:id="@+id/localMusicHead2"
+        android:id="@+id/myMusicHead2"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_below="@id/localMusicHead">
+        android:layout_below="@id/myMusicHead">
 
         <ImageView
-            android:id="@+id/iv_localMusicPlayAll"
+            android:id="@+id/iv_myMusicPlayAll"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:background="#00000000"
-            android:src="@drawable/ic_local_music_play_all"
+            android:src="@drawable/ic_my_music_play_all_pause"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"/>
         
         <TextView
+            android:id="@+id/tv_myMusicPlayAll"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="播放全部"
             android:textSize="20sp"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/iv_localMusicPlayAll"
+            android:layout_toRightOf="@id/iv_myMusicPlayAll"
             android:layout_marginLeft="10dp"/>
 
     </RelativeLayout>
 
     <ListView
-        android:id="@+id/lv_localMusicList"
+        android:id="@+id/lv_myMusicList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/localMusicHead2"
-        android:layout_above="@id/local_music_bottomMusicPlayer">
+        android:layout_below="@id/myMusicHead2"
+        android:layout_above="@id/my_music_bottomMusicPlayer">
     </ListView>
 
     <include
-    android:id="@+id/local_music_bottomMusicPlayer"
+    android:id="@+id/my_music_bottomMusicPlayer"
     layout="@layout/bottom_music_player" />
 
 </RelativeLayout>

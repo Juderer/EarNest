@@ -11,7 +11,7 @@
         android:layout_marginLeft="10dp">
 
         <TextView
-            android:id="@+id/tv_localMusicListItemMusicName"
+            android:id="@+id/tv_myMusicListItemMusicName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="musicName"
@@ -19,7 +19,7 @@
             android:layout_marginTop="10dp"/>
 
         <TextView
-            android:id="@+id/tv_localMusicListItemMusicSinger"
+            android:id="@+id/tv_myMusicListItemMusicSinger"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="singer"
@@ -27,21 +27,21 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/iv_localMusicListItemMV"
+        android:id="@+id/iv_myMusicListItemMV"
         android:layout_width="25dp"
         android:layout_height="25dp"
         android:layout_marginTop="17dp"
-        android:layout_toLeftOf="@id/imgbtn_localMusicListItemAction"
+        android:layout_toLeftOf="@id/imgbtn_myMusicListItemAction"
         android:src="@drawable/ic_mv"/>
     
     <ImageButton
-        android:id="@+id/imgbtn_localMusicListItemAction"
+        android:id="@+id/imgbtn_myMusicListItemAction"
         android:layout_width="30dp"
         android:layout_height="35dp"
         android:layout_marginTop="12dp"
         android:layout_marginLeft="5dp"
         android:layout_alignParentRight="true"
-        android:src="@drawable/ic_local_music_list_item_action"
+        android:src="@drawable/ic_my_music_list_item_action"
         android:background="#00000000"/>
 
 </RelativeLayout>

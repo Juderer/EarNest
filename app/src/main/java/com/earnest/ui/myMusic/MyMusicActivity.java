@@ -21,12 +21,9 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.earnest.R;
 import com.earnest.model.entities.Item_Song;
-import com.earnest.services.LocalMusic;
-import com.earnest.ui.home.MainActivity;
 import com.earnest.ui.musicPlayer.MusicPlayerActivity;
 
 import java.util.ArrayList;
@@ -34,21 +31,24 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class LocalMusicActivity extends AppCompatActivity {
+public class MyMusicActivity extends AppCompatActivity {
 
-    private ListView lvLocalMusicList;
-    private ImageButton imgbtnLocalMusicListItemAction;
-    private AlertDialog.Builder localMusicBuilder;
-    private AlertDialog localMusicAlertDialog;
-    private ImageButton imgbtnLocalMusicBack;
-    private RelativeLayout localMusicMoreActionPlayNext;
-    private RelativeLayout localMusicMoreActionCollect;
-    private RelativeLayout localMusicMoreActionRemark;
-    private RelativeLayout localMusicMoreActionShare;
-    private RelativeLayout localMusicMoreActionDelete;
+    private ListView lvMyMusicList;
+    private ImageButton imgbtnMyMusicListItemAction;
+    private AlertDialog.Builder myMusicBuilder;
+    private AlertDialog myMusicAlertDialog;
+    private ImageButton imgbtnMyMusicBack;
+    private RelativeLayout myMusicMoreActionPlayNext;
+    private RelativeLayout myMusicMoreActionCollect;
+    private RelativeLayout myMusicMoreActionRemark;
+    private RelativeLayout myMusicMoreActionShare;
+    private RelativeLayout myMusicMoreActionDelete;
+    private ImageView iv_myMusicPlayAll;
+    private TextView tv_myMusicPlayAll;
+    private boolean isPlayAll = false;  //播放全部暂停状态
 
     /* 复用activity */
-    TextView tv_localMusicHeadLabel;
+    TextView tv_myMusicHeadLabel;
     Button btn_RecentMusic_deleteAll;
 
     ///底部音乐栏部分
@@ -57,7 +57,7 @@ public class LocalMusicActivity extends AppCompatActivity {
     private int playMode = 0; //顺序播放
 
     /* 底部音乐列表*/
-    private View local_music_bottomMusicPlayer;
+    private View my_music_bottomMusicPlayer;
     private ImageView ivBottomPlayerList;
     private List<Item_Song> list = new ArrayList<Item_Song>();
     private AlertDialog.Builder bottomListBuilder;
@@ -65,37 +65,37 @@ public class LocalMusicActivity extends AppCompatActivity {
     private ImageView iv_bottomPlayerMode;
 
     //测试
-    private String[] localMusicNames={"醉赤壁","醉赤壁","醉赤壁"};
-    private  String[] localMusicSingers={"林俊杰","林俊杰","林俊杰"};
+    private String[] myMusicNames={"醉赤壁","醉赤壁","醉赤壁"};
+    private  String[] myMusicSingers={"林俊杰","林俊杰","林俊杰"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_local_music);
+        setContentView(R.layout.activity_my_music);
 
         /*初始化控件*/
         initUIControls();
 
-        /*复用本地音乐*/
-        String localMusiclabel = getIntent().getStringExtra("label");
+        /*复用*/
+        String myMusiclabel = getIntent().getStringExtra("label");
         int recentDelete = getIntent().getIntExtra("delete",0);
-        tv_localMusicHeadLabel.setText(localMusiclabel);
+        tv_myMusicHeadLabel.setText(myMusiclabel);
         if(recentDelete == 1){
             btn_RecentMusic_deleteAll.setVisibility(View.VISIBLE);
         }
 
         /* 歌曲列表适配 */
         List<Map<String,Object>> listItems = new ArrayList<Map<String,Object>>();
-        for(int i=0;i<localMusicNames.length;i++){
+        for(int i=0;i<myMusicNames.length;i++){
             Map<String,Object> listItem = new HashMap<String,Object>();
-            listItem.put("tvLocalMusicName", localMusicNames[i]);
-            listItem.put("tvLocalMusicSinger",localMusicSingers[i]);
+            listItem.put("tvMyMusicName", myMusicNames[i]);
+            listItem.put("tvMyMusicSinger",myMusicSingers[i]);
             listItems.add(listItem);
         }
-        SimpleAdapter simleAdapter = new SimpleAdapter(this, listItems, R.layout.item_local_music_list ,
-                new String[]{"tvLocalMusicName","tvLocalMusicSinger"},
-                new int[]{R.id.tv_localMusicListItemMusicName, R.id.tv_localMusicListItemMusicSinger}){
+        SimpleAdapter simleAdapter = new SimpleAdapter(this, listItems, R.layout.item_my_music_list ,
+                new String[]{"tvMyMusicName","tvMyMusicSinger"},
+                new int[]{R.id.tv_myMusicListItemMusicName, R.id.tv_myMusicListItemMusicSinger}){
 
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
@@ -103,8 +103,8 @@ public class LocalMusicActivity extends AppCompatActivity {
                 final View view = super.getView(position, convertView, parent);
 
                /* 点击显示其他操作 */
-                imgbtnLocalMusicListItemAction = (ImageButton)view.findViewById(R.id.imgbtn_localMusicListItemAction);
-                imgbtnLocalMusicListItemAction.setOnClickListener(new View.OnClickListener() {
+                imgbtnMyMusicListItemAction = (ImageButton)view.findViewById(R.id.imgbtn_myMusicListItemAction);
+                imgbtnMyMusicListItemAction.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         showMoreAction();
@@ -114,35 +114,55 @@ public class LocalMusicActivity extends AppCompatActivity {
             }
         };
 
-        lvLocalMusicList.setAdapter(simleAdapter);
+        lvMyMusicList.setAdapter(simleAdapter);
 
-        /* 本地音乐返回 */
-        imgbtnLocalMusicBack.setOnClickListener(new View.OnClickListener() {
+        /* 返回 */
+        imgbtnMyMusicBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
             }
         });
 
-        /* 最近播放清空按钮*/
+        /* 最近播放清空列表按钮*/
         btn_RecentMusic_deleteAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
             }
         });
+
+        /* 播放全部 */
+        tv_myMusicPlayAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if(isPlayAll == false){     //点击播放
+                    iv_myMusicPlayAll.setImageResource(R.drawable.ic_my_music_play_all_play);
+                    tv_myMusicPlayAll.setText("暂停播放");
+                    isPlayAll = true;
+                }else if(isPlayAll == true){   //点击暂停
+                    iv_myMusicPlayAll.setImageResource(R.drawable.ic_my_music_play_all_pause);
+                    tv_myMusicPlayAll.setText("播放全部");
+                    isPlayAll = false;
+                }
+
+            }
+        });
     }
 
     private void initUIControls(){
-        tv_localMusicHeadLabel = (TextView)findViewById(R.id.tv_localMusicHeadLabel);
-        lvLocalMusicList = (ListView) findViewById(R.id.lv_localMusicList);
-        imgbtnLocalMusicBack = (ImageButton) findViewById(R.id.imgbtn_localMusicBack);
+        tv_myMusicHeadLabel = (TextView)findViewById(R.id.tv_myMusicHeadLabel);
+        lvMyMusicList = (ListView) findViewById(R.id.lv_myMusicList);
+        imgbtnMyMusicBack = (ImageButton) findViewById(R.id.imgbtn_myMusicBack);
         btn_RecentMusic_deleteAll = (Button)findViewById(R.id.btn_RecentMusic_deleteAll);
+        iv_myMusicPlayAll = (ImageView)findViewById(R.id.iv_myMusicPlayAll);
+        tv_myMusicPlayAll = (TextView)findViewById(R.id.tv_myMusicPlayAll);
 
         //底部播放栏部分
-        local_music_bottomMusicPlayer = (View)findViewById(R.id.local_music_bottomMusicPlayer);
-        ivBottomPlay = (ImageView)local_music_bottomMusicPlayer.findViewById(R.id.iv_bottomPlayerPlay);
-        ivBottomPlayerList = (ImageView) local_music_bottomMusicPlayer.findViewById(R.id.iv_bottomPlayerList);
+        my_music_bottomMusicPlayer = (View)findViewById(R.id.my_music_bottomMusicPlayer);
+        ivBottomPlay = (ImageView)my_music_bottomMusicPlayer.findViewById(R.id.iv_bottomPlayerPlay);
+        ivBottomPlayerList = (ImageView) my_music_bottomMusicPlayer.findViewById(R.id.iv_bottomPlayerList);
 
         //设置监听事件
         setUIControlsOnClick();
@@ -151,10 +171,10 @@ public class LocalMusicActivity extends AppCompatActivity {
     private void setUIControlsOnClick() {
         //底部播放栏部分
         /* 点击底部播放器转换至播放界面 */
-        local_music_bottomMusicPlayer.setOnClickListener(new View.OnClickListener() {
+        my_music_bottomMusicPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(LocalMusicActivity.this,MusicPlayerActivity.class));
+                startActivity(new Intent(MyMusicActivity.this,MusicPlayerActivity.class));
             }
         });
         /* 底栏播放按钮 */
@@ -182,18 +202,18 @@ public class LocalMusicActivity extends AppCompatActivity {
 
     protected void showMoreAction(){
 
-        Context context = LocalMusicActivity.this;
+        Context context = MyMusicActivity.this;
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
-        View layout = inflater.inflate(R.layout.local_music_more_action, null);
+        View layout = inflater.inflate(R.layout.my_music_more_action, null);
 
-        localMusicBuilder = new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.BottomAlertDialog));
-        localMusicBuilder.setView(layout);
-        localMusicAlertDialog = localMusicBuilder.create();
+        myMusicBuilder = new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.BottomAlertDialog));
+        myMusicBuilder.setView(layout);
+        myMusicAlertDialog = myMusicBuilder.create();
 
 
         /* 下一首播放*/
-        localMusicMoreActionPlayNext = (RelativeLayout)layout.findViewById(R.id.localMusicMoreActionPlayNext);
-        localMusicMoreActionPlayNext.setOnClickListener(new View.OnClickListener() {
+        myMusicMoreActionPlayNext = (RelativeLayout)layout.findViewById(R.id.myMusicMoreActionPlayNext);
+        myMusicMoreActionPlayNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -201,8 +221,8 @@ public class LocalMusicActivity extends AppCompatActivity {
         });
 
         /* 收藏 */
-        localMusicMoreActionCollect = (RelativeLayout)layout.findViewById(R.id.localMusicMoreActionCollect);
-        localMusicMoreActionCollect.setOnClickListener(new View.OnClickListener() {
+        myMusicMoreActionCollect = (RelativeLayout)layout.findViewById(R.id.myMusicMoreActionCollect);
+        myMusicMoreActionCollect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -210,8 +230,8 @@ public class LocalMusicActivity extends AppCompatActivity {
         });
 
         /*评论*/
-        localMusicMoreActionRemark = (RelativeLayout)layout.findViewById(R.id.localMusicMoreActionRemark);
-        localMusicMoreActionRemark.setOnClickListener(new View.OnClickListener() {
+        myMusicMoreActionRemark = (RelativeLayout)layout.findViewById(R.id.myMusicMoreActionRemark);
+        myMusicMoreActionRemark.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -219,8 +239,8 @@ public class LocalMusicActivity extends AppCompatActivity {
         });
 
         /*分享*/
-        localMusicMoreActionShare = (RelativeLayout)layout.findViewById(R.id.localMusicMoreActionShare);
-        localMusicMoreActionShare.setOnClickListener(new View.OnClickListener() {
+        myMusicMoreActionShare = (RelativeLayout)layout.findViewById(R.id.myMusicMoreActionShare);
+        myMusicMoreActionShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -228,8 +248,8 @@ public class LocalMusicActivity extends AppCompatActivity {
         });
 
         /*删除*/
-        localMusicMoreActionDelete = (RelativeLayout)layout.findViewById(R.id.localMusicMoreActionDelete);
-        localMusicMoreActionDelete.setOnClickListener(new View.OnClickListener() {
+        myMusicMoreActionDelete = (RelativeLayout)layout.findViewById(R.id.myMusicMoreActionDelete);
+        myMusicMoreActionDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -237,16 +257,16 @@ public class LocalMusicActivity extends AppCompatActivity {
         });
 
         /* 更多操作弹框显示 */
-        localMusicAlertDialog.show();
+        myMusicAlertDialog.show();
 
         //设置大小、位置
-        WindowManager.LayoutParams layoutParams = localMusicAlertDialog.getWindow().getAttributes();
-        localMusicAlertDialog.getWindow().getDecorView().setPadding(0, 0, 0, 0);
+        WindowManager.LayoutParams layoutParams = myMusicAlertDialog.getWindow().getAttributes();
+        myMusicAlertDialog.getWindow().getDecorView().setPadding(0, 0, 0, 0);
         layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
         layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        localMusicAlertDialog.getWindow().setAttributes(layoutParams);
-        localMusicAlertDialog.getWindow().setGravity(Gravity.BOTTOM);
-        localMusicAlertDialog.getWindow().setWindowAnimations(R.style.BottomDialogAnimation);
+        myMusicAlertDialog.getWindow().setAttributes(layoutParams);
+        myMusicAlertDialog.getWindow().setGravity(Gravity.BOTTOM);
+        myMusicAlertDialog.getWindow().setWindowAnimations(R.style.BottomDialogAnimation);
     }
 
     //底部音乐列表初始化数据
@@ -266,7 +286,7 @@ public class LocalMusicActivity extends AppCompatActivity {
     /* 底部歌曲列表显示*/
     protected void showBottomMusicList() {
         list = initData();
-        Context context = LocalMusicActivity.this;
+        Context context = MyMusicActivity.this;
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
         View layout = inflater.inflate(R.layout.bottom_music_list, null);
         ListView bottomListView = (ListView) layout.findViewById(R.id.lv_bottomMusicListview);

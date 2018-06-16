@@ -41,7 +41,7 @@
             android:theme="@style/MusicPlayerTheme"/>
         <activity android:name=".ui.home.RegisterActivity"/>
         <activity android:name=".ui.home.LoginActivity"/>
-        <activity android:name=".ui.myMusic.LocalMusicActivity"/>
+        <activity android:name=".ui.myMusic.MyMusicActivity"/>
         <service
             android:name=".services.PlayerService"
             android:enabled="true"
