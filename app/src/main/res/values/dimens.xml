@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Menu Items -->
+    <!-- Menu PlayFragment Items -->
     <dimen name="menu.items.height">50dp</dimen>
     <dimen name="menu.items.spacing">4dp</dimen>
     <dimen name="menu.items.textsize">22sp</dimen>
+
+    <!-- Menu VideoFragment Items -->
+    <dimen name="menu.rv.spacing.top">5dp</dimen>
+    <dimen name="menu.rv.spacing.side">10dp</dimen>
 
 </resources>
