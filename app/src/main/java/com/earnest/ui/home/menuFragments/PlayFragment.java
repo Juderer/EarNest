@@ -8,10 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.earnest.R;
 import com.earnest.ui.adapter.BaseFragment;
+import com.earnest.ui.home.MainActivity;
 import com.earnest.ui.myMusic.LocalMusicActivity;
+
+import static cn.bmob.v3.Bmob.getApplicationContext;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +33,7 @@ public class PlayFragment extends BaseFragment {
     public PlayFragment() {
         // Required empty public constructor
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,28 +57,44 @@ public class PlayFragment extends BaseFragment {
 
     private void setUIControlsOnClick() {
         //Menu items
+
+        /* 本地音乐 */
         rlLocalMusic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), LocalMusicActivity.class));
+                Intent intentlocalmusic = new Intent(getActivity(), LocalMusicActivity.class);
+                intentlocalmusic.putExtra("label","本地音乐");
+                startActivity(intentlocalmusic);
             }
         });
+
+        /* 下载管理 */
         rlDownloadMusic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
         });
+
+        /* 我的收藏 */
         rlFavoriteMusic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+               //View view1 = View.inflate(getActivity().getApplicationContext(),R.layout.activity_local_music, null);
+                Intent intentFovourite = new Intent(getActivity(), LocalMusicActivity.class);
+                intentFovourite.putExtra("label","我的收藏");
+                startActivity(intentFovourite);
             }
         });
+
+        /* 最近播放 */
         rlRecentMusic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intentRecentMusic = new Intent(getActivity(), LocalMusicActivity.class);
+                intentRecentMusic.putExtra("label","最近播放");
+                intentRecentMusic.putExtra("delete",1);
+                startActivity(intentRecentMusic);
             }
         });
     }

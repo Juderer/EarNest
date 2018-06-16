@@ -34,6 +34,7 @@ import com.earnest.ui.home.menuFragments.FindFragment;
 import com.earnest.ui.home.menuFragments.PlayFragment;
 import com.earnest.ui.home.menuFragments.VideoFragment;
 import com.earnest.ui.musicPlayer.MusicPlayerActivity;
+import com.earnest.ui.myMusic.LocalMusicActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,17 +59,17 @@ public class MainActivity extends AppCompatActivity {
     private final static int VideoFragmentPosition = 2;
 
     //底部音乐栏部分
-    ImageView ivBottomPlay;  //底栏播放暂停按钮
-    boolean isChanged = false; //暂停状态
-    int playMode = 0; //顺序播放
+    private ImageView ivBottomPlay;  //底栏播放暂停按钮
+    private boolean isChanged = false; //暂停状态
+    private int playMode = 0; //顺序播放
 
     /* 底部音乐列表*/
     private View home_bottomMusicPlayer;
     private ImageView ivBottomPlayerList;
-    public List<Item_Song> list = new ArrayList<Item_Song>();
+    private List<Item_Song> list = new ArrayList<Item_Song>();
     private AlertDialog.Builder bottomListBuilder;
     private AlertDialog bottomAlertDialog;
-    ImageView iv_bottomPlayerMode;
+    private ImageView iv_bottomPlayerMode;
 
 
     @Override
@@ -94,7 +95,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /////初始化UI
-
     private void initUIControls() {
         //Fragment
         fragments = new BaseFragment[pages];
