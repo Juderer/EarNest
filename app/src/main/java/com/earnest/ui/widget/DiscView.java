@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.earnest.R;
 
+import com.earnest.model.entities.Song;
 import com.earnest.ui.utils.DisplayUtil;
 
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ public class DiscView extends RelativeLayout {
 
     private List<View> mDiscLayouts = new ArrayList<>();
 
-    //private List<MusicData> mMusicDatas = new ArrayList<>();
+    private List<Song> mSongs = new ArrayList<>();
     private List<ObjectAnimator> mDiscAnimators = new ArrayList<>();
     /*标记ViewPager是否处于偏移的状态*/
     private boolean mViewPagerIsOffset = false;
@@ -368,34 +369,36 @@ public class DiscView extends RelativeLayout {
         return Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),
                 musicPicRes, options), musicPicSize, musicPicSize, true);
     }
-/*
-    public void setMusicDataList(List<MusicData> musicDataList) {
-        if (musicDataList.isEmpty()) return;
+
+    public void setSongList(List<Song> songList) {
+        if (songList.isEmpty()) return;
 
         mDiscLayouts.clear();
-        mMusicDatas.clear();
+        mSongs.clear();
         mDiscAnimators.clear();
-        mMusicDatas.addAll(musicDataList);
+        mSongs.addAll(songList);
 
         int i = 0;
-        for (MusicData musicData : mMusicDatas) {
+        for (Song song : mSongs) {
             View discLayout = LayoutInflater.from(getContext()).inflate(R.layout.layout_disc,
                     mVpContain, false);
 
             ImageView disc = (ImageView) discLayout.findViewById(R.id.ivDisc);
-            disc.setImageDrawable(getDiscDrawable(musicData.getMusicPicRes()));
+            //disc.setImageDrawable(getDiscDrawable(song.getMusicPicRes()));
+            disc.setImageDrawable(getDiscDrawable(R.drawable.timg));
 
             mDiscAnimators.add(getDiscObjectAnimator(disc, i++));
             mDiscLayouts.add(discLayout);
         }
         mViewPagerAdapter.notifyDataSetChanged();
 
-        MusicData musicData = mMusicDatas.get(0);
+        Song song = mSongs.get(0);
         if (mIPlayInfo != null) {
-            mIPlayInfo.onMusicInfoChanged(musicData.getMusicName(), musicData.getMusicAuthor());
-            mIPlayInfo.onMusicPicChanged(musicData.getMusicPicRes());
+            mIPlayInfo.onMusicInfoChanged(song.getTitle(), song.getSinger());
+            //mIPlayInfo.onMusicPicChanged(song.getMusicPicRes());
+            mIPlayInfo.onMusicPicChanged(R.drawable.timg);
         }
-    }*/
+    }
 
     private ObjectAnimator getDiscObjectAnimator(ImageView disc, final int i) {
         ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(disc, View.ROTATION, 0, 360);
@@ -473,15 +476,16 @@ public class DiscView extends RelativeLayout {
 
     public void notifyMusicInfoChanged(int position) {
         if (mIPlayInfo != null) {
-            //MusicData musicData = mMusicDatas.get(position);
-            //mIPlayInfo.onMusicInfoChanged(musicData.getMusicName(), musicData.getMusicAuthor());
+            Song song = mSongs.get(position);
+            mIPlayInfo.onMusicInfoChanged(song.getTitle(), song.getSinger());
         }
     }
 
     public void notifyMusicPicChanged(int position) {
         if (mIPlayInfo != null) {
-            //MusicData musicData = mMusicDatas.get(position);
-            //mIPlayInfo.onMusicPicChanged(musicData.getMusicPicRes());
+            Song song = mSongs.get(position);
+            //mIPlayInfo.onMusicPicChanged(song.getMusicPicRes());
+            mIPlayInfo.onMusicPicChanged(R.drawable.timg);
         }
     }
 
@@ -512,16 +516,16 @@ public class DiscView extends RelativeLayout {
             play();
         }
     }
-/*
+
     public void next() {
         int currentItem = mVpContain.getCurrentItem();
-        if (currentItem == mMusicDatas.size() - 1) {
+        if (currentItem == mSongs.size() - 1) {
             Toast.makeText(getContext(), "已经到达最后一首", Toast.LENGTH_SHORT).show();
         } else {
             selectMusicWithButton();
             mVpContain.setCurrentItem(currentItem + 1, true);
         }
-    }*/
+    }
 
     public void last() {
         int currentItem = mVpContain.getCurrentItem();
