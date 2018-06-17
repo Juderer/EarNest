@@ -38,6 +38,7 @@ import com.earnest.ui.home.menuFragments.FindFragment;
 import com.earnest.ui.home.menuFragments.PlayFragment;
 import com.earnest.ui.home.menuFragments.VideoFragment;
 import com.earnest.ui.musicPlayer.MusicPlayerActivity;
+import com.earnest.ui.search.SearchActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -129,6 +130,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void setUIControlsOnClick() {
         //顶部标题栏
+
+        /*个人设置*/
         ivMenuMy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -137,28 +140,36 @@ public class MainActivity extends AppCompatActivity {
                 popPersonalSetting.showAtLocation(getLayoutInflater().inflate(R.layout.activity_main, null), Gravity.LEFT, 0, 500);
             }
         });
+
+        /*我的*/
         ivMenuPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setPageSelection(PlayFragmentPosition);
             }
         });
+
+        /*发现主页*/
         ivMenuFind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setPageSelection(FindFragmentPosition);
             }
         });
+
+        /*视频*/
         ivMenuVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 setPageSelection(VideoFragmentPosition);
             }
         });
+
+        /* 搜索 */
         ivMenuSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivity(new Intent(MainActivity.this, SearchActivity.class));
             }
         });
 
@@ -408,6 +419,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /* 初始化个人设置弹窗 */
     protected void initPopupWindow(){
         View popupWindowView = getLayoutInflater().inflate(R.layout.pop_personal_setting, null);
         //内容，高度，宽度
@@ -430,14 +442,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        RelativeLayout re_personalsetting_letter = (RelativeLayout)popupWindowView.findViewById(R.id.re_personalsetting_letter);
+        RelativeLayout re_personalsetting_share = (RelativeLayout)popupWindowView.findViewById(R.id.re_personalsetting_share);
         RelativeLayout re_personalsetting_help = (RelativeLayout)popupWindowView.findViewById(R.id.re_personalsetting_help);
         RelativeLayout re_personalsetting_about = (RelativeLayout)popupWindowView.findViewById(R.id.re_personalsetting_about);
-        RelativeLayout re_personalsetting_setting = (RelativeLayout)popupWindowView.findViewById(R.id.re_personalsetting_setting);
         RelativeLayout re_personalsetting_exit = (RelativeLayout)popupWindowView.findViewById(R.id.re_personalsetting_exit);
 
         /*我的消息*/
-        re_personalsetting_letter.setOnClickListener(new View.OnClickListener() {
+        re_personalsetting_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -460,14 +471,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        /*设置*/
-        re_personalsetting_setting.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
         /*退出*/
         re_personalsetting_exit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -477,7 +480,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    /*** 获取PopupWindow实例*/
+    /*** 获取个人设置弹窗实例*/
     private void getPopupWindow() {
 
         if (null != popPersonalSetting) {

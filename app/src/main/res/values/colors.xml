@@ -8,7 +8,7 @@
     <color name="transparent">#00000000</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
-    <color name="app.color.background">#EDEDED</color>
+    <color name="app.color.background">#f7f5f5</color>
 
     <!-- Theme - Dark Blue -->
     <color name="dark_blue.background">#484e51</color>
@@ -19,7 +19,10 @@
     <color name="colorBottomPlayerMusicName">#0d0101</color>
     <color name="colorBottomMusicListDivider1">#cecaca</color>
     <color name="colorDividerLine">#cecaca</color>
-    <color name="colorBottomMusicList">#e1dfdf</color>
+    <color name="colorBottomMusicList">#ffffff</color>
+
+    <!--更多操作-->
+    <color name="colorMoreAction">#ffffff</color>
 
     <!-- 本地音乐-->
     <color name="colorMyMusicTitle">#e20202</color>

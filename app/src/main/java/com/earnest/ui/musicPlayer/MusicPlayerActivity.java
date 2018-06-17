@@ -2,6 +2,7 @@ package com.earnest.ui.musicPlayer;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -177,10 +178,12 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
 
             }
         });
+
+        /*评论*/
         ivReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivity(new Intent(MusicPlayerActivity.this,RemarkActivity.class));
             }
         });
         ivMore.setOnClickListener(new View.OnClickListener() {

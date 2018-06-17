@@ -39,27 +39,27 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/re_personalsetting_letter"
+        android:id="@+id/re_personalsetting_share"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_below="@id/re_personalsetting_head"
         android:layout_marginTop="10dp">
 
         <ImageView
-            android:id="@+id/iv_pesonalsetting_myMessage"
+            android:id="@+id/iv_pesonalsetting_share"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_marginLeft="10dp"
-            android:src="@drawable/ic_personalsetting_letter"
+            android:src="@drawable/ic_personalsetting_share"
             android:layout_centerVertical="true"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="我的消息"
+            android:text="分享"
             android:textSize="18sp"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/iv_pesonalsetting_myMessage"
+            android:layout_toRightOf="@id/iv_pesonalsetting_share"
             android:layout_marginLeft="10dp"/>
 
     </RelativeLayout>
@@ -67,8 +67,8 @@
     <RelativeLayout
         android:id="@+id/re_personalsetting_help"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/re_personalsetting_letter"
+        android:layout_height="30dp"
+        android:layout_below="@id/re_personalsetting_share"
         android:layout_marginTop="10dp">
 
         <ImageView
@@ -93,7 +93,7 @@
     <RelativeLayout
         android:id="@+id/re_personalsetting_about"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_below="@id/re_personalsetting_help"
         android:layout_marginTop="10dp">
 
@@ -116,44 +116,18 @@
 
     </RelativeLayout>
 
-    <View
+    <!--<View
         android:layout_width="280dp"
         android:layout_height="0.5dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="50dp"
-        android:background="@color/colorPersonalSettingdivider"/>
-
-    <RelativeLayout
-        android:id="@+id/re_personalsetting_setting"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp">
-
-        <ImageView
-            android:id="@+id/iv_pesonalsetting_setting"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginLeft="15dp"
-            android:src="@drawable/ic_personalsetting_set"
-            android:layout_centerVertical="true"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="设  置"
-            android:textSize="18sp"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/iv_pesonalsetting_setting"
-            android:layout_marginLeft="10dp"/>
-
-    </RelativeLayout>
+        android:background="@color/colorPersonalSettingdivider"/>-->
 
     <RelativeLayout
         android:id="@+id/re_personalsetting_exit"
         android:layout_width="150dp"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="10dp"
         android:layout_alignParentRight="true">
