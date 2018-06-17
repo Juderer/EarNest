@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.earnest.ui.search.SearchResultActivity"
+    android:background="@color/app.color.background">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/searchResult_toorbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        android:layout_alignParentTop="true"
+        app:popupTheme="@style/Theme.AppCompat.Light">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iv_searchResult_microphone"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/ic_search_microphone"/>
+
+            <EditText
+                android:id="@+id/et_searchResult_input"
+                android:layout_width="250dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:hint="林俊杰"
+                android:layout_toRightOf="@id/iv_searchResult_microphone"/>
+
+            <ImageView
+                android:id="@+id/iv_searchResult_search"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_toRightOf="@id/et_searchResult_input"
+                android:layout_marginLeft="5dp"
+                android:layout_centerVertical="true"
+                android:src="@drawable/ic_search_search"/>
+
+            <TextView
+                android:id="@+id/tv_searchResult_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="取消"
+                android:textSize="20sp"
+                android:textColor="@color/white"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="10dp"
+                android:layout_centerVertical="true"/>
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
+
+    <ListView
+        android:id="@+id/lv_searchResult"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/searchResult_toorbar"
+        android:layout_above="@id/searchResult_bottomMusicPlayer">
+    </ListView>
+
+    <include
+        android:id="@+id/searchResult_bottomMusicPlayer"
+        layout="@layout/bottom_music_player" />
+</RelativeLayout>

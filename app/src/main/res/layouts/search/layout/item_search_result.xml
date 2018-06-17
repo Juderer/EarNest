@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="10dp">
+
+        <TextView
+            android:id="@+id/tv_searchResultItemMusicName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="musicName"
+            android:textSize="20sp"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/tv_searchResultItemMusicSinger"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="singer"
+            android:layout_marginTop="3dp"/>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_searchResultItemMV"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="17dp"
+        android:layout_toLeftOf="@id/imgbtn_searchResultItemAction"
+        android:src="@drawable/ic_mv"/>
+
+    <ImageButton
+        android:id="@+id/imgbtn_searchResultItemAction"
+        android:layout_width="30dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginLeft="5dp"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/ic_my_music_list_item_action"
+        android:background="#00000000"/>
+
+</RelativeLayout>

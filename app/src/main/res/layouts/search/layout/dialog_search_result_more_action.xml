@@ -6,17 +6,17 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/colorMoreAction"
-    android:id="@+id/myMusicMoreActionLayout"
+    android:id="@+id/searchResultMusicMoreActionLayout"
     tools:context="com.earnest.ui.home.MainActivity">
 
     <RelativeLayout
-        android:id="@+id/myMusicMoreActionLayout_head"
+        android:id="@+id/searchResultMusicMoreActionLayout_head"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:orientation="horizontal">
 
         <TextView
-            android:id="@+id/tv_myMusicMoreActionMusicName_label"
+            android:id="@+id/tv_searchResultMusicMoreActionMusicName_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="歌曲："
@@ -25,12 +25,12 @@
             android:textSize="15sp"/>
 
         <TextView
-            android:id="@+id/tv_myMusicMoreActionMusicName"
+            android:id="@+id/tv_searchResultMusicMoreActionMusicName"
             android:layout_width="190dp"
             android:layout_height="wrap_content"
             android:text="歌曲名称"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/tv_myMusicMoreActionMusicName_label"
+            android:layout_toRightOf="@id/tv_searchResultMusicMoreActionMusicName_label"
             android:layout_marginLeft="5dp"
             android:textSize="15sp"/>
     </RelativeLayout>
@@ -38,18 +38,18 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:layout_below="@id/myMusicMoreActionLayout_head"
+        android:layout_below="@id/searchResultMusicMoreActionLayout_head"
         android:layout_centerHorizontal="true"
         android:background="@color/colorMyMusicdivider"/>
 
     <RelativeLayout
-        android:id="@+id/myMusicMoreActionPlayNext"
+        android:id="@+id/searchResultMusicMoreActionPlayNext"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_below="@id/myMusicMoreActionLayout_head">
+        android:layout_below="@id/searchResultMusicMoreActionLayout_head">
 
         <ImageView
-            android:id="@+id/img_myMusicMoreActionPlayNext"
+            android:id="@+id/img_searchResultMusicMoreActionPlayNext"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginLeft="10dp"
@@ -57,13 +57,13 @@
             android:src="@drawable/ic_my_music_more_action_play_next"/>
 
         <TextView
-            android:id="@+id/tv_myMusicMoreActionPlayNext"
+            android:id="@+id/tv_searchResultMusicMoreActionPlayNext"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="下一首播放"
             android:textSize="20sp"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/img_myMusicMoreActionPlayNext"
+            android:layout_toRightOf="@id/img_searchResultMusicMoreActionPlayNext"
             android:layout_marginLeft="10dp"/>
 
     </RelativeLayout>
@@ -71,18 +71,18 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:layout_below="@id/myMusicMoreActionPlayNext"
+        android:layout_below="@id/searchResultMusicMoreActionPlayNext"
         android:layout_centerHorizontal="true"
         android:background="@color/colorMyMusicdivider"/>
 
     <RelativeLayout
-        android:id="@+id/myMusicMoreActionCollect"
+        android:id="@+id/searchResultMusicMoreActionCollect"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_below="@id/myMusicMoreActionPlayNext">
+        android:layout_below="@id/searchResultMusicMoreActionPlayNext">
 
         <ImageView
-            android:id="@+id/img_myMusicMoreActionCollect"
+            android:id="@+id/img_searchResultMusicMoreActionCollect"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginLeft="13dp"
@@ -90,12 +90,12 @@
             android:src="@drawable/ic_my_music_more_action_collect"/>
 
         <TextView
-            android:id="@+id/tv_myMusicMoreActionCollect"
+            android:id="@+id/tv_searchResultMusicMoreActionCollect"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="收藏到歌单"
             android:textSize="20sp"
-            android:layout_toRightOf="@id/img_myMusicMoreActionCollect"
+            android:layout_toRightOf="@id/img_searchResultMusicMoreActionCollect"
             android:layout_marginLeft="13dp"
             android:layout_centerVertical="true"/>
 
@@ -104,18 +104,18 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:layout_below="@id/myMusicMoreActionCollect"
+        android:layout_below="@id/searchResultMusicMoreActionCollect"
         android:layout_centerHorizontal="true"
         android:background="@color/colorMyMusicdivider"/>
 
     <RelativeLayout
-        android:id="@+id/myMusicMoreActionRemark"
+        android:id="@+id/searchResultMusicMoreActionRemark"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_below="@id/myMusicMoreActionCollect">
+        android:layout_below="@id/searchResultMusicMoreActionCollect">
 
         <ImageView
-            android:id="@+id/img_myMusicMoreActionRemark"
+            android:id="@+id/img_searchResultMusicMoreActionRemark"
             android:layout_width="23dp"
             android:layout_height="23dp"
             android:layout_marginLeft="12dp"
@@ -123,12 +123,12 @@
             android:src="@drawable/ic_my_music_more_action_remark"/>
 
         <TextView
-            android:id="@+id/tv_myMusicMoreActionRemark"
+            android:id="@+id/tv_searchResultMusicMoreActionRemark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="评论"
             android:textSize="20sp"
-            android:layout_toRightOf="@id/img_myMusicMoreActionRemark"
+            android:layout_toRightOf="@id/img_searchResultMusicMoreActionRemark"
             android:layout_marginLeft="11dp"
             android:layout_centerVertical="true"/>
 
@@ -137,18 +137,18 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:layout_below="@id/myMusicMoreActionRemark"
+        android:layout_below="@id/searchResultMusicMoreActionRemark"
         android:layout_centerHorizontal="true"
         android:background="@color/colorMyMusicdivider"/>
 
     <RelativeLayout
-        android:id="@+id/myMusicMoreActionShare"
+        android:id="@+id/searchResultMusicMoreActionShare"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_below="@id/myMusicMoreActionRemark">
+        android:layout_below="@id/searchResultMusicMoreActionRemark">
 
         <ImageView
-            android:id="@+id/img_myMusicMoreActionShare"
+            android:id="@+id/img_searchResultMusicMoreActionShare"
             android:layout_width="23dp"
             android:layout_height="23dp"
             android:layout_marginLeft="11dp"
@@ -156,12 +156,12 @@
             android:src="@drawable/ic_my_music_more_action_share"/>
 
         <TextView
-            android:id="@+id/tv_myMusicMoreActionShare"
+            android:id="@+id/tv_searchResultMusicMoreActionShare"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="分享"
             android:textSize="20sp"
-            android:layout_toRightOf="@id/img_myMusicMoreActionShare"
+            android:layout_toRightOf="@id/img_searchResultMusicMoreActionShare"
             android:layout_marginLeft="11dp"
             android:layout_centerVertical="true"/>
 
@@ -170,18 +170,18 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:layout_below="@id/myMusicMoreActionShare"
+        android:layout_below="@id/searchResultMusicMoreActionShare"
         android:layout_centerHorizontal="true"
         android:background="@color/colorMyMusicdivider"/>
 
     <RelativeLayout
-        android:id="@+id/myMusicMoreActionDelete"
+        android:id="@+id/searchResultMusicMoreActionDownload"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_below="@id/myMusicMoreActionShare">
+        android:layout_below="@id/searchResultMusicMoreActionShare">
 
         <ImageView
-            android:id="@+id/img_myMusicMoreActionDelete"
+            android:id="@+id/img_searchResultMusicMoreActionDelete"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginLeft="11dp"
@@ -189,12 +189,12 @@
             android:src="@drawable/ic_my_music_more_action_delete"/>
 
         <TextView
-            android:id="@+id/tv_myMusicMoreActionDelete"
+            android:id="@+id/tv_searchResultMusicMoreActionDelete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="删除"
+            android:text="下载"
             android:textSize="20sp"
-            android:layout_toRightOf="@id/img_myMusicMoreActionDelete"
+            android:layout_toRightOf="@id/img_searchResultMusicMoreActionDelete"
             android:layout_marginLeft="10dp"
             android:layout_centerVertical="true"/>
 
