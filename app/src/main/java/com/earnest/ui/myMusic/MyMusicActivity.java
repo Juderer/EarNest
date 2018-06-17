@@ -63,6 +63,7 @@ public class MyMusicActivity extends AppCompatActivity {
     private AlertDialog.Builder bottomListBuilder;
     private AlertDialog bottomAlertDialog;
     private ImageView iv_bottomPlayerMode;
+    private ImageView iv_bottomPlayerDeleteAll;
 
     //测试
     private String[] myMusicNames={"醉赤壁","醉赤壁","醉赤壁"};
@@ -326,6 +327,14 @@ public class MyMusicActivity extends AppCompatActivity {
             }
         });
 
+        /* 清空列表*/
+        iv_bottomPlayerDeleteAll = (ImageView)layout.findViewById(R.id.iv_bottomPlayerDeleteAll);
+        iv_bottomPlayerDeleteAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
         /*  关闭歌曲列表 */
         Button btnBottomMusicListClose = (Button)layout.findViewById(R.id.btn_bottomMusicListClose);

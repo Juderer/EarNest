@@ -35,4 +35,10 @@
         <item name="android:backgroundDimAmount">0.6</item><!--昏暗数量-->
     </style>
 
+    <!--个人设置-->
+    <style name="AnimationLeftFade">
+        <item name="android:windowEnterAnimation">@anim/in_lefttoright</item>
+        <item name="android:windowExitAnimation">@anim/out_righttoleft</item>
+    </style>
+
 </resources>

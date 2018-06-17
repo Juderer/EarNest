@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -22,7 +23,10 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.earnest.R;
 import com.earnest.model.entities.Item_Song;
@@ -69,7 +73,10 @@ public class MainActivity extends AppCompatActivity {
     private AlertDialog.Builder bottomListBuilder;
     private AlertDialog bottomAlertDialog;
     private ImageView iv_bottomPlayerMode;
+    private ImageView iv_bottomPlayerDeleteAll;
 
+    /*个人设置*/
+    private PopupWindow popPersonalSetting;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,7 +132,9 @@ public class MainActivity extends AppCompatActivity {
         ivMenuMy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                getPopupWindow();
+                //popPersonalSetting.showAtLocation(findViewById(R.id.), Gravity.CENTER, 0, 0);
+                popPersonalSetting.showAtLocation(getLayoutInflater().inflate(R.layout.activity_main, null), Gravity.LEFT, 0, 500);
             }
         });
         ivMenuPlay.setOnClickListener(new View.OnClickListener() {
@@ -290,6 +299,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        /* 清空列表*/
+        iv_bottomPlayerDeleteAll = (ImageView)layout.findViewById(R.id.iv_bottomPlayerDeleteAll);
+        iv_bottomPlayerDeleteAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
 
         /*  关闭歌曲列表 */
         Button btnBottomMusicListClose = (Button)layout.findViewById(R.id.btn_bottomMusicListClose);
@@ -390,5 +408,83 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    protected void initPopupWindow(){
+        View popupWindowView = getLayoutInflater().inflate(R.layout.pop_personal_setting, null);
+        //内容，高度，宽度
+        popPersonalSetting = new PopupWindow(popupWindowView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
 
+        //动画效果
+        popPersonalSetting.setAnimationStyle(R.style.AnimationLeftFade);
+
+        //点击其他地方消失
+        popupWindowView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if( popPersonalSetting != null && popPersonalSetting.isShowing()){
+                    popPersonalSetting.dismiss();
+                    popPersonalSetting = null;
+                }
+                // 这里如果返回true的话，touch事件将被拦截
+                // 拦截后 PopupWindow的onTouchEvent不被调用，这样点击外部区域无法dismiss
+                return false;
+            }
+        });
+
+        RelativeLayout re_personalsetting_letter = (RelativeLayout)popupWindowView.findViewById(R.id.re_personalsetting_letter);
+        RelativeLayout re_personalsetting_help = (RelativeLayout)popupWindowView.findViewById(R.id.re_personalsetting_help);
+        RelativeLayout re_personalsetting_about = (RelativeLayout)popupWindowView.findViewById(R.id.re_personalsetting_about);
+        RelativeLayout re_personalsetting_setting = (RelativeLayout)popupWindowView.findViewById(R.id.re_personalsetting_setting);
+        RelativeLayout re_personalsetting_exit = (RelativeLayout)popupWindowView.findViewById(R.id.re_personalsetting_exit);
+
+        /*我的消息*/
+        re_personalsetting_letter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        /*帮助*/
+        re_personalsetting_help.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        /*关于耳窝*/
+        re_personalsetting_about.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        /*设置*/
+        re_personalsetting_setting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
+        /*退出*/
+        re_personalsetting_exit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+    }
+
+    /*** 获取PopupWindow实例*/
+    private void getPopupWindow() {
+
+        if (null != popPersonalSetting) {
+            popPersonalSetting.dismiss();
+            return;
+        } else {
+            initPopupWindow();
+        }
+    }
 }

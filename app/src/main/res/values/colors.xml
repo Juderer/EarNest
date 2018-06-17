@@ -25,6 +25,9 @@
     <color name="colorMyMusicTitle">#e20202</color>
     <color name="colorMyMusicdivider">#b3acac</color>
 
+    <!--个人设置-->
+    <color name="colorPersonalSettingdivider">#b3acac</color>
+
     <color name="musicPlayerPrimary">#3d85ba</color>
     <color name="musicPlayerPrimaryDark">#3d85ba</color>
 </resources>
