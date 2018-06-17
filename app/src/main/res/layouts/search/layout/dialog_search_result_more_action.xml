@@ -186,7 +186,7 @@
             android:layout_height="25dp"
             android:layout_marginLeft="11dp"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_my_music_more_action_delete"/>
+            android:src="@drawable/ic_search_result_more_action_download"/>
 
         <TextView
             android:id="@+id/tv_searchResultMusicMoreActionDelete"
