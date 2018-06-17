@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     private AlertDialog.Builder bottomListBuilder;
     private AlertDialog bottomAlertDialog;
     private ImageView iv_bottomPlayerMode;
+    private ImageView iv_bottomPlayerDeleteAll;
 
 
     @Override
@@ -287,6 +288,15 @@ public class MainActivity extends AppCompatActivity {
                     iv_bottomPlayerMode.setImageResource(R.drawable.bottom_music_list_play_mode_list);
                     playMode = 0;
                 }
+            }
+        });
+
+        /* 清空列表*/
+        iv_bottomPlayerDeleteAll = (ImageView)layout.findViewById(R.id.iv_bottomPlayerDeleteAll);
+        iv_bottomPlayerDeleteAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
 
