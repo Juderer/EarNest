@@ -167,4 +167,57 @@
 
     </RelativeLayout>
 
+    <LinearLayout
+        android:id="@+id/ll_mySongListshead"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:background="@color/colorRemarkHead"
+        android:orientation="horizontal"
+        android:layout_marginTop="15dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="我的歌单"
+            android:textSize="18sp"
+            android:layout_marginLeft="15dp"/>
+    </LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/ll_mySongLists_myFavourite"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_marginLeft="15dp"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/image_my_song_lists_favourite"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="55dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="17sp"
+                android:text="我喜欢的音乐"
+                android:textColor="#403f3f"
+                android:layout_marginTop="5dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="5首"
+                android:textColor="#403f3f"/>
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>
