@@ -3,7 +3,9 @@ package com.earnest.utils;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.os.Handler;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import com.earnest.model.entities.Song;
 
@@ -50,11 +52,9 @@ public class MusicUtils {
                     }
                     // 释放资源
                     cursor.close();
-
                 }
             }
         }).start();
-
         return list;
     }
 

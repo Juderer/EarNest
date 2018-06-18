@@ -9,8 +9,11 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
@@ -20,7 +23,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.earnest.R;
+import com.earnest.event.MessageEvent;
 import com.earnest.event.PlayEvent;
+import com.earnest.manager.MusicPlayerManager;
 import com.earnest.model.entities.Song;
 import com.earnest.ui.utils.DisplayUtil;
 import com.earnest.ui.utils.FastBlurUtil;
@@ -29,17 +34,27 @@ import com.earnest.ui.widget.DiscView;
 import com.earnest.utils.MusicUtils;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import static com.earnest.event.PlayEvent.Action.SEEK;
+
 
 public class MusicPlayerActivity extends AppCompatActivity implements DiscView.IPlayInfo{
+
     //hr:event声明和list声明
     PlayEvent playEvent;
     private List<Song> queue;
+    //当前音乐索引
+    private int currPosition;
+    //当前音乐进度位置
+    private int playPositon;
 
 
     //UI控件声明
@@ -75,6 +90,10 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
     TextView tvProgress;
     SeekBar seek_bar;
     TextView tvDuration;
+    //hr:进度条相关
+    private Timer timer;
+    private boolean isSeekBarChanging;//互斥变量 防止进度条与定时器冲突
+    private static final int UPDATE_TIME = 0x1;//更新播放事件的标记
 
     //控制栏
     ImageView ivPlayMode;
@@ -90,8 +109,12 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
         //getSupportActionBar().hide();//隐藏标题栏
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
+        //hr:注册eventbus订阅
+        EventBus.getDefault().register(this);
         initUIControls();
         setAnimations();
+        //hr:绑定handler
+        myHandler = new MyHandler(this);
 
         //根据音乐图片制作毛玻璃背景效果，并通过一个单独的线程进行切换显示
         try2UpdateMusicPicBackground(R.drawable.timg);
@@ -99,6 +122,8 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
         //hr:导入本地音乐数据
         queue = new ArrayList<>();
         queue=MusicUtils.getLocalMusicData(this);
+        Log.d("4",String.valueOf(queue.size()));
+
 
     }
 
@@ -144,6 +169,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
     }
 
     private void setUIControlsOnClick() {
+
         //标题栏
         ivBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -193,6 +219,30 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
             }
         });
         //滚动条
+        seek_bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+//                if (MusicPlayerManager.getPlayer().getMediaPlayer().isPlaying()) {
+//                    playEvent=new PlayEvent();
+//                    playEvent.setAction(SEEK);
+//                    playEvent.setSeekTo(i);EventBus.getDefault().post(playEvent);
+//                } else {
+//
+//                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                isSeekBarChanging=true;
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                isSeekBarChanging=false;
+                MusicPlayerManager.getPlayer().seekTo(seekBar.getProgress());//???直接调用
+
+            }
+        });
         //控制栏
         ivPlayMode.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -225,6 +275,10 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
         ivPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0056f8731c0dbf92e790782bfeb759d6fb783144
                 //hr:修改播放状态选择
                 switch (currState) {
             case IDLE:
@@ -234,7 +288,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
                 playEvent.setAction(PlayEvent.Action.PLAY);
                 playEvent.setQueue(queue);
                 EventBus.getDefault().post(playEvent);
-                currState =PAUSE;
+
                 break;
             case PAUSE:
                 pauseMusic();
@@ -242,7 +296,9 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
                 playEvent = new PlayEvent();
                 playEvent.setAction(PlayEvent.Action.STOP);
                 EventBus.getDefault().post(playEvent);
-                currState = START;
+                //进度条相关
+                playPositon=MusicPlayerManager.getPlayer().getCurrentPosition();
+                timer.purge();
                 break;
             case START:
                 playMusic();
@@ -250,12 +306,33 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
                 playEvent = new PlayEvent();
                 playEvent.setAction(PlayEvent.Action.RESUME);
                 playEvent.setQueue(queue);
+                playEvent.setSeekTo(playPositon);
                 EventBus.getDefault().post(playEvent);
-                currState = PAUSE;
+
         }
 
             }
         });
+
+        timer=new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if((MusicPlayerManager.getPlayer().getQueue())!=null&&!(MusicPlayerManager.getPlayer().getQueue()).isEmpty()) {
+                    if (!isSeekBarChanging) {
+                        seek_bar.setProgress(MusicPlayerManager.getPlayer().getCurrentPosition());
+                        //Handler用于更新已经播放时间
+                        Message msg = myHandler.obtainMessage(UPDATE_TIME);//用于更新已经播放时间
+                        msg.arg1 = seek_bar.getProgress();//用于更新已经播放时间
+                        myHandler.sendMessage(msg);//用于更新已经播放时间
+
+                    }
+                }
+            }
+        },0,50);
+
+
+
         ivPlayNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -298,6 +375,11 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
     private void playMusic() {
         //discAnimation.start();
         ivPlay.setImageResource(R.drawable.ic_pause);
+<<<<<<< HEAD
+=======
+        //isPlaying = true;
+        currState =PAUSE;
+>>>>>>> 0056f8731c0dbf92e790782bfeb759d6fb783144
     }
 
     //暂停音乐
@@ -308,6 +390,11 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
             discAnimation.setFloatValues(valueAvatar, 360f + valueAvatar);
         }*/
         ivPlay.setImageResource(R.drawable.ic_play);
+<<<<<<< HEAD
+=======
+        //isPlaying = false;
+        currState = START;
+>>>>>>> 0056f8731c0dbf92e790782bfeb759d6fb783144
     }
 
     //切换音乐
@@ -392,6 +479,67 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
 
         return BitmapFactory.decodeResource(getResources(), musicPicRes, options);
     }
+
+    //hr:接收过来的MessageEvent 解决获取不到MusicPlayermanager queue
+    @Subscribe
+    public void onEvent(MessageEvent mMessageEvent) {
+        int i= MusicPlayerManager.getPlayer().getQueue().size();
+        currPosition=MusicPlayerManager.getPlayer().getCurrentMusicIndex();
+        Song song = MusicPlayerManager.getPlayer().getQueue().get(currPosition);
+        tvTitle.setText(song.getTitle());
+        tvArtist.setText(song.getSinger());
+        tvDuration.setText(MusicUtils.formatTime(song.getDuration()));
+        seek_bar.setProgress(MusicPlayerManager.getPlayer().getCurrentPosition());//设置当前进度为0
+        seek_bar.setMax((int)song.getDuration());//设置进度条最大值为MP3总时间
+
+        if (MusicPlayerManager.getPlayer().getMediaPlayer().isPlaying()) {
+            playMusic();
+        } else {
+            pauseMusic();
+        }
+    }
+
+    //hr:每次进入界面获取一次音乐信息
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(  (MusicPlayerManager.getPlayer().getQueue())!=null&&!(MusicPlayerManager.getPlayer().getQueue()).isEmpty()  ){
+            int i=MusicPlayerManager.getPlayer().getCurrentMusicIndex();
+            Song song= MusicPlayerManager.getPlayer().getQueue().get(i);
+            tvTitle.setText(song.getTitle());
+            tvArtist.setText(song.getSinger());
+            tvDuration.setText(MusicUtils.formatTime(song.getDuration()));
+            seek_bar.setProgress(MusicPlayerManager.getPlayer().getCurrentPosition());//设置当前进度为0
+            seek_bar.setMax((int)song.getDuration());//设置进度条最大值为MP3总时间
+        }
+
+        if (MusicPlayerManager.getPlayer().getMediaPlayer().isPlaying()) {
+            playMusic();
+        } else {
+        }
+
+    }
+
+    //hr:用于更新进度条时间
+    private static MyHandler myHandler;
+    static class MyHandler extends Handler {
+        private MusicPlayerActivity mMusicPlayerActivity;
+        public MyHandler(MusicPlayerActivity mMusicPlayerActivity){
+            this.mMusicPlayerActivity = mMusicPlayerActivity;
+        }
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (mMusicPlayerActivity!=null){
+                switch (msg.what){
+                    case UPDATE_TIME://更新时间(已经播放时间)
+                        mMusicPlayerActivity.tvProgress.setText(MusicUtils.formatTime(msg.arg1));
+                        break;
+                }
+            }
+        }
+    }
+
 
     @Override
     public void onMusicInfoChanged(String musicName, String musicAuthor) {
@@ -478,4 +626,5 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
             mDisc.next();
         }
     }*/
+
 }

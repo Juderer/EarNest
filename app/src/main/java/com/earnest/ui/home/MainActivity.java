@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -29,8 +30,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.earnest.R;
+import com.earnest.event.MessageEvent;
+import com.earnest.event.PlayEvent;
+import com.earnest.manager.MusicPlayerManager;
 import com.earnest.model.entities.Item_Song;
 
+import com.earnest.model.entities.Song;
 import com.earnest.services.PlayerService;
 import com.earnest.ui.adapter.BaseFragment;
 import com.earnest.ui.adapter.MainPagerAdapter;
@@ -39,6 +44,11 @@ import com.earnest.ui.home.menuFragments.PlayFragment;
 import com.earnest.ui.home.menuFragments.VideoFragment;
 import com.earnest.ui.musicPlayer.MusicPlayerActivity;
 import com.earnest.ui.search.SearchActivity;
+import com.earnest.utils.MusicUtils;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,13 +74,25 @@ public class MainActivity extends AppCompatActivity {
 
     //底部音乐栏部分
     private ImageView ivBottomPlay;  //底栏播放暂停按钮
-    private boolean isChanged = false; //暂停状态
+    //hr:定义三种播放状态
+    private static final int IDLE = 0;
+    private static final int PAUSE = 1;
+    private static final int START = 2;
+    private int currState = IDLE;
     private int playMode = 0; //顺序播放
+
+    //hr:底部音乐栏信息
+    private TextView tv_bottomPlayerMusicName;
+    private TextView tv_bottomPlayerLyrics;//歌词？
+
+    //hr:playevent声明
+    PlayEvent playEvent;
+    List<Song> queue;
 
     /* 底部音乐列表*/
     private View home_bottomMusicPlayer;
     private ImageView ivBottomPlayerList;
-    private List<Item_Song> list = new ArrayList<Item_Song>();
+    private List<Song> list = new ArrayList<>();
     private AlertDialog.Builder bottomListBuilder;
     private AlertDialog bottomAlertDialog;
     private ImageView iv_bottomPlayerMode;
@@ -92,6 +114,8 @@ public class MainActivity extends AppCompatActivity {
 
         //hr:开始服务
         startService(new Intent(this, PlayerService.class));
+        //hr:订阅传过来的MessageEvent以改变音乐信息
+        EventBus.getDefault().register(this);
 
 
         // 进入MainActivity后，需要结束StartActivity
@@ -99,6 +123,13 @@ public class MainActivity extends AppCompatActivity {
         //StartActivity.instance.finish();
 
         initUIControls();
+
+
+
+        //hr:导入音乐列表 这里为本地音乐数据,在初识列表里没有音乐时使用
+        queue = new ArrayList<>();
+        queue= MusicUtils.getLocalMusicData(this);
+
     }
 
     /////初始化UI
@@ -123,6 +154,10 @@ public class MainActivity extends AppCompatActivity {
         home_bottomMusicPlayer = (View)findViewById(R.id.home_bottomMusicPlayer);
         ivBottomPlay = (ImageView) findViewById(R.id.iv_bottomPlayerPlay);
         ivBottomPlayerList = (ImageView) findViewById(R.id.iv_bottomPlayerList);
+
+        tv_bottomPlayerMusicName=(TextView)findViewById(R.id.tv_bottomPlayerMusicName);
+        tv_bottomPlayerLyrics=(TextView)findViewById(R.id.tv_bottomPlayerLyrics);
+
 
         //设置监听事件
         setUIControlsOnClick();
@@ -181,18 +216,37 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent(MainActivity.this,MusicPlayerActivity.class));
             }
         });
+
         /* 底栏播放按钮 */
         ivBottomPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isChanged) {
-                    //点击播放
-                    ivBottomPlay.setImageResource(R.drawable.bottomplayerpause);
-                } else {
-                    //点击暂停
-                    ivBottomPlay.setImageResource(R.drawable.bottomplayerplay);
+                switch (currState) {
+                    case IDLE:
+                        Toast.makeText(getApplicationContext(),"未指定歌曲，从本地音乐第一首开始放起",Toast.LENGTH_LONG).show();
+                        ivBottomPlay.setImageResource(R.drawable.bottomplayerplay);
+                        //hr:event播放控制
+                        playEvent = new PlayEvent();
+                        playEvent.setAction(PlayEvent.Action.PLAY);
+                        playEvent.setQueue(queue);
+                        EventBus.getDefault().post(playEvent);
+                        currState =PAUSE;
+                        break;
+                    case PAUSE:
+                        ivBottomPlay.setImageResource(R.drawable.bottomplayerpause);
+                        //hr:event播放控制
+                        playEvent.setAction(PlayEvent.Action.STOP);
+                        EventBus.getDefault().post(playEvent);
+                        currState = START;
+                        break;
+                    case START:
+                        ivBottomPlay.setImageResource(R.drawable.bottomplayerplay);
+                        //hr:event播放控制
+                        playEvent.setAction(PlayEvent.Action.RESUME);
+                        EventBus.getDefault().post(playEvent);
+                        currState = PAUSE;
+                        break;
                 }
-                isChanged = !isChanged;
             }
         });
         /* 底栏歌曲列表按钮*/
@@ -254,16 +308,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //底部音乐列表初始化数据
-    private ArrayList<Item_Song> initData() {
-        ArrayList<Item_Song> slist = new ArrayList<Item_Song>();
-        Item_Song s;
-        for (int i = 0; i < 10; i++) {
-            s = new Item_Song();
-            s.setNum(String.valueOf(i + 1));
-            s.setTitle("醉赤壁");
-            s.setSinger("林俊杰");
-            slist.add(s);
-        }
+    private List<Song> initData() {
+        List<Song> slist = new ArrayList<>();
+//        Item_Song s;
+//        for (int i = 0; i < 10; i++) {
+//            s = new Item_Song();
+//            s.setNum(String.valueOf(i + 1));
+//            s.setTitle("醉赤壁");
+//            s.setSinger("林俊杰");
+//            slist.add(s);
+//        }
+        slist=MusicUtils.getLocalMusicData(this);
         return slist;
     }
 
@@ -283,8 +338,14 @@ public class MainActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> arg0, View arg1, int positon, long id) {
 
                 //在这里面就是执行点击后要进行的操作
-
-
+                //返回listview的下标
+                int currpisition = positon;
+                //把消息psot出去
+                playEvent = new PlayEvent();
+                playEvent.setAction(PlayEvent.Action.PLAY);
+                playEvent.setQueue(list);
+                playEvent.setMusicIndex(currpisition);
+                EventBus.getDefault().post(playEvent);
             }
         });
 
@@ -299,6 +360,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(playMode == 0){
                     iv_bottomPlayerMode.setImageResource(R.drawable.bottom_music_list_play_mode_shuffle);
+                    //MusicPlayerManager.getPlayer().setPlayMode();
                     playMode = 1;
                 }else if(playMode == 1){
                     iv_bottomPlayerMode.setImageResource(R.drawable.bottom_music_list_play_mode_loop);
@@ -347,10 +409,10 @@ public class MainActivity extends AppCompatActivity {
 
     //底部音乐列表的适配器
     class BottomMusicListAdapter extends BaseAdapter {
-        private List<Item_Song> mlist = new ArrayList<Item_Song>();
+        private List<Song> mlist = new ArrayList<>();
         private Context mContext;
 
-        public BottomMusicListAdapter(Context context, List<Item_Song> list) {
+        public BottomMusicListAdapter(Context context, List<Song> list) {
             this.mContext = context;
             this.mlist = list;
         }
@@ -361,7 +423,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         @Override
-        public Item_Song getItem(int position) {
+        public Song getItem(int position) {
             return mlist.get(position);
         }
 
@@ -388,9 +450,9 @@ public class MainActivity extends AppCompatActivity {
                 songs = (Songs) convertView.getTag();
             }
 
-            songs.num.setText(list.get(position).num);
-            songs.musicname.setText(list.get(position).title);
-            songs.singer.setText(list.get(position).singer);
+            songs.num.setText(String.valueOf(position+1));
+            songs.musicname.setText(list.get(position).getTitle());
+            songs.singer.setText(list.get(position).getSinger());
 
             //点击回收箱按钮从列表中删除歌曲
             songs.delete.setOnClickListener(new View.OnClickListener() {
@@ -490,4 +552,48 @@ public class MainActivity extends AppCompatActivity {
             initPopupWindow();
         }
     }
+
+    //hr:接收MessageEvent 解决获取不到MusicPlayermanager queue
+    @Subscribe
+    public void onEvent(MessageEvent mMessageEvent) {
+        int i=MusicPlayerManager.getPlayer().getCurrentMusicIndex();
+        Log.d("56",String.valueOf(i));
+        Song song= MusicPlayerManager.getPlayer().getQueue().get(i);
+        tv_bottomPlayerMusicName.setText(song.getTitle());
+        boolean j=MusicPlayerManager.getPlayer().getMediaPlayer().isPlaying();
+        if (MusicPlayerManager.getPlayer().getMediaPlayer().isPlaying()) {
+            ivBottomPlay.setImageResource(R.drawable.bottomplayerplay);
+            currState=PAUSE;
+        } else {
+            ivBottomPlay.setImageResource(R.drawable.bottomplayerpause);
+            currState=START;
+        }
+    }
+
+    //hr:想要在返回这个界面时获取新的歌曲信息
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(  (MusicPlayerManager.getPlayer().getQueue())!=null&&!(MusicPlayerManager.getPlayer().getQueue()).isEmpty()  ){
+            int i=MusicPlayerManager.getPlayer().getCurrentMusicIndex();
+            Song song= MusicPlayerManager.getPlayer().getQueue().get(i);
+            tv_bottomPlayerMusicName.setText(song.getTitle());
+        }
+
+        if (MusicPlayerManager.getPlayer().getMediaPlayer().isPlaying()) {
+            ivBottomPlay.setImageResource(R.drawable.bottomplayerplay);
+            currState=PAUSE;
+        } else {
+            ivBottomPlay.setImageResource(R.drawable.bottomplayerpause);
+            //处理未播放歌曲时第一次点击底部播放按钮
+            if(currState==IDLE){
+            }else{
+                currState=START;
+            }
+        }
+
+    }
+
+
+
 }
