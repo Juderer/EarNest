@@ -31,6 +31,11 @@
     <!--个人设置-->
     <color name="colorPersonalSettingdivider">#b3acac</color>
 
+    <!--评论-->
+    <color name="colorRemarkHead">#e0d9ec</color>
+    <color name="colorRemarkBottom">#edeaf1</color>
+    <color name="colorRemarkButtom">#727173</color>
+
     <color name="musicPlayerPrimary">#3d85ba</color>
     <color name="musicPlayerPrimaryDark">#3d85ba</color>
 </resources>

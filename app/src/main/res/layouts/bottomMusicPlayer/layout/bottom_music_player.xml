@@ -31,6 +31,7 @@
             android:layout_marginTop="10dp"
             android:textSize="20dp"
             android:textColor="@color/colorBottomPlayerMusicName"
+            android:singleLine="true"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:marqueeRepeatLimit="marquee_forever"
@@ -41,7 +42,12 @@
             android:id="@+id/tv_bottomPlayerLyrics"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="确认过眼神，我遇上对的人" />
+            android:text="确认过眼神，我遇上对的人"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:focusable="true"
+            android:focusableInTouchMode="true"  />
 
     </LinearLayout>
 

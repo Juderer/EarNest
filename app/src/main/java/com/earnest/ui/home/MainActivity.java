@@ -504,14 +504,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        RelativeLayout re_personalsetting_letter = (RelativeLayout)popupWindowView.findViewById(R.id.re_personalsetting_letter);
+        RelativeLayout re_personalsetting_share = (RelativeLayout)popupWindowView.findViewById(R.id.re_personalsetting_share);
         RelativeLayout re_personalsetting_help = (RelativeLayout)popupWindowView.findViewById(R.id.re_personalsetting_help);
         RelativeLayout re_personalsetting_about = (RelativeLayout)popupWindowView.findViewById(R.id.re_personalsetting_about);
-        RelativeLayout re_personalsetting_setting = (RelativeLayout)popupWindowView.findViewById(R.id.re_personalsetting_setting);
         RelativeLayout re_personalsetting_exit = (RelativeLayout)popupWindowView.findViewById(R.id.re_personalsetting_exit);
 
         /*我的消息*/
-        re_personalsetting_letter.setOnClickListener(new View.OnClickListener() {
+        re_personalsetting_share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -528,14 +527,6 @@ public class MainActivity extends AppCompatActivity {
 
         /*关于耳窝*/
         re_personalsetting_about.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
-        /*设置*/
-        re_personalsetting_setting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 

@@ -2,6 +2,7 @@ package com.earnest.ui.musicPlayer;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -29,6 +30,7 @@ import com.earnest.model.entities.Song;
 import com.earnest.ui.utils.DisplayUtil;
 import com.earnest.ui.utils.FastBlurUtil;
 import com.earnest.ui.widget.BackgourndAnimationLinearLayout;
+import com.earnest.ui.widget.DiscView;
 import com.earnest.utils.MusicUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -41,11 +43,11 @@ import java.util.TimerTask;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
 import static com.earnest.event.PlayEvent.Action.SEEK;
 
 
-public class MusicPlayerActivity extends AppCompatActivity {
+public class MusicPlayerActivity extends AppCompatActivity implements DiscView.IPlayInfo{
+
     //hr:event声明和list声明
     PlayEvent playEvent;
     private List<Song> queue;
@@ -67,6 +69,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     //中部
     ImageView ivCD;
+    DiscView mDisc;
     //动画
     private ObjectAnimator discAnimation;
 
@@ -135,7 +138,8 @@ public class MusicPlayerActivity extends AppCompatActivity {
         tvArtist = (TextView) findViewById(R.id.tvArtist);
         ivShare = (ImageView) findViewById(R.id.ivShare);
         //中部
-        ivCD = (ImageView) findViewById(R.id.ivCD);
+        //ivCD = (ImageView) findViewById(R.id.ivCD);
+        mDisc = (DiscView) findViewById(R.id.discview);
         //功能栏
         ivFavoriate = (ImageView) findViewById(R.id.ivFavoriate);
         ivDownload = (ImageView) findViewById(R.id.ivDownload);
@@ -179,13 +183,14 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
             }
         });
-        //中部
+        /*//中部
         ivCD.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
             }
-        });
+        });*/
+        mDisc.setPlayInfoListener(this);
         //功能栏
         ivFavoriate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -199,10 +204,12 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
             }
         });
+
+        /*评论*/
         ivReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivity(new Intent(MusicPlayerActivity.this,RemarkActivity.class));
             }
         });
         ivMore.setOnClickListener(new View.OnClickListener() {
@@ -353,29 +360,29 @@ public class MusicPlayerActivity extends AppCompatActivity {
     }
 
     //动画设置
-    private void setAnimations() {
+    private void setAnimations() {/*
         discAnimation = ObjectAnimator.ofFloat(ivCD, "rotation", 0, 360);
         discAnimation.setDuration(20000);
         discAnimation.setInterpolator(new LinearInterpolator());
-        discAnimation.setRepeatCount(ValueAnimator.INFINITE);
+        discAnimation.setRepeatCount(ValueAnimator.INFINITE);*/
     }
 
     //音乐控制方法，所有动画控制方法写在如下函数中
     //播放音乐
     private void playMusic() {
-        discAnimation.start();
+        //discAnimation.start();
         ivPlay.setImageResource(R.drawable.ic_pause);
         //isPlaying = true;
         currState =PAUSE;
     }
 
     //暂停音乐
-    private void pauseMusic() {
+    private void pauseMusic() {/*
         if (discAnimation != null && discAnimation.isRunning()) {
             discAnimation.cancel();
             float valueAvatar = (float) discAnimation.getAnimatedValue();
             discAnimation.setFloatValues(valueAvatar, 360f + valueAvatar);
-        }
+        }*/
         ivPlay.setImageResource(R.drawable.ic_play);
         //isPlaying = false;
         currState = START;
@@ -383,7 +390,7 @@ public class MusicPlayerActivity extends AppCompatActivity {
 
     //切换音乐
     private void switchMusic() {
-        discAnimation.end();
+        //discAnimation.end();
         playMusic();
         //根据音乐图片制作毛玻璃背景效果，并通过一个单独的线程进行切换显示
         try2UpdateMusicPicBackground(R.drawable.timg);
@@ -523,5 +530,92 @@ public class MusicPlayerActivity extends AppCompatActivity {
             }
         }
     }
+
+
+    @Override
+    public void onMusicInfoChanged(String musicName, String musicAuthor) {
+        tvTitle.setText(musicName);
+        tvArtist.setText(musicAuthor);
+    }
+
+    @Override
+    public void onMusicPicChanged(int musicPicRes) {
+        try2UpdateMusicPicBackground(musicPicRes);
+    }
+
+    @Override
+    public void onMusicChanged(DiscView.MusicChangedStatus musicChangedStatus) {/*
+        switch (musicChangedStatus) {
+            case PLAY:{
+                play();
+                break;
+            }
+            case PAUSE:{
+                pause();
+                break;
+            }
+            case NEXT:{
+                next();
+                break;
+            }
+            case LAST:{
+                last();
+                break;
+            }
+            case STOP:{
+                stop();
+                break;
+            }
+        }*/
+    }/*
+    private void play() {
+        //optMusic(MusicService.ACTION_OPT_MUSIC_PLAY);
+        startUpdateSeekBarProgress();
+    }
+
+    private void pause() {
+        optMusic(MusicService.ACTION_OPT_MUSIC_PAUSE);
+        stopUpdateSeekBarProgree();
+    }
+
+    private void stop() {
+        stopUpdateSeekBarProgree();
+        mIvPlayOrPause.setImageResource(R.drawable.ic_play);
+        mTvMusicDuration.setText(duration2Time(0));
+        mTvTotalMusicDuration.setText(duration2Time(0));
+        mSeekBar.setProgress(0);
+    }
+
+    private void next() {
+        mRootLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                optMusic(MusicService.ACTION_OPT_MUSIC_NEXT);
+            }
+        }, DURATION_NEEDLE_ANIAMTOR);
+        stopUpdateSeekBarProgree();
+        mTvMusicDuration.setText(duration2Time(0));
+        mTvTotalMusicDuration.setText(duration2Time(0));
+    }
+
+    private void last() {
+        mRootLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                optMusic(MusicService.ACTION_OPT_MUSIC_LAST);
+            }
+        }, DURATION_NEEDLE_ANIAMTOR);
+        stopUpdateSeekBarProgree();
+        mTvMusicDuration.setText(duration2Time(0));
+        mTvTotalMusicDuration.setText(duration2Time(0));
+    }
+
+    private void complete(boolean isOver) {
+        if (isOver) {
+            mDisc.stop();
+        } else {
+            mDisc.next();
+        }
+    }*/
 
 }
