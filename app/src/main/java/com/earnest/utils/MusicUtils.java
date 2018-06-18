@@ -26,9 +26,6 @@ public class MusicUtils {
     public static List<Song> getLocalMusicData(final Context context) {
         final List<Song> list = new ArrayList<Song>();
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
                 // 媒体库查询语句（写一个工具类MusicUtils）
                 Cursor cursor = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, null, null,
                         null, MediaStore.Audio.AudioColumns.IS_MUSIC);
@@ -53,8 +50,6 @@ public class MusicUtils {
                     // 释放资源
                     cursor.close();
                 }
-            }
-        }).start();
         return list;
     }
 

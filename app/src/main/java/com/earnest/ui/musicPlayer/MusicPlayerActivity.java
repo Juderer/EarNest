@@ -275,10 +275,10 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
         ivPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-<<<<<<< HEAD
-=======
-
->>>>>>> 0056f8731c0dbf92e790782bfeb759d6fb783144
+//<<<<<<< HEAD
+//=======
+//
+//>>>>>>> 0056f8731c0dbf92e790782bfeb759d6fb783144
                 //hr:修改播放状态选择
                 switch (currState) {
             case IDLE:
@@ -375,11 +375,11 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
     private void playMusic() {
         //discAnimation.start();
         ivPlay.setImageResource(R.drawable.ic_pause);
-<<<<<<< HEAD
-=======
-        //isPlaying = true;
-        currState =PAUSE;
->>>>>>> 0056f8731c0dbf92e790782bfeb759d6fb783144
+//<<<<<<< HEAD
+//=======
+//        //isPlaying = true;
+//        currState =PAUSE;
+//>>>>>>> 0056f8731c0dbf92e790782bfeb759d6fb783144
     }
 
     //暂停音乐
@@ -390,11 +390,11 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
             discAnimation.setFloatValues(valueAvatar, 360f + valueAvatar);
         }*/
         ivPlay.setImageResource(R.drawable.ic_play);
-<<<<<<< HEAD
-=======
-        //isPlaying = false;
-        currState = START;
->>>>>>> 0056f8731c0dbf92e790782bfeb759d6fb783144
+//<<<<<<< HEAD
+//=======
+//        //isPlaying = false;
+//        currState = START;
+//>>>>>>> 0056f8731c0dbf92e790782bfeb759d6fb783144
     }
 
     //切换音乐
