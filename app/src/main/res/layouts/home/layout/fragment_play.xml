@@ -193,7 +193,7 @@
         <ImageView
             android:layout_width="55dp"
             android:layout_height="55dp"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="10dp"
             android:layout_gravity="center_vertical"
             android:src="@drawable/image_my_song_lists_favourite"/>
 

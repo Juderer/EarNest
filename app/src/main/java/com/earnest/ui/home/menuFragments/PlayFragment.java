@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.earnest.R;
@@ -25,6 +26,7 @@ public class PlayFragment extends BaseFragment {
     RelativeLayout rlDownloadMusic;
     RelativeLayout rlFavoriteMusic;
     RelativeLayout rlRecentMusic;
+    LinearLayout llMySongListsMyFavourite;
 
     public PlayFragment() {
         // Required empty public constructor
@@ -47,6 +49,7 @@ public class PlayFragment extends BaseFragment {
         rlDownloadMusic = (RelativeLayout) view.findViewById(R.id.rlDownloadMusic);
         rlFavoriteMusic = (RelativeLayout) view.findViewById(R.id.rlFavoriteMusic);
         rlRecentMusic = (RelativeLayout) view.findViewById(R.id.rlRecentMusic);
+        llMySongListsMyFavourite = (LinearLayout)view.findViewById(R.id.ll_mySongLists_myFavourite);
 
         setUIControlsOnClick();
     }
@@ -91,6 +94,14 @@ public class PlayFragment extends BaseFragment {
                 intentRecentMusic.putExtra("label","最近播放");
                 intentRecentMusic.putExtra("delete",1);
                 startActivity(intentRecentMusic);
+            }
+        });
+
+        /*我喜欢 -- 歌单*/
+        llMySongListsMyFavourite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
             }
         });
     }
