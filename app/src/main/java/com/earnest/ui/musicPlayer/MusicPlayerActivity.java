@@ -1,6 +1,7 @@
 package com.earnest.ui.musicPlayer;
 
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,12 +11,21 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +36,7 @@ import com.earnest.event.PlayEvent;
 import com.earnest.manager.MusicPlayerManager;
 import com.earnest.model.WechatShare;
 import com.earnest.model.entities.Song;
+import com.earnest.ui.home.MainActivity;
 import com.earnest.ui.utils.DisplayUtil;
 import com.earnest.ui.utils.FastBlurUtil;
 import com.earnest.ui.widget.BackgourndAnimationLinearLayout;
@@ -50,11 +61,21 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
     //hr:event声明和list声明
     PlayEvent playEvent;
     private List<Song> queue;
+    private List<Song> list;
     //当前音乐索引
     private int currPosition;
     //当前音乐进度位置
     private int playPositon;
 
+    private int playMode = 0; //顺序播放
+
+    //音乐列表
+    private View home_bottomMusicPlayer;
+    private ImageView ivBottomPlayerList;
+    private AlertDialog bottomAlertDialog;
+    private AlertDialog.Builder bottomListBuilder;
+    private ImageView iv_bottomPlayerMode;
+    private ImageView iv_bottomPlayerDeleteAll;
 
     //UI控件声明
     //重写的LinearLayout，实现动画
@@ -354,9 +375,160 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
         ivPlayList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                showBottomMusicList();
+            }
+        });
+    }
+
+    /* 底部歌曲列表显示*/
+    protected void showBottomMusicList() {
+        list = queue;
+        Context context = MusicPlayerActivity.this;
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
+        View layout = inflater.inflate(R.layout.bottom_music_list, null);
+        ListView bottomListView = (ListView) layout.findViewById(R.id.lv_bottomMusicListview);
+        MusicPlayerActivity.BottomMusicListAdapter adapter = new MusicPlayerActivity.BottomMusicListAdapter(context, list);
+        bottomListView.setAdapter(adapter);
+
+        //点击列表中某一歌曲--播放歌曲
+        bottomListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int positon, long id) {
+
+                //在这里面就是执行点击后要进行的操作
+                //返回listview的下标
+                int currpisition = positon;
+                Log.d("hr01",String.valueOf(currpisition));
+                //把消息psot出去
+                playEvent = new PlayEvent();
+                playEvent.setAction(PlayEvent.Action.PLAY);
+                playEvent.setQueue(list);
+                playEvent.setMusicIndex(currpisition);
+                EventBus.getDefault().post(playEvent);
+            }
+        });
+
+        bottomListBuilder = new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.BottomAlertDialog));
+        bottomListBuilder.setView(layout);
+        bottomAlertDialog = bottomListBuilder.create();
+
+        /* 更换播放模式 */
+        iv_bottomPlayerMode = (ImageView)layout.findViewById(R.id.iv_bottomPlayerMode);
+        iv_bottomPlayerMode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(playMode == 0){
+                    iv_bottomPlayerMode.setImageResource(R.drawable.bottom_music_list_play_mode_shuffle);
+                    //MusicPlayerManager.getPlayer().setPlayMode();
+                    playMode = 1;
+                }else if(playMode == 1){
+                    iv_bottomPlayerMode.setImageResource(R.drawable.bottom_music_list_play_mode_loop);
+                    playMode = 2;
+                }else if(playMode == 2){
+                    iv_bottomPlayerMode.setImageResource(R.drawable.bottom_music_list_play_mode_list);
+                    playMode = 0;
+                }
+            }
+        });
+
+        /* 清空列表*/
+        iv_bottomPlayerDeleteAll = (ImageView)layout.findViewById(R.id.iv_bottomPlayerDeleteAll);
+        iv_bottomPlayerDeleteAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
             }
         });
+
+
+        /*  关闭歌曲列表 */
+        Button btnBottomMusicListClose = (Button)layout.findViewById(R.id.btn_bottomMusicListClose);
+        btnBottomMusicListClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                bottomAlertDialog.dismiss();
+            }
+        });
+
+
+
+        //显示
+        bottomAlertDialog.show();
+
+        //设置大小、位置
+        WindowManager.LayoutParams layoutParams = bottomAlertDialog.getWindow().getAttributes();
+        bottomAlertDialog.getWindow().getDecorView().setPadding(0, 0, 0, 0);
+        layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
+        layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        bottomAlertDialog.getWindow().setAttributes(layoutParams);
+        bottomAlertDialog.getWindow().setGravity(Gravity.BOTTOM);
+        bottomAlertDialog.getWindow().setWindowAnimations(R.style.BottomDialogAnimation);
+
+    }
+
+    //底部音乐列表的适配器
+    class BottomMusicListAdapter extends BaseAdapter {
+        private List<Song> mlist = new ArrayList<>();
+        private Context mContext;
+
+        public BottomMusicListAdapter(Context context, List<Song> list) {
+            this.mContext = context;
+            this.mlist = list;
+        }
+
+        @Override
+        public int getCount() {
+            return mlist.size();
+        }
+
+        @Override
+        public Song getItem(int position) {
+            return mlist.get(position);
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            MusicPlayerActivity.BottomMusicListAdapter.Songs songs = null;
+            if (convertView == null) {
+                LayoutInflater inflater = LayoutInflater.from(mContext);
+                convertView = inflater.inflate(R.layout.item_bottom_music_list_item, null);
+
+                songs = new MusicPlayerActivity.BottomMusicListAdapter.Songs();
+                songs.num = (TextView) convertView.findViewById(R.id.tv_bottomMusicListItemNumber);
+                songs.musicname = (TextView) convertView.findViewById(R.id.tv_bottomMusicListItemMusicName);
+                songs.singer = (TextView) convertView.findViewById(R.id.tv_bottomMusicListItemMusicSinger);
+                songs.delete = (ImageView) convertView.findViewById(R.id.iv_bottomMusicListItemDelete);
+
+                convertView.setTag(songs);
+            } else {
+                songs = (MusicPlayerActivity.BottomMusicListAdapter.Songs) convertView.getTag();
+            }
+
+            songs.num.setText(String.valueOf(position+1));
+            songs.musicname.setText(list.get(position).getTitle());
+            songs.singer.setText(list.get(position).getSinger());
+
+            //点击回收箱按钮从列表中删除歌曲
+            songs.delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                }
+            });
+            return convertView;
+        }
+
+        class Songs {
+            TextView num;
+            TextView musicname;
+            TextView singer;
+            ImageView delete;
+        }
     }
 
     //动画设置

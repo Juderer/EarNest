@@ -317,14 +317,6 @@ public class MainActivity extends AppCompatActivity {
     //底部音乐列表初始化数据
     private List<Song> initData() {
         List<Song> slist = new ArrayList<>();
-//        Item_Song s;
-//        for (int i = 0; i < 10; i++) {
-//            s = new Item_Song();
-//            s.setNum(String.valueOf(i + 1));
-//            s.setTitle("醉赤壁");
-//            s.setSinger("林俊杰");
-//            slist.add(s);
-//        }
         slist=MusicUtils.getLocalMusicData(this);
         return slist;
     }
