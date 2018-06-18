@@ -16,7 +16,8 @@ public class PlayEvent {
     private Action mAction;
     private Song mSong;
     private List<Song> mQueue;
-    private int seekTo;
+    private int seekTo=0;
+    private int musicIndex=0;
 
     public Song getSong(){
         return mSong;
@@ -50,5 +51,15 @@ public class PlayEvent {
     public void setSeekTo(int seekTo) {
         this.seekTo = seekTo;
     }
+
+    public int getMusicIndex() {
+        return musicIndex;
+    }
+
+    public void setMusicIndex(int musicIndex) {
+        this.musicIndex = musicIndex;
+    }
+
+
 
 }

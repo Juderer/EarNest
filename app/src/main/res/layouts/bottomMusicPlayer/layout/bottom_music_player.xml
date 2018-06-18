@@ -35,7 +35,7 @@
             android:focusableInTouchMode="true"
             android:marqueeRepeatLimit="marquee_forever"
             android:ellipsize="marquee"
-            android:text="醉赤壁vndanvakjvnkd" />
+            android:text="未播放歌曲" />
 
         <TextView
             android:id="@+id/tv_bottomPlayerLyrics"

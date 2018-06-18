@@ -2,8 +2,12 @@ package com.earnest.manager;
 
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.util.Log;
 
+import com.earnest.event.MessageEvent;
 import com.earnest.model.entities.Song;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,6 +20,8 @@ import java.util.Random;
  */
 
 public class MusicPlayerManager implements MediaPlayer.OnCompletionListener {
+    private MessageEvent mMessageEvent=new MessageEvent();
+
     private static MusicPlayerManager player = new MusicPlayerManager();
 
     private MediaPlayer mMediaPlayer;
@@ -47,10 +53,20 @@ public class MusicPlayerManager implements MediaPlayer.OnCompletionListener {
         mPlayMode = PlayMode.LOOP;
     }
 
+    public MediaPlayer getMediaPlayer(){
+        return mMediaPlayer;
+    }
+
+
     public void setQueue(List<Song> queue, int index) {
         mQueue = queue;
         mQueueIndex = index;
         play(getNowPlaying());
+    }
+
+    //hr:618
+    public List<Song> getQueue() {
+        return mQueue;
     }
 
     public void play(Song song) {
@@ -62,11 +78,15 @@ public class MusicPlayerManager implements MediaPlayer.OnCompletionListener {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
                     mMediaPlayer.start();
+                    EventBus.getDefault().post(mMessageEvent);
+
                 }
             });
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     public void pause() {
@@ -79,10 +99,12 @@ public class MusicPlayerManager implements MediaPlayer.OnCompletionListener {
 
     public void next() {
         play(getNextSong());
+        //EventBus.getDefault().post(mMessageEvent);
     }
 
     public void previous() {
         play(getPreviousSong());
+       // EventBus.getDefault().post(mMessageEvent);
     }
 
     @Override
@@ -127,7 +149,12 @@ public class MusicPlayerManager implements MediaPlayer.OnCompletionListener {
         return null;
     }
 
+    //获取当前播放歌曲index
+    public int getCurrentMusicIndex(){
+        return mQueueIndex;
+    }
 
+    //hr:获取当前进度
     public int getCurrentPosition() {
         if (getNowPlaying() != null) {
             return mMediaPlayer.getCurrentPosition();
@@ -176,6 +203,10 @@ public class MusicPlayerManager implements MediaPlayer.OnCompletionListener {
         mMediaPlayer.release();
         mMediaPlayer = null;
         mContext = null;
+    }
+
+    public void seekTo(int mec){
+        mMediaPlayer.seekTo(mec);
     }
 
 }

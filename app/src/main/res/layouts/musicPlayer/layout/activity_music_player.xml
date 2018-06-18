@@ -40,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="醉赤壁"
+                android:text="未播放音乐"
                 android:textColor="@color/white"
                 android:textSize="18sp" />
 
@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="—林俊杰—"
+                android:text="未播放音乐"
                 android:textColor="@color/white"
                 android:textSize="14sp" />
 
