@@ -24,12 +24,16 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.earnest.R;
+import com.earnest.event.PlayEvent;
 import com.earnest.model.entities.Item_Song;
 import com.earnest.model.entities.Song;
 import com.earnest.ui.musicPlayer.MusicPlayerActivity;
 import com.earnest.utils.MusicUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,9 +44,9 @@ public class MyMusicActivity extends AppCompatActivity {
 
     //hr:变量声明
     private List<Song> myMusicList;
-    static List<Song> staticLocalMusicList;
 
-    private TestListView lvMyMusicList;
+    PlayEvent playEvent;
+    private ListView lvMyMusicList;
     private ImageButton imgbtnMyMusicListItemAction;
     private AlertDialog.Builder myMusicBuilder;
     private AlertDialog myMusicAlertDialog;
@@ -76,22 +80,14 @@ public class MyMusicActivity extends AppCompatActivity {
 
     Handler mHandler=new Handler();
 
-    //测试
-    private String[] myMusicNames={"醉赤壁","醉赤壁","醉赤壁"};
-    private  String[] myMusicSingers={"林俊杰","林俊杰","林俊杰"};
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+        boolean b = supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_my_music);
 
         /*初始化控件*/
         initUIControls();
-
-        staticLocalMusicList=MusicUtils.getLocalMusicData(this);
-        Log.d("91",String.valueOf(staticLocalMusicList.size()));
 
         /*复用*/
         String myMusiclabel = getIntent().getStringExtra("label");
@@ -103,27 +99,17 @@ public class MyMusicActivity extends AppCompatActivity {
 
 
         /* 歌曲列表适配 */
-//        myMusicList=new ArrayList<>();
-//        myMusicList= MusicUtils.getLocalMusicData(this);
-        myMusicList.addAll(staticLocalMusicList);
-        Log.d("92",String.valueOf(staticLocalMusicList.size()));
-        List<Map<String,Object>> listItems = new ArrayList<Map<String,Object>>();
+        myMusicList=new ArrayList<>();
+        myMusicList= MusicUtils.getLocalMusicData(this);
+
+        final List<Map<String,Object>> listItems = new ArrayList<Map<String,Object>>();
         for(int i=0;i<myMusicList.size();i++){
             Map<String,Object> listItem = new HashMap<String,Object>();
             listItem.put("tvMyMusicName", myMusicList.get(i).getTitle());
             listItem.put("tvMyMusicSinger",myMusicList.get(i).getSinger());
             listItems.add(listItem);
             //mHandler.sendEmptyMessage(10);
-
         }
-
-
-//        for(int i=0;i<myMusicNames.length;i++){
-//            Map<String,Object> listItem = new HashMap<String,Object>();
-//            listItem.put("tvMyMusicName", myMusicNames[i]);
-//            listItem.put("tvMyMusicSinger",myMusicSingers[i]);
-//            listItems.add(listItem);
-//        }
 
         final SimpleAdapter simleAdapter = new SimpleAdapter(this, listItems, R.layout.item_my_music_list ,
                 new String[]{"tvMyMusicName","tvMyMusicSinger"},
@@ -134,7 +120,8 @@ public class MyMusicActivity extends AppCompatActivity {
                 final int p = position;
                 final View view = super.getView(position, convertView, parent);
 
-               /* 点击显示其他操作 */
+
+                /* 点击显示其他操作 */
                 imgbtnMyMusicListItemAction = (ImageButton)view.findViewById(R.id.imgbtn_myMusicListItemAction);
                 imgbtnMyMusicListItemAction.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -144,25 +131,30 @@ public class MyMusicActivity extends AppCompatActivity {
                 });
                 return view;
             }
-
-//            public void addItemSelf () {
-//                MyMusicActivity.this.runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        Log.e("TestListView" , "run TestAdapter.notifyDataSetChanged() ..." );
-//                        notifyDataSetChanged();
-//                    }
-//                });
-//            }
-
-
         };
 
+         lvMyMusicList.setAdapter(simleAdapter);
+         //simleAdapter.notifyDataSetChanged();
+         //
+         lvMyMusicList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+             @Override
+             public void onItemClick(AdapterView<?> adapterView, View view, int positon, long l) {
+//                 //在这里面就是执行点击后要进行的操作
+//                 //返回listview的下标
+//                 int currpisition = positon;
+//                 //把消息psot出去
+//                 playEvent = new PlayEvent();
+//                 playEvent.setAction(PlayEvent.Action.PLAY);
+//                 playEvent.setQueue(myMusicList);
+//                 playEvent.setMusicIndex(currpisition);
+//                 EventBus.getDefault().post(playEvent);
+
+                 System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+             }
+         });
 
 
-        lvMyMusicList.setAdapter(simleAdapter);
-       // simleAdapter.notifyDataSetChanged();
-        Handler mHandler=new Handler(){
+        mHandler = new Handler(){
             @Override
             public void handleMessage(Message msg){
                 super.handleMessage(msg);
@@ -209,9 +201,10 @@ public class MyMusicActivity extends AppCompatActivity {
         });
     }
 
+
     private void initUIControls(){
         tv_myMusicHeadLabel = (TextView)findViewById(R.id.tv_myMusicHeadLabel);
-        lvMyMusicList = (TestListView) findViewById(R.id.lv_myMusicList);
+        lvMyMusicList = (ListView) findViewById(R.id.lv_myMusicList);
         imgbtnMyMusicBack = (ImageButton) findViewById(R.id.imgbtn_myMusicBack);
         btn_RecentMusic_deleteAll = (Button)findViewById(R.id.btn_RecentMusic_deleteAll);
         iv_myMusicPlayAll = (ImageView)findViewById(R.id.iv_myMusicPlayAll);
@@ -332,14 +325,6 @@ public class MyMusicActivity extends AppCompatActivity {
     //底部音乐列表初始化数据
     private List<Song> initData() {
         List<Song> slist = new ArrayList<>();
-//        Item_Song s;
-//        for (int i = 0; i < 10; i++) {
-//            s = new Item_Song();
-//            s.setNum(String.valueOf(i + 1));
-//            s.setTitle("醉赤壁");
-//            s.setSinger("林俊杰");
-//            slist.add(s);
-//        }
         slist=MusicUtils.getLocalMusicData(this);
 
         return slist;
@@ -347,7 +332,7 @@ public class MyMusicActivity extends AppCompatActivity {
 
     /* 底部歌曲列表显示*/
     protected void showBottomMusicList() {
-        list .addAll(staticLocalMusicList);
+        //list .addAll(staticLocalMusicList);
         Log.d("90",String.valueOf(list.size()));
         Context context = MyMusicActivity.this;
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);

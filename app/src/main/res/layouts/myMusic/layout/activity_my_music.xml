@@ -72,13 +72,13 @@
 
     </RelativeLayout>
 
-    <com.earnest.ui.myMusic.TestListView
+    <ListView
         android:id="@+id/lv_myMusicList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/myMusicHead2"
         android:layout_above="@id/my_music_bottomMusicPlayer">
-    </com.earnest.ui.myMusic.TestListView>
+    </ListView>
 
     <include
     android:id="@+id/my_music_bottomMusicPlayer"

@@ -38,7 +38,6 @@ public class LocalMusicAdapter extends BaseAdapter{
         mActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Log.e("TestListView" , "run TestAdapter.notifyDataSetChanged() ..." );
                 LocalMusicAdapter.this.notifyDataSetChanged();
             }
         });
