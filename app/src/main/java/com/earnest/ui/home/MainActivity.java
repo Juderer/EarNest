@@ -4,6 +4,8 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -33,6 +35,7 @@ import com.earnest.R;
 import com.earnest.event.MessageEvent;
 import com.earnest.event.PlayEvent;
 import com.earnest.manager.MusicPlayerManager;
+import com.earnest.model.WechatShare;
 import com.earnest.model.entities.Item_Song;
 
 import com.earnest.model.entities.Song;
@@ -45,6 +48,7 @@ import com.earnest.ui.home.menuFragments.VideoFragment;
 import com.earnest.ui.musicPlayer.MusicPlayerActivity;
 import com.earnest.ui.search.SearchActivity;
 import com.earnest.utils.MusicUtils;
+import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -509,11 +513,20 @@ public class MainActivity extends AppCompatActivity {
         RelativeLayout re_personalsetting_about = (RelativeLayout)popupWindowView.findViewById(R.id.re_personalsetting_about);
         RelativeLayout re_personalsetting_exit = (RelativeLayout)popupWindowView.findViewById(R.id.re_personalsetting_exit);
 
-        /*我的消息*/
+        /*我的设置——分享*/
         re_personalsetting_share.setOnClickListener(new View.OnClickListener() {
+            WechatShare wechatShare = WechatShare.getInstance(MainActivity.this);
+            boolean result = true;
+
             @Override
             public void onClick(View view) {
-
+                if (wechatShare.isSupportWX()) {
+                    Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_wechat_share);
+                    result = wechatShare.sharePic(bmp, SendMessageToWX.Req.WXSceneTimeline);
+                }
+                else {
+                    Toast.makeText(MainActivity.this, "手机上微信版本不支持分享到朋友圈", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -537,7 +550,7 @@ public class MainActivity extends AppCompatActivity {
         re_personalsetting_exit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                System.exit(0);
             }
         });
     }

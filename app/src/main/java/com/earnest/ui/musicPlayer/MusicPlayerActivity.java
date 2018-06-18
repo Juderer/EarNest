@@ -1,7 +1,6 @@
 package com.earnest.ui.musicPlayer;
 
 import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,7 +15,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -26,12 +24,14 @@ import com.earnest.R;
 import com.earnest.event.MessageEvent;
 import com.earnest.event.PlayEvent;
 import com.earnest.manager.MusicPlayerManager;
+import com.earnest.model.WechatShare;
 import com.earnest.model.entities.Song;
 import com.earnest.ui.utils.DisplayUtil;
 import com.earnest.ui.utils.FastBlurUtil;
 import com.earnest.ui.widget.BackgourndAnimationLinearLayout;
 import com.earnest.ui.widget.DiscView;
 import com.earnest.utils.MusicUtils;
+import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -41,12 +41,11 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import static com.earnest.event.PlayEvent.Action.SEEK;
-
 
 public class MusicPlayerActivity extends AppCompatActivity implements DiscView.IPlayInfo{
+
+    //zsl: 微信分享
+    private WechatShare wechatShare;
 
     //hr:event声明和list声明
     PlayEvent playEvent;
@@ -130,6 +129,9 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
     /////初始化UI
 
     private void initUIControls() {
+        //zsl: 微信分享
+        wechatShare = WechatShare.getInstance(this);
+
         //背景
         mRootLayout = (BackgourndAnimationLinearLayout) findViewById(R.id.rootLayout);
         //标题栏
@@ -180,7 +182,15 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
         ivShare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                boolean result = true;
+                // 微信分享
+                if (wechatShare.isSupportWX()) {
+                    Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_wechat_share);
+                    result = wechatShare.sharePic(bmp, SendMessageToWX.Req.WXSceneTimeline);
+                }
+                else {
+                    Toast.makeText(MusicPlayerActivity.this, "手机上微信版本不支持分享到朋友圈", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         /*//中部
