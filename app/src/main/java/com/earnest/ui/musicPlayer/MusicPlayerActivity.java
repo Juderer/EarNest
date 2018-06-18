@@ -265,10 +265,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
         ivPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//<<<<<<< HEAD
-//=======
-//
-//>>>>>>> 0056f8731c0dbf92e790782bfeb759d6fb783144
+
                 //hr:修改播放状态选择
                 switch (currState) {
             case IDLE:

@@ -84,9 +84,11 @@ public class MainActivity extends AppCompatActivity {
     //hr:底部音乐栏信息
     private TextView tv_bottomPlayerMusicName;
     private TextView tv_bottomPlayerLyrics;//歌词？
+    //hr:播放进度
+    private int currPlayPosition;
 
     //hr:playevent声明
-    PlayEvent playEvent;
+    PlayEvent playEvent=new PlayEvent();;
     List<Song> queue;
 
     /* 底部音乐列表*/
@@ -226,7 +228,6 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(),"未指定歌曲，从本地音乐第一首开始放起",Toast.LENGTH_LONG).show();
                         ivBottomPlay.setImageResource(R.drawable.bottomplayerplay);
                         //hr:event播放控制
-                        playEvent = new PlayEvent();
                         playEvent.setAction(PlayEvent.Action.PLAY);
                         playEvent.setQueue(queue);
                         EventBus.getDefault().post(playEvent);
@@ -241,8 +242,10 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case START:
                         ivBottomPlay.setImageResource(R.drawable.bottomplayerplay);
+                        currPlayPosition=MusicPlayerManager.getPlayer().getCurrentPosition();
                         //hr:event播放控制
                         playEvent.setAction(PlayEvent.Action.RESUME);
+                        playEvent.setSeekTo(currPlayPosition);
                         EventBus.getDefault().post(playEvent);
                         currState = PAUSE;
                         break;

@@ -116,7 +116,7 @@ public class MusicPlayerManager implements MediaPlayer.OnCompletionListener {
         if (mQueue.isEmpty()) {
             return null;
         }
-        Log.d("hr01-2",String.valueOf(mQueueIndex));
+        //Log.d("hr01-2",String.valueOf(mQueueIndex));
         return mQueue.get(mQueueIndex);
     }
 

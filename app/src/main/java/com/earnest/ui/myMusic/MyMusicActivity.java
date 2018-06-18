@@ -27,13 +27,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.earnest.R;
+import com.earnest.event.MessageEvent;
 import com.earnest.event.PlayEvent;
+import com.earnest.manager.MusicPlayerManager;
 import com.earnest.model.entities.Item_Song;
 import com.earnest.model.entities.Song;
 import com.earnest.ui.musicPlayer.MusicPlayerActivity;
 import com.earnest.utils.MusicUtils;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,6 +47,12 @@ public class MyMusicActivity extends AppCompatActivity {
 
     //hr:变量声明
     private List<Song> myMusicList;
+    //hr:定义三种播放状态
+    //hr:定义三种播放状态
+    private static final int IDLE = 0;
+    private static final int PAUSE = 1;
+    private static final int START = 2;
+    private int currState = IDLE;
 
     PlayEvent playEvent;
     private ListView lvMyMusicList;
@@ -139,17 +148,15 @@ public class MyMusicActivity extends AppCompatActivity {
          lvMyMusicList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
              @Override
              public void onItemClick(AdapterView<?> adapterView, View view, int positon, long l) {
-//                 //在这里面就是执行点击后要进行的操作
-//                 //返回listview的下标
-//                 int currpisition = positon;
-//                 //把消息psot出去
-//                 playEvent = new PlayEvent();
-//                 playEvent.setAction(PlayEvent.Action.PLAY);
-//                 playEvent.setQueue(myMusicList);
-//                 playEvent.setMusicIndex(currpisition);
-//                 EventBus.getDefault().post(playEvent);
-
-                 System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+                 //在这里面就是执行点击后要进行的操作
+                 //返回listview的下标
+                 int currpisition = positon;
+                 //把消息psot出去
+                 playEvent = new PlayEvent();
+                 playEvent.setAction(PlayEvent.Action.PLAY);
+                 playEvent.setQueue(myMusicList);
+                 playEvent.setMusicIndex(currpisition);
+                 EventBus.getDefault().post(playEvent);
              }
          });
 
@@ -211,9 +218,9 @@ public class MyMusicActivity extends AppCompatActivity {
         tv_myMusicPlayAll = (TextView)findViewById(R.id.tv_myMusicPlayAll);
 
         //底部播放栏部分
-        my_music_bottomMusicPlayer = (View)findViewById(R.id.my_music_bottomMusicPlayer);
-        ivBottomPlay = (ImageView)my_music_bottomMusicPlayer.findViewById(R.id.iv_bottomPlayerPlay);
-        ivBottomPlayerList = (ImageView) my_music_bottomMusicPlayer.findViewById(R.id.iv_bottomPlayerList);
+       // my_music_bottomMusicPlayer = (View)findViewById(R.id.my_music_bottomMusicPlayer);
+       // ivBottomPlay = (ImageView)my_music_bottomMusicPlayer.findViewById(R.id.iv_bottomPlayerPlay);
+       // ivBottomPlayerList = (ImageView) my_music_bottomMusicPlayer.findViewById(R.id.iv_bottomPlayerList);
 
         //设置监听事件
         setUIControlsOnClick();
@@ -222,35 +229,35 @@ public class MyMusicActivity extends AppCompatActivity {
     private void setUIControlsOnClick() {
         //底部播放栏部分
         /* 点击底部播放器转换至播放界面 */
-        my_music_bottomMusicPlayer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MyMusicActivity.this,MusicPlayerActivity.class));
-            }
-        });
+//        my_music_bottomMusicPlayer.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(MyMusicActivity.this,MusicPlayerActivity.class));
+//            }
+//        });
 
-        /* 底栏播放按钮 */
-        ivBottomPlay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (isChanged) {
-                    //点击播放
-                    ivBottomPlay.setImageResource(R.drawable.bottomplayerpause);
-                } else {
-                    //点击暂停
-                    ivBottomPlay.setImageResource(R.drawable.bottomplayerplay);
-                }
-                isChanged = !isChanged;
-            }
-        });
-
-        /* 底栏歌曲列表按钮*/
-        ivBottomPlayerList.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showBottomMusicList();
-            }
-        });
+//        /* 底栏播放按钮 */
+//        ivBottomPlay.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if (isChanged) {
+//                    //点击播放
+//                    ivBottomPlay.setImageResource(R.drawable.bottomplayerpause);
+//                } else {
+//                    //点击暂停
+//                    ivBottomPlay.setImageResource(R.drawable.bottomplayerplay);
+//                }
+//                isChanged = !isChanged;
+//            }
+//        });
+//
+//        /* 底栏歌曲列表按钮*/
+//        ivBottomPlayerList.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                showBottomMusicList();
+//            }
+//        });
     }
 
     protected void showMoreAction(){
@@ -471,6 +478,7 @@ public class MyMusicActivity extends AppCompatActivity {
             TextView singer;
             ImageView delete;
         }
+
     }
 
 }
