@@ -16,9 +16,9 @@ import java.util.TimerTask;
 import cn.bmob.sms.BmobSMS;
 import cn.bmob.sms.listener.RequestSMSCodeListener;
 import cn.bmob.sms.listener.VerifySMSCodeListener;
-import cn.bmob.v3.BmobUser;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.SaveListener;
+//import cn.bmob.v3.BmobUser;
+//import cn.bmob.v3.exception.BmobException;
+//import cn.bmob.v3.listener.SaveListener;
 
 /**
  * Created by ZhuShuLi on 2018/6/2.
@@ -100,32 +100,32 @@ public class BmobRegister {
         if (!isCorrectVerifyCode)
             return ;
 
-        MyUser user = new MyUser();
-        user.setUsername(phoneNumber);
-        user.setPassword(password);
-        user.setMobilePhoneNumber(phoneNumber);
-        user.signUp(new SaveListener<BmobUser>() {
-            @Override
-            public void done(BmobUser bmobUser, BmobException e) {
-                if (e == null) {
-                    Toast.makeText(RegisterActivity.instance, "注册成功", Toast.LENGTH_SHORT).show();
-                    // 如果成功后，延时1.5秒后返回上一个页面
-                    TimerTask task = new TimerTask() {
-                        @Override
-                        public void run() {
-                            RegisterActivity.instance.finish();
-                        }
-                    };
-                    Timer timer = new Timer();
-                    timer.schedule(task, 1500);
-                }
-                else {
-                    Toast.makeText(RegisterActivity.instance, "注册失败", Toast.LENGTH_SHORT).show();
-                    et_Register_Phonenumber.setText("");
-                    et_Password.setText("");
-                }
-            }
-        });
+//        MyUser user = new MyUser();
+//        user.setUsername(phoneNumber);
+//        user.setPassword(password);
+//        user.setMobilePhoneNumber(phoneNumber);
+//        user.signUp(new SaveListener<BmobUser>() {
+//            @Override
+//            public void done(BmobUser bmobUser, BmobException e) {
+//                if (e == null) {
+//                    Toast.makeText(RegisterActivity.instance, "注册成功", Toast.LENGTH_SHORT).show();
+//                    // 如果成功后，延时1.5秒后返回上一个页面
+//                    TimerTask task = new TimerTask() {
+//                        @Override
+//                        public void run() {
+//                            RegisterActivity.instance.finish();
+//                        }
+//                    };
+//                    Timer timer = new Timer();
+//                    timer.schedule(task, 1500);
+//                }
+//                else {
+//                    Toast.makeText(RegisterActivity.instance, "注册失败", Toast.LENGTH_SHORT).show();
+//                    et_Register_Phonenumber.setText("");
+//                    et_Password.setText("");
+//                }
+//            }
+//        });
     }
 
     private boolean checkInput(String userTel, String password) {

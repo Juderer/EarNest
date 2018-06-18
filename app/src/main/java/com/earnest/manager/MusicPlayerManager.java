@@ -61,6 +61,7 @@ public class MusicPlayerManager implements MediaPlayer.OnCompletionListener {
     public void setQueue(List<Song> queue, int index) {
         mQueue = queue;
         mQueueIndex = index;
+        Log.d("hr01-1",String.valueOf(mQueueIndex));
         play(getNowPlaying());
     }
 
@@ -78,8 +79,8 @@ public class MusicPlayerManager implements MediaPlayer.OnCompletionListener {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
                     mMediaPlayer.start();
+                    Log.d("hr01-3",String.valueOf(mQueueIndex));
                     EventBus.getDefault().post(mMessageEvent);
-
                 }
             });
 
@@ -104,7 +105,6 @@ public class MusicPlayerManager implements MediaPlayer.OnCompletionListener {
 
     public void previous() {
         play(getPreviousSong());
-       // EventBus.getDefault().post(mMessageEvent);
     }
 
     @Override
@@ -116,6 +116,7 @@ public class MusicPlayerManager implements MediaPlayer.OnCompletionListener {
         if (mQueue.isEmpty()) {
             return null;
         }
+        Log.d("hr01-2",String.valueOf(mQueueIndex));
         return mQueue.get(mQueueIndex);
     }
 
@@ -185,6 +186,7 @@ public class MusicPlayerManager implements MediaPlayer.OnCompletionListener {
     private int getPreviousIndex() {
         if((mQueueIndex-1)>=0){
             mQueueIndex--;
+            Log.d("ju",String.valueOf(mQueueIndex));
 
         }else{
             mQueueIndex = mQueue.size()-1;

@@ -340,6 +340,7 @@ public class MainActivity extends AppCompatActivity {
                 //在这里面就是执行点击后要进行的操作
                 //返回listview的下标
                 int currpisition = positon;
+                Log.d("hr01",String.valueOf(currpisition));
                 //把消息psot出去
                 playEvent = new PlayEvent();
                 playEvent.setAction(PlayEvent.Action.PLAY);
@@ -561,7 +562,7 @@ public class MainActivity extends AppCompatActivity {
         Song song= MusicPlayerManager.getPlayer().getQueue().get(i);
         tv_bottomPlayerMusicName.setText(song.getTitle());
         boolean j=MusicPlayerManager.getPlayer().getMediaPlayer().isPlaying();
-        if (MusicPlayerManager.getPlayer().getMediaPlayer().isPlaying()) {
+        if (j) {
             ivBottomPlay.setImageResource(R.drawable.bottomplayerplay);
             currState=PAUSE;
         } else {

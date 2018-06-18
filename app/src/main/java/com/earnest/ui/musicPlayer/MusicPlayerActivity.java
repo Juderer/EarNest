@@ -122,9 +122,6 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
         //hr:导入本地音乐数据
         queue = new ArrayList<>();
         queue=MusicUtils.getLocalMusicData(this);
-        Log.d("4",String.valueOf(queue.size()));
-
-
     }
 
     /////初始化UI
@@ -222,13 +219,6 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
         seek_bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-//                if (MusicPlayerManager.getPlayer().getMediaPlayer().isPlaying()) {
-//                    playEvent=new PlayEvent();
-//                    playEvent.setAction(SEEK);
-//                    playEvent.setSeekTo(i);EventBus.getDefault().post(playEvent);
-//                } else {
-//
-//                }
             }
 
             @Override
@@ -279,13 +269,13 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
                 //hr:修改播放状态选择
                 switch (currState) {
             case IDLE:
+                Toast.makeText(getApplicationContext(),"未指定歌曲，从本地音乐第一首开始放起",Toast.LENGTH_LONG).show();
                 playMusic();
                 //hr:event播放控制
                 playEvent = new PlayEvent();
                 playEvent.setAction(PlayEvent.Action.PLAY);
                 playEvent.setQueue(queue);
                 EventBus.getDefault().post(playEvent);
-
                 break;
             case PAUSE:
                 pauseMusic();
@@ -496,6 +486,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
         super.onResume();
         if(  (MusicPlayerManager.getPlayer().getQueue())!=null&&!(MusicPlayerManager.getPlayer().getQueue()).isEmpty()  ){
             int i=MusicPlayerManager.getPlayer().getCurrentMusicIndex();
+            Log.d("hr01-4",String.valueOf(i));
             Song song= MusicPlayerManager.getPlayer().getQueue().get(i);
             tvTitle.setText(song.getTitle());
             tvArtist.setText(song.getSinger());
@@ -507,6 +498,10 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
         if (MusicPlayerManager.getPlayer().getMediaPlayer().isPlaying()) {
             playMusic();
         } else {
+            if(currState==IDLE){
+            }else {
+                pauseMusic();
+            }
         }
 
     }
