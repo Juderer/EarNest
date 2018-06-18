@@ -225,21 +225,6 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
         ivPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if(!isPlaying) {
-//                    playMusic();
-//                    //hr:event播放控制
-//                    playEvent = new PlayEvent();
-//                    playEvent.setAction(PlayEvent.Action.PLAY);
-//                    playEvent.setQueue(queue);
-//                    EventBus.getDefault().post(playEvent);
-//                } else {
-//                    pauseMusic();
-//                    //hr:event播放控制
-//                    playEvent = new PlayEvent();
-//                    playEvent.setAction(PlayEvent.Action.STOP);
-//                    EventBus.getDefault().post(playEvent);
-//                }
-
                 //hr:修改播放状态选择
                 switch (currState) {
             case IDLE:
@@ -313,7 +298,6 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
     private void playMusic() {
         //discAnimation.start();
         ivPlay.setImageResource(R.drawable.ic_pause);
-        //isPlaying = true;
     }
 
     //暂停音乐
@@ -324,7 +308,6 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
             discAnimation.setFloatValues(valueAvatar, 360f + valueAvatar);
         }*/
         ivPlay.setImageResource(R.drawable.ic_play);
-        //isPlaying = false;
     }
 
     //切换音乐
