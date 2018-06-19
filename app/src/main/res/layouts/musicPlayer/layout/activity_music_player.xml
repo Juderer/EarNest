@@ -174,7 +174,7 @@
             android:id="@+id/ivPlayMode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_play_mode_shuffle"/>
+            android:src="@drawable/ic_play_mode_list"/>
 
         <ImageView
             android:id="@+id/ivPlayLast"

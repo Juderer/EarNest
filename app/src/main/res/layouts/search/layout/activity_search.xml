@@ -126,14 +126,9 @@
     <ListView
         android:id="@+id/lv_search_history"
         android:layout_below="@id/re_search_hotSearch"
-        android:layout_above="@id/search_bottomMusicPlayer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="30dp">
     </ListView>
-
-    <include
-        android:id="@+id/search_bottomMusicPlayer"
-        layout="@layout/bottom_music_player" />
 
 </RelativeLayout>

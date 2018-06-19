@@ -9,9 +9,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Handler;
-import android.os.Message;
+import android.media.MediaMetadataRetriever;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -44,7 +42,6 @@ import com.earnest.manager.MusicPlayerManager;
 import com.earnest.model.WechatShare;
 
 import com.earnest.model.entities.Song;
-import com.earnest.services.ImgDonwload;
 import com.earnest.services.PhoneService;
 import com.earnest.services.PlayerService;
 import com.earnest.ui.adapter.BaseFragment;
@@ -53,6 +50,7 @@ import com.earnest.ui.home.menuFragments.FindFragment;
 import com.earnest.ui.home.menuFragments.PlayFragment;
 import com.earnest.ui.home.menuFragments.VideoFragment;
 import com.earnest.ui.musicPlayer.MusicPlayerActivity;
+import com.earnest.ui.search.SearchActivity;
 import com.earnest.ui.widget.RoundImageView;
 import com.earnest.ui.search.SearchResultActivity;
 import com.earnest.utils.MusicUtils;
@@ -61,11 +59,6 @@ import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,6 +111,7 @@ public class MainActivity extends AppCompatActivity {
     private AlertDialog bottomAlertDialog;
     private ImageView iv_bottomPlayerMode;
     private ImageView iv_bottomPlayerDeleteAll;
+    private ImageView iv_bottomPlayerImg;
 
     /*个人设置*/
     private PopupWindow popPersonalSetting;
@@ -192,6 +186,8 @@ public class MainActivity extends AppCompatActivity {
 
         tv_bottomPlayerMusicName=(TextView)findViewById(R.id.tv_bottomPlayerMusicName);
         tv_bottomPlayerLyrics=(TextView)findViewById(R.id.tv_bottomPlayerLyrics);
+        iv_bottomPlayerImg = (ImageView) findViewById(R.id.iv_bottomPlayerImg);
+
 
 
         //设置监听事件
@@ -239,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
         ivMenuSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, SearchResultActivity.class));
+                startActivity(new Intent(MainActivity.this,SearchResultActivity.class));
             }
         });
 
@@ -618,6 +614,15 @@ public class MainActivity extends AppCompatActivity {
             int i=MusicPlayerManager.getPlayer().getCurrentMusicIndex();
             Song song= MusicPlayerManager.getPlayer().getQueue().get(i);
             tv_bottomPlayerMusicName.setText(song.getTitle());
+
+            //显示歌曲对应图片
+            Bitmap bitmap = getAlbumBitmapDrawavle(song.getFileUrl());
+            if(bitmap == null){
+                iv_bottomPlayerImg.setImageResource(R.drawable.ic_default_song_music);
+            }else {
+                iv_bottomPlayerImg.setImageBitmap(bitmap);
+            }
+
         }
 
         if (MusicPlayerManager.getPlayer().getMediaPlayer().isPlaying()) {
@@ -632,6 +637,16 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    //获取歌曲对应图片
+    public static Bitmap getAlbumBitmapDrawavle(String path){
+        MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
+        mediaMetadataRetriever.setDataSource(path);
+
+        byte[] art = mediaMetadataRetriever.getEmbeddedPicture();
+
+        return art != null ? BitmapFactory.decodeByteArray(art,0,art.length) : null;
     }
 
 
