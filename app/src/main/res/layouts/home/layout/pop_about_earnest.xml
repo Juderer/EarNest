@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="270dp"
     android:layout_height="400dp"
-    android:background="@color/white"
+    android:background="@drawable/about"
     android:fitsSystemWindows="true">
 
 </RelativeLayout>
