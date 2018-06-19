@@ -52,6 +52,10 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.earnest.ui.home.MainActivity.currState;
+import static com.earnest.ui.search.SearchResultActivity.currNetMusicArtist;
+import static com.earnest.ui.search.SearchResultActivity.currNetMusicName;
+
 
 public class MusicPlayerActivity extends AppCompatActivity implements DiscView.IPlayInfo{
 
@@ -97,8 +101,8 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
     private static final int IDLE = 0;
     private static final int PAUSE = 1;
     private static final int START = 2;
-    private int currState = IDLE;
-    //private boolean isPlaying = false;
+   // private int currState = IDLE;
+
 
     //功能栏
     ImageView ivFavoriate;
@@ -142,6 +146,8 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
         //hr:导入本地音乐数据
         queue = new ArrayList<>();
         queue=MusicUtils.getLocalMusicData(this);
+
+
     }
 
     /////初始化UI
@@ -261,7 +267,6 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
             public void onStopTrackingTouch(SeekBar seekBar) {
                 isSeekBarChanging=false;
                 MusicPlayerManager.getPlayer().seekTo(seekBar.getProgress());//???直接调用
-
             }
         });
         //控制栏
@@ -322,7 +327,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
                     playEvent.setAction(PlayEvent.Action.STOP);
                     EventBus.getDefault().post(playEvent);
                     //进度条相关
-                    playPositon=MusicPlayerManager.getPlayer().getCurrentPosition();
+                    //playPositon=MusicPlayerManager.getPlayer().getCurrentPosition();
                     timer.purge();
                 }else{
                     playEvent = new PlayEvent();
@@ -338,7 +343,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
                     playEvent = new PlayEvent();
                     playEvent.setAction(PlayEvent.Action.RESUME);
                     playEvent.setQueue(queue);
-                    playEvent.setSeekTo(playPositon);
+                    //playEvent.setSeekTo(playPositon);
                     EventBus.getDefault().post(playEvent);
                 }else{
                     playEvent = new PlayEvent();
@@ -708,7 +713,22 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
             tvDuration.setText(MusicUtils.formatTime(song.getDuration()));
             seek_bar.setProgress(MusicPlayerManager.getPlayer().getCurrentPosition());//设置当前进度为0
             seek_bar.setMax((int)song.getDuration());//设置进度条最大值为MP3总时间
+        }else {
+
+            if (MusicPlayerManager.getPlayer().getMediaPlayer().isPlaying()) {
+                tvTitle.setText(currNetMusicName);
+                tvArtist.setText(currNetMusicArtist);
+
+            } else {
+                if(currState==IDLE){
+                }else {
+                    pauseMusic();
+                }
+            }
+
         }
+
+
 
         if (MusicPlayerManager.getPlayer().getMediaPlayer().isPlaying()) {
             playMusic();
