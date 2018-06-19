@@ -36,6 +36,7 @@ import com.earnest.event.PlayEvent;
 import com.earnest.manager.MusicPlayerManager;
 import com.earnest.model.WechatShare;
 import com.earnest.model.entities.Song;
+import com.earnest.services.ImgDonwload;
 import com.earnest.ui.home.MainActivity;
 import com.earnest.ui.utils.DisplayUtil;
 import com.earnest.ui.utils.FastBlurUtil;
@@ -141,7 +142,8 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
         myHandler = new MyHandler(this);
 
         //根据音乐图片制作毛玻璃背景效果，并通过一个单独的线程进行切换显示
-        try2UpdateMusicPicBackground(R.drawable.timg);
+//        String str = ImgDonwload.dir + "123.jpg";
+//        try2UpdateMusicPicBackground(str);
 
         //hr:导入本地音乐数据
         queue = new ArrayList<>();
@@ -617,11 +619,11 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
         //discAnimation.end();
         playMusic();
         //根据音乐图片制作毛玻璃背景效果，并通过一个单独的线程进行切换显示
-        try2UpdateMusicPicBackground(R.drawable.timg);
+        //try2UpdateMusicPicBackground(R.drawable.timg);
     }
 
     //背景图片处理，以下请勿更改
-    private void try2UpdateMusicPicBackground(final int musicPicRes) {
+    private void try2UpdateMusicPicBackground(final String musicPicRes) {
         if (mRootLayout.isNeed2UpdateBackground(musicPicRes)) {
             new Thread(new Runnable() {
                 @Override
@@ -639,7 +641,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
         }
     }
 
-    private Drawable getForegroundDrawable(int musicPicRes) {
+    private Drawable getForegroundDrawable(String musicPicRes) {
         /*得到屏幕的宽高比，以便按比例切割图片一部分*/
         final float widthHeightSize = (float) (DisplayUtil.getScreenWidth(MusicPlayerActivity.this)
                 * 1.0 / DisplayUtil.getScreenHeight(this) * 1.0);
@@ -663,19 +665,22 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
         return foregroundDrawable;
     }
 
-    private Bitmap getForegroundBitmap(int musicPicRes) {
+    private Bitmap getForegroundBitmap(String musicPicRes) {
         int screenWidth = DisplayUtil.getScreenWidth(this);
         int screenHeight = DisplayUtil.getScreenHeight(this);
 
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
 
-        BitmapFactory.decodeResource(getResources(), musicPicRes, options);
+        //BitmapFactory.decodeResource(getResources(), musicPicRes, options);
+        BitmapFactory.decodeFile(musicPicRes, options);
+
         int imageWidth = options.outWidth;
         int imageHeight = options.outHeight;
 
         if (imageWidth < screenWidth && imageHeight < screenHeight) {
-            return BitmapFactory.decodeResource(getResources(), musicPicRes);
+            //return BitmapFactory.decodeResource(getResources(), musicPicRes);
+            return BitmapFactory.decodeFile(musicPicRes);
         }
 
         int sample = 2;
@@ -692,7 +697,8 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
         options.inSampleSize = sample;
         options.inPreferredConfig = Bitmap.Config.RGB_565;
 
-        return BitmapFactory.decodeResource(getResources(), musicPicRes, options);
+        //return BitmapFactory.decodeResource(getResources(), musicPicRes, options);
+        return BitmapFactory.decodeFile(musicPicRes, options);
     }
 
     //hr:接收过来的MessageEvent 解决获取不到MusicPlayermanager queue
@@ -776,7 +782,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
 
     @Override
     public void onMusicPicChanged(int musicPicRes) {
-        try2UpdateMusicPicBackground(musicPicRes);
+        //try2UpdateMusicPicBackground(musicPicRes);
     }
 
     @Override

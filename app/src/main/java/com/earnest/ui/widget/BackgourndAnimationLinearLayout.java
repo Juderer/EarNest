@@ -28,7 +28,7 @@ public class BackgourndAnimationLinearLayout extends LinearLayout {
      */
     private LayerDrawable layerDrawable;
     private ObjectAnimator objectAnimator;
-    private int musicPicRes = -1;
+    private String musicPicRes = null;
 
     public BackgourndAnimationLinearLayout(Context context) {
         this(context, null);
@@ -102,8 +102,8 @@ public class BackgourndAnimationLinearLayout extends LinearLayout {
         objectAnimator.start();
     }
 
-    public boolean isNeed2UpdateBackground(int musicPicRes) {
-        if (this.musicPicRes == -1) return true;
+    public boolean isNeed2UpdateBackground(String musicPicRes) {
+        if (this.musicPicRes == null) return true;
         if (musicPicRes != this.musicPicRes) {
             return true;
         }
