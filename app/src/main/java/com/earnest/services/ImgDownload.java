@@ -27,7 +27,7 @@ import java.util.UUID;
  * Created by Administrator on 2018/6/19.
  */
 
-public class ImgDonwload {
+public class ImgDownload {
 
     private static String filePath;
     private static Bitmap mBitmap;

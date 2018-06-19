@@ -36,8 +36,6 @@ import com.earnest.event.PlayEvent;
 import com.earnest.manager.MusicPlayerManager;
 import com.earnest.model.WechatShare;
 import com.earnest.model.entities.Song;
-import com.earnest.services.ImgDonwload;
-import com.earnest.ui.home.MainActivity;
 import com.earnest.ui.utils.DisplayUtil;
 import com.earnest.ui.utils.FastBlurUtil;
 import com.earnest.ui.widget.BackgourndAnimationLinearLayout;
@@ -142,7 +140,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
         myHandler = new MyHandler(this);
 
         //根据音乐图片制作毛玻璃背景效果，并通过一个单独的线程进行切换显示
-//        String str = ImgDonwload.dir + "123.jpg";
+//        String str = ImgDownload.dir + "123.jpg";
 //        try2UpdateMusicPicBackground(str);
 
         //hr:导入本地音乐数据
