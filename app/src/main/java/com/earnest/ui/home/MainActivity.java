@@ -50,7 +50,6 @@ import com.earnest.ui.home.menuFragments.FindFragment;
 import com.earnest.ui.home.menuFragments.PlayFragment;
 import com.earnest.ui.home.menuFragments.VideoFragment;
 import com.earnest.ui.musicPlayer.MusicPlayerActivity;
-import com.earnest.ui.search.SearchActivity;
 import com.earnest.ui.widget.RoundImageView;
 import com.earnest.ui.search.SearchResultActivity;
 import com.earnest.utils.MusicUtils;
@@ -115,6 +114,8 @@ public class MainActivity extends AppCompatActivity {
 
     /*个人设置*/
     private PopupWindow popPersonalSetting;
+    private PopupWindow popHelp;
+    private PopupWindow popAbout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -201,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
         ivMenuMy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getPopupWindow();
+                getPersonalSettingPopupWindow();
                 //popPersonalSetting.showAtLocation(findViewById(R.id.), Gravity.CENTER, 0, 0);
                 popPersonalSetting.showAtLocation(getLayoutInflater().inflate(R.layout.activity_main, null), Gravity.LEFT, 0, 500);
             }
@@ -507,7 +508,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /* 初始化个人设置弹窗 */
-    protected void initPopupWindow(){
+    protected void initPesonalSettingPopupWindow(){
         View popupWindowView = getLayoutInflater().inflate(R.layout.pop_personal_setting, null);
         //内容，高度，宽度
         popPersonalSetting = new PopupWindow(popupWindowView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
@@ -557,7 +558,9 @@ public class MainActivity extends AppCompatActivity {
         re_personalsetting_help.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                getHelpPopupWindow();
+                popHelp.showAtLocation(getLayoutInflater().inflate(R.layout.activity_main, null), Gravity.CENTER, 0, 0);
+                popPersonalSetting.dismiss();
             }
         });
 
@@ -565,7 +568,9 @@ public class MainActivity extends AppCompatActivity {
         re_personalsetting_about.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                getAboutPopupWindow();
+                popAbout.showAtLocation(getLayoutInflater().inflate(R.layout.activity_main, null), Gravity.CENTER, 0, 0);
+                popPersonalSetting.dismiss();
             }
         });
 
@@ -579,13 +584,83 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /*** 获取个人设置弹窗实例*/
-    private void getPopupWindow() {
+    private void getPersonalSettingPopupWindow() {
 
         if (null != popPersonalSetting) {
             popPersonalSetting.dismiss();
             return;
         } else {
-            initPopupWindow();
+            initPesonalSettingPopupWindow();
+        }
+    }
+
+    /*初始化帮助弹窗*/
+    protected void initHelpPopupWindow(){
+        View popupHelpWindowView = getLayoutInflater().inflate(R.layout.pop_help, null);
+        //内容，高度，宽度
+        popHelp = new PopupWindow(popupHelpWindowView, 600, 800, true);
+
+        //动画效果
+        popHelp.setAnimationStyle(R.style.AnimationLeftFade);
+
+        //点击其他地方消失
+        popupHelpWindowView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if( popHelp != null && popHelp.isShowing()){
+                    popHelp.dismiss();
+                    popHelp = null;
+                }
+                // 这里如果返回true的话，touch事件将被拦截
+                // 拦截后 PopupWindow的onTouchEvent不被调用，这样点击外部区域无法dismiss
+                return false;
+            }
+        });
+    }
+
+    /*** 获取帮助弹窗实例*/
+    private void getHelpPopupWindow() {
+
+        if (null != popHelp) {
+            popHelp.dismiss();
+            return;
+        } else {
+            initHelpPopupWindow();
+        }
+    }
+
+    /*初始化关于弹窗*/
+    protected void initAboutPopupWindow(){
+        View popupAboutWindowView = getLayoutInflater().inflate(R.layout.pop_about_earnest, null);
+        //内容，高度，宽度
+        popAbout = new PopupWindow(popupAboutWindowView, 600,800, true);
+
+        //动画效果
+        popAbout.setAnimationStyle(R.style.AnimationLeftFade);
+
+        //点击其他地方消失
+        popupAboutWindowView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if( popAbout != null && popAbout.isShowing()){
+                    popAbout.dismiss();
+                    popAbout = null;
+                }
+                // 这里如果返回true的话，touch事件将被拦截
+                // 拦截后 PopupWindow的onTouchEvent不被调用，这样点击外部区域无法dismiss
+                return false;
+            }
+        });
+    }
+
+    /*** 获取关于弹窗实例*/
+    private void getAboutPopupWindow() {
+
+        if (null != popAbout) {
+            popAbout.dismiss();
+            return;
+        } else {
+            initAboutPopupWindow();
         }
     }
 
