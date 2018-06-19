@@ -649,6 +649,4 @@ public class MainActivity extends AppCompatActivity {
         return art != null ? BitmapFactory.decodeByteArray(art,0,art.length) : null;
     }
 
-
-
 }

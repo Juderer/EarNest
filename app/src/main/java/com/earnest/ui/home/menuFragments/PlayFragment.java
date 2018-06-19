@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 
 import com.earnest.R;
 import com.earnest.ui.adapter.BaseFragment;
+import com.earnest.ui.myMusic.MyFavouriteActivity;
 import com.earnest.ui.myMusic.MyMusicActivity;
 
 /**
@@ -101,7 +102,8 @@ public class PlayFragment extends BaseFragment {
         llMySongListsMyFavourite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intentMyFavouriteMusicList = new Intent(getActivity(), MyFavouriteActivity.class);
+                startActivity(intentMyFavouriteMusicList);
             }
         });
     }
