@@ -1,7 +1,6 @@
 package com.earnest.model.entities;
 
-import com.earnest.services.ImgDonwload;
-import com.earnest.ui.home.MainActivity;
+import com.earnest.services.ImgDownload;
 
 /**
  * Created by Administrator on 2018/6/19.
@@ -49,7 +48,7 @@ public class OnlineSong extends Song {
 
 
     public void makeBitmap(String address) {
-        ImgDonwload.donwloadImg(id, address);
+        ImgDownload.donwloadImg(getTitle(), address);
     }
 
 }
