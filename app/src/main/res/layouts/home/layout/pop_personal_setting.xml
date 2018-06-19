@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="300dp"
+    android:layout_width="260dp"
     android:layout_height="fill_parent"
-    android:background="@color/app.color.background">
+    android:background="@color/app.color.background"
+    android:fitsSystemWindows="true">
 
     <RelativeLayout
         android:id="@+id/re_personalsetting_head"

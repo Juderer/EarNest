@@ -36,6 +36,14 @@
     <color name="colorRemarkBottom">#edeaf1</color>
     <color name="colorRemarkButtom">#727173</color>
 
+    <!--我喜欢歌单-->
+    <color name="colorMyFavouriteMusicList">#454141</color>
+    <color name="myFavouriteMusicListPrimary">#454141</color>
+    <color name="myFavouriteMusicListPrimaryDark">#454141</color>
+    <color name="colorMyFavouriteMusicListItemDivider">#dad7d7</color>
+
+    <!--音乐播放器-->
     <color name="musicPlayerPrimary">#3d85ba</color>
     <color name="musicPlayerPrimaryDark">#3d85ba</color>
+
 </resources>

@@ -69,10 +69,10 @@
     </RelativeLayout>
 
     <View
-        android:layout_width="match_parent"
+        android:layout_width="350dp"
         android:layout_height="0.5dp"
         android:layout_below="@id/myMusicMoreActionPlayNext"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentRight="true"
         android:background="@color/colorMyMusicdivider"/>
 
     <RelativeLayout
@@ -102,10 +102,10 @@
     </RelativeLayout>
 
     <View
-        android:layout_width="match_parent"
+        android:layout_width="350dp"
         android:layout_height="0.5dp"
         android:layout_below="@id/myMusicMoreActionCollect"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentRight="true"
         android:background="@color/colorMyMusicdivider"/>
 
     <RelativeLayout
@@ -135,10 +135,10 @@
     </RelativeLayout>
 
     <View
-        android:layout_width="match_parent"
+        android:layout_width="350dp"
         android:layout_height="0.5dp"
         android:layout_below="@id/myMusicMoreActionRemark"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentRight="true"
         android:background="@color/colorMyMusicdivider"/>
 
     <RelativeLayout
@@ -168,10 +168,10 @@
     </RelativeLayout>
 
     <View
-        android:layout_width="match_parent"
+        android:layout_width="350dp"
         android:layout_height="0.5dp"
         android:layout_below="@id/myMusicMoreActionShare"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentRight="true"
         android:background="@color/colorMyMusicdivider"/>
 
     <RelativeLayout

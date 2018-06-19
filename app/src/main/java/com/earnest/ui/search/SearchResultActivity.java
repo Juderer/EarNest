@@ -29,12 +29,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.earnest.R;
+import com.earnest.event.MessageEvent;
 import com.earnest.event.PlayEvent;
+import com.earnest.manager.MusicPlayerManager;
 import com.earnest.model.entities.Item_Song;
+import com.earnest.model.entities.Song;
 import com.earnest.ui.home.MainActivity;
 import com.earnest.ui.musicPlayer.MusicPlayerActivity;
+import com.earnest.utils.MusicUtils;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -55,6 +60,7 @@ import java.util.Map;
 public class SearchResultActivity extends AppCompatActivity {
     //hr:
     PlayEvent playEvent=new PlayEvent();
+    private List<Song> localMusicList;
 
     private ListView lv_searchResult;
     private ImageView iv_searchResult_search;
@@ -77,6 +83,13 @@ public class SearchResultActivity extends AppCompatActivity {
     //hr:底部音乐栏播放信息
     private TextView tv_bottomPlayerMusicName;
     private TextView tv_bottomPlayerLyrics;//歌词？
+
+
+    //hr:设置一个static变量存储当前播放网络音乐id
+    public static int currNetMusic;
+    public static String currNetMusicName;
+    public static String currNetMusicArtist;
+
 
     //hr:定义三种播放状态
     private static final int IDLE = 0;
@@ -102,6 +115,13 @@ public class SearchResultActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_result);
+
+        //hr:获取本地音乐列表
+        localMusicList=new ArrayList<>();
+        localMusicList=MusicUtils.getLocalMusicData(this);
+
+        //hr:订阅传过来的MessageEvent以改变音乐信息
+        EventBus.getDefault().register(this);
 
         initUIControls();
 
@@ -145,8 +165,14 @@ public class SearchResultActivity extends AppCompatActivity {
 //                        playEvent.setQueue(queue);
 //                        EventBus.getDefault().post(playEvent);
 
+
                         netMusicList.get(p);
                         picUrlMap.get(p);
+
+                        currNetMusic=p;
+
+                        currNetMusicName=netMusicList.get(p).get("title").toString();
+                        currNetMusicArtist=netMusicList.get(p).get("artist").toString();
                         Uri uri1 = Uri.parse(netMusicList.get(p).get("audio").toString());
                         playEvent.setAction(PlayEvent.Action.PLAY);
                         playEvent.setTestNet(PlayEvent.TestNet.NET);
@@ -228,6 +254,44 @@ public class SearchResultActivity extends AppCompatActivity {
                 startActivity(new Intent(SearchResultActivity.this,MusicPlayerActivity.class));
             }
         });
+
+
+         /*底栏播放按钮 */
+        ivBottomPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch (currState){
+                    case IDLE:
+                        ivBottomPlay.setImageResource(R.drawable.bottomplayerplay);
+                        Toast.makeText(getApplicationContext(),"未指定歌曲，从本地音乐第一首开始放起",Toast.LENGTH_LONG).show();
+                        //hr:event播放控制
+                        playEvent.setAction(PlayEvent.Action.PLAY);
+                        playEvent.setQueue(localMusicList);
+                        EventBus.getDefault().post(playEvent);
+                        currState=PAUSE;
+                        break;
+                    case PAUSE:
+                        ivBottomPlay.setImageResource(R.drawable.bottomplayerpause);
+                        //hr:event播放控制
+                        playEvent.setAction(PlayEvent.Action.STOP);
+                        EventBus.getDefault().post(playEvent);
+                            //进度条相关
+//                            playPositon=MusicPlayerManager.getPlayer().getCurrentPosition();
+//                            timer.purge();
+                        currState=START;
+                        break;
+                    case START:
+                        ivBottomPlay.setImageResource(R.drawable.bottomplayerplay);
+
+                            playEvent.setAction(PlayEvent.Action.RESUME);
+                            EventBus.getDefault().post(playEvent);
+                        currState=PAUSE;
+                        break;
+                }
+
+            }
+        });
+
 
         /* 底栏歌曲列表按钮*/
         ivBottomPlayerList.setOnClickListener(new View.OnClickListener() {
@@ -585,4 +649,71 @@ public class SearchResultActivity extends AppCompatActivity {
         }
 
     }
+
+
+
+    //hr:back to UI
+
+    //hr:接收过来的MessageEvent 修改底部播放栏的音乐信息
+    @Subscribe
+    public void onEvent(MessageEvent mMessageEvent) {
+        //if 当前播放为本地音乐 else为网络音乐点击播放
+        if(  (MusicPlayerManager.getPlayer().getQueue())!=null&&!(MusicPlayerManager.getPlayer().getQueue()).isEmpty()  ){
+            int currPosition=MusicPlayerManager.getPlayer().getCurrentMusicIndex();
+            Song song = MusicPlayerManager.getPlayer().getQueue().get(currPosition);
+            tv_bottomPlayerMusicName.setText(song.getTitle());
+            //tv_bottomPlayerLyrics.setText();
+            if (MusicPlayerManager.getPlayer().getMediaPlayer().isPlaying()) {
+                ivBottomPlay.setImageResource(R.drawable.bottomplayerplay);
+                currState=PAUSE;
+            } else {
+                ivBottomPlay.setImageResource(R.drawable.bottomplayerpause);
+                currState=START;
+            }
+        }else{
+            ivBottomPlay.setImageResource(R.drawable.bottomplayerplay);
+            tv_bottomPlayerMusicName.setText(netMusicList.get(currNetMusic).get("title").toString());
+            currState = PAUSE;
+        }
+
+    }
+
+    //hr:想要在返回这个界面时获取新的歌曲信息
+    @Override
+    public void onResume() {
+        super.onResume();
+        boolean isPlay=MusicPlayerManager.getPlayer().getMediaPlayer().isPlaying();
+        //if当前播放列表中已有本地歌曲
+        if(  (MusicPlayerManager.getPlayer().getQueue())!=null&&!(MusicPlayerManager.getPlayer().getQueue()).isEmpty()  ){
+            int i=MusicPlayerManager.getPlayer().getCurrentMusicIndex();
+            Song song= MusicPlayerManager.getPlayer().getQueue().get(i);
+            tv_bottomPlayerMusicName.setText(song.getTitle());
+        }else
+        {
+            //正播放网络音乐
+            if(isPlay){
+                //显示网络音乐的信息
+                tv_bottomPlayerMusicName.setText(currNetMusicName);
+            }
+        }
+
+        //单独处理按钮图片ui变化
+        if (isPlay) {
+            ivBottomPlay.setImageResource(R.drawable.bottomplayerplay);
+            currState=PAUSE;
+        } else {
+            ivBottomPlay.setImageResource(R.drawable.bottomplayerpause);
+            //处理未播放歌曲时第一次点击底部播放按钮
+            if(currState==IDLE){
+            }else{
+                currState=START;
+            }
+        }
+
+    }
+
+
 }
+
+
+

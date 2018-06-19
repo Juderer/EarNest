@@ -4,12 +4,15 @@ import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -42,6 +45,7 @@ import com.earnest.manager.MusicPlayerManager;
 import com.earnest.model.WechatShare;
 
 import com.earnest.model.entities.Song;
+import com.earnest.services.ImgDownload;
 import com.earnest.services.PhoneService;
 import com.earnest.services.PlayerService;
 import com.earnest.ui.adapter.BaseFragment;
@@ -50,7 +54,6 @@ import com.earnest.ui.home.menuFragments.FindFragment;
 import com.earnest.ui.home.menuFragments.PlayFragment;
 import com.earnest.ui.home.menuFragments.VideoFragment;
 import com.earnest.ui.musicPlayer.MusicPlayerActivity;
-import com.earnest.ui.search.SearchActivity;
 import com.earnest.ui.widget.RoundImageView;
 import com.earnest.ui.search.SearchResultActivity;
 import com.earnest.utils.MusicUtils;
@@ -59,8 +62,15 @@ import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.earnest.ui.search.SearchResultActivity.currNetMusicName;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -90,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int IDLE = 0;
     private static final int PAUSE = 1;
     private static final int START = 2;
-    private int currState = IDLE;
+    public  static int currState = IDLE;
     private int playMode = 0; //顺序播放
 
     //hr:底部音乐栏信息
@@ -115,6 +125,8 @@ public class MainActivity extends AppCompatActivity {
 
     /*个人设置*/
     private PopupWindow popPersonalSetting;
+    private PopupWindow popHelp;
+    private PopupWindow popAbout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -201,7 +213,7 @@ public class MainActivity extends AppCompatActivity {
         ivMenuMy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getPopupWindow();
+                getPersonalSettingPopupWindow();
                 //popPersonalSetting.showAtLocation(findViewById(R.id.), Gravity.CENTER, 0, 0);
                 popPersonalSetting.showAtLocation(getLayoutInflater().inflate(R.layout.activity_main, null), Gravity.LEFT, 0, 500);
             }
@@ -507,7 +519,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /* 初始化个人设置弹窗 */
-    protected void initPopupWindow(){
+    protected void initPesonalSettingPopupWindow(){
         View popupWindowView = getLayoutInflater().inflate(R.layout.pop_personal_setting, null);
         //内容，高度，宽度
         popPersonalSetting = new PopupWindow(popupWindowView, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT, true);
@@ -557,7 +569,9 @@ public class MainActivity extends AppCompatActivity {
         re_personalsetting_help.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                getHelpPopupWindow();
+                popHelp.showAtLocation(getLayoutInflater().inflate(R.layout.activity_main, null), Gravity.CENTER, 0, 0);
+                popPersonalSetting.dismiss();
             }
         });
 
@@ -565,7 +579,9 @@ public class MainActivity extends AppCompatActivity {
         re_personalsetting_about.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                getAboutPopupWindow();
+                popAbout.showAtLocation(getLayoutInflater().inflate(R.layout.activity_main, null), Gravity.CENTER, 0, 0);
+                popPersonalSetting.dismiss();
             }
         });
 
@@ -579,31 +595,112 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /*** 获取个人设置弹窗实例*/
-    private void getPopupWindow() {
+    private void getPersonalSettingPopupWindow() {
 
         if (null != popPersonalSetting) {
             popPersonalSetting.dismiss();
             return;
         } else {
-            initPopupWindow();
+            initPesonalSettingPopupWindow();
+        }
+    }
+
+    /*初始化帮助弹窗*/
+    protected void initHelpPopupWindow(){
+        View popupHelpWindowView = getLayoutInflater().inflate(R.layout.pop_help, null);
+        //内容，高度，宽度
+        popHelp = new PopupWindow(popupHelpWindowView, 600, 800, true);
+
+        //动画效果
+        popHelp.setAnimationStyle(R.style.AnimationLeftFade);
+
+        //点击其他地方消失
+        popupHelpWindowView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if( popHelp != null && popHelp.isShowing()){
+                    popHelp.dismiss();
+                    popHelp = null;
+                }
+                // 这里如果返回true的话，touch事件将被拦截
+                // 拦截后 PopupWindow的onTouchEvent不被调用，这样点击外部区域无法dismiss
+                return false;
+            }
+        });
+    }
+
+    /*** 获取帮助弹窗实例*/
+    private void getHelpPopupWindow() {
+
+        if (null != popHelp) {
+            popHelp.dismiss();
+            return;
+        } else {
+            initHelpPopupWindow();
+        }
+    }
+
+    /*初始化关于弹窗*/
+    protected void initAboutPopupWindow(){
+        View popupAboutWindowView = getLayoutInflater().inflate(R.layout.pop_about_earnest, null);
+        //内容，高度，宽度
+        popAbout = new PopupWindow(popupAboutWindowView, 600,800, true);
+
+        //动画效果
+        popAbout.setAnimationStyle(R.style.AnimationLeftFade);
+
+        //点击其他地方消失
+        popupAboutWindowView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if( popAbout != null && popAbout.isShowing()){
+                    popAbout.dismiss();
+                    popAbout = null;
+                }
+                // 这里如果返回true的话，touch事件将被拦截
+                // 拦截后 PopupWindow的onTouchEvent不被调用，这样点击外部区域无法dismiss
+                return false;
+            }
+        });
+    }
+
+    /*** 获取关于弹窗实例*/
+    private void getAboutPopupWindow() {
+
+        if (null != popAbout) {
+            popAbout.dismiss();
+            return;
+        } else {
+            initAboutPopupWindow();
         }
     }
 
     //hr:接收MessageEvent 解决获取不到MusicPlayermanager queue
     @Subscribe
     public void onEvent(MessageEvent mMessageEvent) {
-        int i=MusicPlayerManager.getPlayer().getCurrentMusicIndex();
-        Log.d("56",String.valueOf(i));
-        Song song= MusicPlayerManager.getPlayer().getQueue().get(i);
-        tv_bottomPlayerMusicName.setText(song.getTitle());
-        boolean j=MusicPlayerManager.getPlayer().getMediaPlayer().isPlaying();
-        if (j) {
+        //if 当前播放为本地音乐 else为网络音乐点击播放
+        if(  (MusicPlayerManager.getPlayer().getQueue())!=null&&!(MusicPlayerManager.getPlayer().getQueue()).isEmpty()  ){
+
+            int currPosition=MusicPlayerManager.getPlayer().getCurrentMusicIndex();
+            Song song = MusicPlayerManager.getPlayer().getQueue().get(currPosition);
+            tv_bottomPlayerMusicName.setText(song.getTitle());
+            //tv_bottomPlayerLyrics.setText();
+            if (MusicPlayerManager.getPlayer().getMediaPlayer().isPlaying()) {
+                ivBottomPlay.setImageResource(R.drawable.bottomplayerplay);
+                currState=PAUSE;
+            } else {
+                ivBottomPlay.setImageResource(R.drawable.bottomplayerpause);
+                currState=START;
+            }
+        }else{
+
             ivBottomPlay.setImageResource(R.drawable.bottomplayerplay);
-            currState=PAUSE;
-        } else {
-            ivBottomPlay.setImageResource(R.drawable.bottomplayerpause);
-            currState=START;
+            tv_bottomPlayerMusicName.setText(currNetMusicName);
+            currState = PAUSE;
         }
+
+
+
     }
 
     //hr:想要在返回这个界面时获取新的歌曲信息
@@ -622,6 +719,15 @@ public class MainActivity extends AppCompatActivity {
             }else {
                 iv_bottomPlayerImg.setImageBitmap(bitmap);
             }
+
+            try {
+                ImgDownload.saveFile(bitmap,song.getTitle());
+                Log.d("yzp","aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+            }catch (IOException e){
+                e.printStackTrace();
+                Log.d("yzp","bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
+            }
+
 
         }
 
@@ -648,7 +754,4 @@ public class MainActivity extends AppCompatActivity {
 
         return art != null ? BitmapFactory.decodeByteArray(art,0,art.length) : null;
     }
-
-
-
 }
