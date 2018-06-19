@@ -143,7 +143,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
 
 
         initUIControls();
-        setAnimations();
+
         //hr:绑定handler
         myHandler = new MyHandler(this);
 
@@ -307,27 +307,6 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
             @Override
             public void onClick(View v) {
                 mDisc.last();
-                if((MusicPlayerManager.getPlayer().getQueue())!=null&&!(MusicPlayerManager.getPlayer().getQueue()).isEmpty()) {
-                    switchMusic();
-                    //hr:event播放控制
-                    playEvent = new PlayEvent();
-                    playEvent.setAction(PlayEvent.Action.PREVIOUS);
-                    playEvent.setQueue(queue);
-                    EventBus.getDefault().post(playEvent);
-                    switch (currState){
-                        case IDLE:
-                            currState=PAUSE;
-                            break;
-                        case START:
-                            currState=PAUSE;
-                            break;
-                        case PAUSE:
-                            break;
-                    }
-                }else{
-                    Log.d("rr","yi");
-                    Toast.makeText(getApplicationContext(),"当前为试听歌曲，无法跳转上一首，请先在列表中选择歌曲",Toast.LENGTH_LONG).show();
-                }
             }
         });
 
@@ -335,52 +314,14 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
             @Override
             public void onClick(View v) {
                 mDisc.playOrPause();
-                //hr:修改播放状态选择
-                switch (currState) {
-            case IDLE:
-                Toast.makeText(getApplicationContext(),"未指定歌曲，从本地音乐第一首开始放起",Toast.LENGTH_LONG).show();
-                playMusic();
-                //hr:event播放控制
-                playEvent = new PlayEvent();
-                playEvent.setAction(PlayEvent.Action.PLAY);
-                playEvent.setQueue(queue);
-                EventBus.getDefault().post(playEvent);
-                break;
-            case PAUSE:
-                pauseMusic();
-                if(  (MusicPlayerManager.getPlayer().getQueue())!=null&&!(MusicPlayerManager.getPlayer().getQueue()).isEmpty()  ){
-                    //hr:event播放控制
-                    playEvent = new PlayEvent();
-                    playEvent.setAction(PlayEvent.Action.STOP);
-                    EventBus.getDefault().post(playEvent);
-                    //进度条相关
-                    playPositon=MusicPlayerManager.getPlayer().getCurrentPosition();
-                    timer.purge();
-                }else{
-                    playEvent = new PlayEvent();
-                    playEvent.setAction(PlayEvent.Action.STOP);
-                    EventBus.getDefault().post(playEvent);
-                }
+            }
+        });
 
-                break;
-            case START:
-                playMusic();
-                if(  (MusicPlayerManager.getPlayer().getQueue())!=null&&!(MusicPlayerManager.getPlayer().getQueue()).isEmpty()  ){
-                    //hr:event播放控制
-                    playEvent = new PlayEvent();
-                    playEvent.setAction(PlayEvent.Action.RESUME);
-                    playEvent.setQueue(queue);
-                    playEvent.setSeekTo(playPositon);
-                    EventBus.getDefault().post(playEvent);
-                }else{
-                    playEvent = new PlayEvent();
-                    playEvent.setAction(PlayEvent.Action.RESUME);
-                    playEvent.setTestNet(PlayEvent.TestNet.NET);
-                    EventBus.getDefault().post(playEvent);
-                }
 
-        }
-
+        ivPlayNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mDisc.next();
             }
         });
 
@@ -401,34 +342,6 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
             }
         },0,50);
 
-
-
-        ivPlayNext.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mDisc.next();
-                if((MusicPlayerManager.getPlayer().getQueue())!=null&&!(MusicPlayerManager.getPlayer().getQueue()).isEmpty()) {
-                    //hr:event播放控制
-                    switchMusic();
-                    playEvent = new PlayEvent();
-                    playEvent.setAction(PlayEvent.Action.NEXT);
-                    EventBus.getDefault().post(playEvent);
-                    switch (currState){
-                        case IDLE:
-                            currState=PAUSE;
-                            break;
-                        case START:
-                            currState=PAUSE;
-                            break;
-                        case PAUSE:
-                            break;
-                    }
-                }else{
-                    Toast.makeText(getApplicationContext(),"当前为试听歌曲，无法跳转下一首，请先在列表中选择歌曲",Toast.LENGTH_LONG).show();
-                }
-
-            }
-        });
         ivPlayList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -588,44 +501,6 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
         }
     }
 
-    //动画设置
-    private void setAnimations() {/*
-        discAnimation = ObjectAnimator.ofFloat(ivCD, "rotation", 0, 360);
-        discAnimation.setDuration(20000);
-        discAnimation.setInterpolator(new LinearInterpolator());
-        discAnimation.setRepeatCount(ValueAnimator.INFINITE);*/
-    }
-
-    //音乐控制方法，所有动画控制方法写在如下函数中
-    //播放音乐
-    private void playMusic() {
-        //discAnimation.start();
-        ivPlay.setImageResource(R.drawable.ic_pause);
-        currState =PAUSE;
-
-    }
-
-    //暂停音乐
-    private void pauseMusic() {/*
-        if (discAnimation != null && discAnimation.isRunning()) {
-            discAnimation.cancel();
-            float valueAvatar = (float) discAnimation.getAnimatedValue();
-            discAnimation.setFloatValues(valueAvatar, 360f + valueAvatar);
-        }*/
-        ivPlay.setImageResource(R.drawable.ic_play);
-
-         currState = START;
-
-    }
-
-    //切换音乐
-    private void switchMusic() {
-        //discAnimation.end();
-        playMusic();
-        //根据音乐图片制作毛玻璃背景效果，并通过一个单独的线程进行切换显示
-        //try2UpdateMusicPicBackground(R.drawable.timg);
-    }
-
     //背景图片处理，以下请勿更改
     private void try2UpdateMusicPicBackground(final String musicPicRes) {
         if (mRootLayout.isNeed2UpdateBackground(musicPicRes)) {
@@ -719,9 +594,11 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
             seek_bar.setMax((int)song.getDuration());//设置进度条最大值为MP3总时间
 
             if (MusicPlayerManager.getPlayer().getMediaPlayer().isPlaying()) {
-                playMusic();
+                ivPlay.setImageResource(R.drawable.ic_pause);
+                currState =PAUSE;
             } else {
-                pauseMusic();
+                ivPlay.setImageResource(R.drawable.ic_play);
+                currState = START;
             }
         }else{
             ivPlay.setImageResource(R.drawable.ic_play);
@@ -747,11 +624,13 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
         }
 
         if (MusicPlayerManager.getPlayer().getMediaPlayer().isPlaying()) {
-            playMusic();
+            ivPlay.setImageResource(R.drawable.ic_pause);
+            currState =PAUSE;
         } else {
             if(currState==IDLE){
             }else {
-                pauseMusic();
+                ivPlay.setImageResource(R.drawable.ic_play);
+                currState = START;
             }
         }
 
@@ -817,10 +696,60 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
     private void play() {
         //optMusic(MusicService.ACTION_OPT_MUSIC_PLAY);
 //        startUpdateSeekBarProgress();
+        //hr:修改播放状态选择
+        switch (currState) {
+            case IDLE:
+                Toast.makeText(getApplicationContext(),"未指定歌曲，从本地音乐第一首开始放起",Toast.LENGTH_LONG).show();
+                ivPlay.setImageResource(R.drawable.ic_pause);
+                currState =PAUSE;
+                //hr:event播放控制
+                playEvent = new PlayEvent();
+                playEvent.setAction(PlayEvent.Action.PLAY);
+                playEvent.setQueue(queue);
+                EventBus.getDefault().post(playEvent);
+                break;
+            case START:
+                ivPlay.setImageResource(R.drawable.ic_pause);
+                currState =PAUSE;
+                if(  (MusicPlayerManager.getPlayer().getQueue())!=null&&!(MusicPlayerManager.getPlayer().getQueue()).isEmpty()  ){
+                    //hr:event播放控制
+                    playEvent = new PlayEvent();
+                    playEvent.setAction(PlayEvent.Action.RESUME);
+                    playEvent.setQueue(queue);
+                    playEvent.setSeekTo(playPositon);
+                    EventBus.getDefault().post(playEvent);
+                }else{
+                    playEvent = new PlayEvent();
+                    playEvent.setAction(PlayEvent.Action.RESUME);
+                    playEvent.setTestNet(PlayEvent.TestNet.NET);
+                    EventBus.getDefault().post(playEvent);
+                }
+
+        }
     }
 
     private void pause() {
 //        stopUpdateSeekBarProgree();
+        //hr:修改播放状态选择
+        switch (currState) {
+            case PAUSE:
+                ivPlay.setImageResource(R.drawable.ic_play);
+                currState = START;
+                if(  (MusicPlayerManager.getPlayer().getQueue())!=null&&!(MusicPlayerManager.getPlayer().getQueue()).isEmpty()  ){
+                    //hr:event播放控制
+                    playEvent = new PlayEvent();
+                    playEvent.setAction(PlayEvent.Action.STOP);
+                    EventBus.getDefault().post(playEvent);
+                    //进度条相关
+                    playPositon=MusicPlayerManager.getPlayer().getCurrentPosition();
+                    timer.purge();
+                }else{
+                    playEvent = new PlayEvent();
+                    playEvent.setAction(PlayEvent.Action.STOP);
+                    EventBus.getDefault().post(playEvent);
+                }
+                break;
+        }
     }
 
     private void stop() {
@@ -841,6 +770,29 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
 //        stopUpdateSeekBarProgree();
 //        mTvMusicDuration.setText(duration2Time(0));
 //        mTvTotalMusicDuration.setText(duration2Time(0));
+        if((MusicPlayerManager.getPlayer().getQueue())!=null&&!(MusicPlayerManager.getPlayer().getQueue()).isEmpty()) {
+            //hr:event播放控制
+            ivPlay.setImageResource(R.drawable.ic_pause);
+            currState =PAUSE;
+            //根据音乐图片制作毛玻璃背景效果，并通过一个单独的线程进行切换显示
+            //try2UpdateMusicPicBackground(R.drawable.timg);
+
+            playEvent = new PlayEvent();
+            playEvent.setAction(PlayEvent.Action.NEXT);
+            EventBus.getDefault().post(playEvent);
+            switch (currState){
+                case IDLE:
+                    currState=PAUSE;
+                    break;
+                case START:
+                    currState=PAUSE;
+                    break;
+                case PAUSE:
+                    break;
+            }
+        }else{
+            Toast.makeText(getApplicationContext(),"当前为试听歌曲，无法跳转下一首，请先在列表中选择歌曲",Toast.LENGTH_LONG).show();
+        }
     }
 
     private void last() {
@@ -853,6 +805,31 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
 //        stopUpdateSeekBarProgree();
 //        mTvMusicDuration.setText(duration2Time(0));
 //        mTvTotalMusicDuration.setText(duration2Time(0));
+        if((MusicPlayerManager.getPlayer().getQueue())!=null&&!(MusicPlayerManager.getPlayer().getQueue()).isEmpty()) {
+            ivPlay.setImageResource(R.drawable.ic_pause);
+            currState =PAUSE;
+            //根据音乐图片制作毛玻璃背景效果，并通过一个单独的线程进行切换显示
+            //try2UpdateMusicPicBackground(R.drawable.timg);
+
+            //hr:event播放控制
+            playEvent = new PlayEvent();
+            playEvent.setAction(PlayEvent.Action.PREVIOUS);
+            playEvent.setQueue(queue);
+            EventBus.getDefault().post(playEvent);
+            switch (currState){
+                case IDLE:
+                    currState=PAUSE;
+                    break;
+                case START:
+                    currState=PAUSE;
+                    break;
+                case PAUSE:
+                    break;
+            }
+        }else{
+            Log.d("rr","yi");
+            Toast.makeText(getApplicationContext(),"当前为试听歌曲，无法跳转上一首，请先在列表中选择歌曲",Toast.LENGTH_LONG).show();
+        }
     }
 
     private void complete(boolean isOver) {
