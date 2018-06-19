@@ -42,6 +42,7 @@ import com.earnest.model.WechatShare;
 import com.earnest.model.entities.Item_Song;
 
 import com.earnest.model.entities.Song;
+import com.earnest.services.PhoneService;
 import com.earnest.services.PlayerService;
 import com.earnest.ui.adapter.BaseFragment;
 import com.earnest.ui.adapter.MainPagerAdapter;
@@ -129,6 +130,7 @@ public class MainActivity extends AppCompatActivity {
 
         //hr:开始服务
         startService(new Intent(this, PlayerService.class));
+        startService(new Intent(this, PhoneService.class));
         //hr:订阅传过来的MessageEvent以改变音乐信息
         EventBus.getDefault().register(this);
 
