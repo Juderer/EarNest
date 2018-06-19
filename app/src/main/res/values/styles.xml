@@ -17,6 +17,14 @@
 
     </style>
 
+    <style name="MyFavouriteMusicListTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/myFavouriteMusicListPrimary</item>
+        <item name="colorPrimaryDark">@color/myFavouriteMusicListPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+    </style>
+
     <!--弹窗进入、退出动画-->
     <style name="BottomDialogAnimation">
         <item name="android:windowEnterAnimation">@anim/dialog_enter</item>

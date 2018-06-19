@@ -106,10 +106,17 @@ public class MyMusicActivity extends AppCompatActivity {
             btn_RecentMusic_deleteAll.setVisibility(View.VISIBLE);
         }
 
-
-        /* 歌曲列表适配 */
         myMusicList=new ArrayList<>();
-        myMusicList= MusicUtils.getLocalMusicData(this);
+        if (myMusiclabel.equals("本地音乐")){
+            /* 歌曲列表适配 */
+            myMusicList= MusicUtils.getLocalMusicData(this);
+        }else if (myMusiclabel.equals("我的收藏")){
+            myMusicList = MusicPlayerActivity.favoriateSongList;
+        }else {
+
+        }
+
+
 
         final List<Map<String,Object>> listItems = new ArrayList<Map<String,Object>>();
         for(int i=0;i<myMusicList.size();i++){

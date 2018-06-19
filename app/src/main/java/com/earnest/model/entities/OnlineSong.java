@@ -1,5 +1,7 @@
 package com.earnest.model.entities;
 
+import com.earnest.services.ImgDownload;
+
 /**
  * Created by Administrator on 2018/6/19.
  */
@@ -16,6 +18,8 @@ public class OnlineSong extends Song {
         this.id = id;
         this.albumPicUrl = albumPicUrl;
         this.audioUrl = audioUrl;
+
+        makeBitmap(albumPicUrl);
     }
 
     public String getId() {
@@ -41,4 +45,10 @@ public class OnlineSong extends Song {
     public void setAudioUrl(String audioUrl) {
         this.audioUrl = audioUrl;
     }
+
+
+    public void makeBitmap(String address) {
+        ImgDownload.donwloadImg(getTitle(), address);
+    }
+
 }

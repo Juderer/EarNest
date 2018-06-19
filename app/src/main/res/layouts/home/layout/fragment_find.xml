@@ -5,10 +5,6 @@
     tools:context="com.earnest.ui.home.menuFragments.FindFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <!--<TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="FIND" />-->
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -21,11 +17,12 @@
             android:src="@drawable/personalsettingbackground"
             android:scaleType="fitXY"/>
 
-        <com.earnest.ui.widget.RoundImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_below="@id/iv_headimg"
-            android:layout_marginTop="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="推荐歌曲"
+            android:textSize="20sp"
+            android:layout_below="@id/iv_headimg"/>
     </RelativeLayout>
 
 </FrameLayout>

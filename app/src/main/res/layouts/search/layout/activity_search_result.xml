@@ -55,11 +55,11 @@
         android:id="@+id/lv_searchResult"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/searchResult_toorbar"
-        android:layout_above="@id/searchResult_bottomMusicPlayer">
+        android:layout_below="@id/searchResult_toorbar">
     </ListView>
 
     <include
         android:id="@+id/searchResult_bottomMusicPlayer"
         layout="@layout/bottom_music_player" />
+
 </RelativeLayout>
