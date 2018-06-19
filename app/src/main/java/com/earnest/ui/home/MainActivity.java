@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -111,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
     private AlertDialog bottomAlertDialog;
     private ImageView iv_bottomPlayerMode;
     private ImageView iv_bottomPlayerDeleteAll;
+    private ImageView iv_bottomPlayerImg;
 
     /*个人设置*/
     private PopupWindow popPersonalSetting;
@@ -185,6 +187,8 @@ public class MainActivity extends AppCompatActivity {
 
         tv_bottomPlayerMusicName=(TextView)findViewById(R.id.tv_bottomPlayerMusicName);
         tv_bottomPlayerLyrics=(TextView)findViewById(R.id.tv_bottomPlayerLyrics);
+        iv_bottomPlayerImg = (ImageView) findViewById(R.id.iv_bottomPlayerImg);
+
 
 
         //设置监听事件
@@ -609,6 +613,10 @@ public class MainActivity extends AppCompatActivity {
             int i=MusicPlayerManager.getPlayer().getCurrentMusicIndex();
             Song song= MusicPlayerManager.getPlayer().getQueue().get(i);
             tv_bottomPlayerMusicName.setText(song.getTitle());
+
+            //显示歌曲对应图片
+            Bitmap bitmap = getAlbumBitmapDrawavle(song.getFileUrl());
+            iv_bottomPlayerImg.setImageBitmap(bitmap);
         }
 
         if (MusicPlayerManager.getPlayer().getMediaPlayer().isPlaying()) {
@@ -623,6 +631,16 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    //获取歌曲对应图片
+    public static Bitmap getAlbumBitmapDrawavle(String path){
+        MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
+        mediaMetadataRetriever.setDataSource(path);
+
+        byte[] art = mediaMetadataRetriever.getEmbeddedPicture();
+
+        return art != null ? BitmapFactory.decodeByteArray(art,0,art.length) : null;
     }
 
 

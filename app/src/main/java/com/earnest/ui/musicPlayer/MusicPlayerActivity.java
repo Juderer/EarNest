@@ -226,6 +226,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
         });*/
         mDisc.setPlayInfoListener(this);
         //功能栏
+        //收藏音乐操作
         ivFavoriate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -283,7 +284,17 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
         ivPlayMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if(playMode == 0){
+                    ivPlayMode.setImageResource(R.drawable.ic_play_mode_shuffle);
+                    //MusicPlayerManager.getPlayer().setPlayMode();
+                    playMode = 1;
+                }else if(playMode == 1){
+                    ivPlayMode.setImageResource(R.drawable.ic_play_mode_loop);
+                    playMode = 2;
+                }else if(playMode == 2){
+                    ivPlayMode.setImageResource(R.drawable.ic_play_mode_list);
+                    playMode = 0;
+                }
             }
         });
         ivPlayLast.setOnClickListener(new View.OnClickListener() {
