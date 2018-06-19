@@ -45,7 +45,7 @@ public class MusicPlayerManager implements MediaPlayer.OnCompletionListener {
     public MusicPlayerManager() {
 
         mMediaPlayer= new ManagedMediaPlayer();
-        mMediaPlayer.setOnCompletionListener(this);
+        //mMediaPlayer.setOnCompletionListener(this);
 
         mQueue = new ArrayList<>();
         mQueueIndex = 0;
@@ -72,6 +72,16 @@ public class MusicPlayerManager implements MediaPlayer.OnCompletionListener {
 
     public void play(Song song) {
         try {
+            //以下为解决mediaPlayer (-38,0)的问题 参考简书
+            if(mMediaPlayer!=null){
+                mMediaPlayer.setOnCompletionListener(null);
+                mMediaPlayer.setOnPreparedListener(null);
+                mMediaPlayer.reset();
+                mMediaPlayer.release();
+                mMediaPlayer=null;
+            }
+            mMediaPlayer= new ManagedMediaPlayer();
+            mMediaPlayer.setOnCompletionListener(this);
             mMediaPlayer.reset();
             mMediaPlayer.setDataSource(song.getFileUrl());
             mMediaPlayer.prepareAsync();
