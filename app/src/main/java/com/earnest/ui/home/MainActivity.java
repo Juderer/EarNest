@@ -10,9 +10,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
-import android.net.Uri;
-import android.os.Handler;
-import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -45,7 +42,6 @@ import com.earnest.manager.MusicPlayerManager;
 import com.earnest.model.WechatShare;
 
 import com.earnest.model.entities.Song;
-import com.earnest.services.ImgDonwload;
 import com.earnest.services.PhoneService;
 import com.earnest.services.PlayerService;
 import com.earnest.ui.adapter.BaseFragment;
@@ -62,11 +58,6 @@ import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -625,7 +616,12 @@ public class MainActivity extends AppCompatActivity {
 
             //显示歌曲对应图片
             Bitmap bitmap = getAlbumBitmapDrawavle(song.getFileUrl());
-            iv_bottomPlayerImg.setImageBitmap(bitmap);
+            if(bitmap == null){
+                iv_bottomPlayerImg.setImageResource(R.drawable.ic_default_song_music);
+            }else {
+                iv_bottomPlayerImg.setImageBitmap(bitmap);
+            }
+
         }
 
         if (MusicPlayerManager.getPlayer().getMediaPlayer().isPlaying()) {
