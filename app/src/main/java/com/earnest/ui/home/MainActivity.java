@@ -4,12 +4,15 @@ import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -42,6 +45,7 @@ import com.earnest.manager.MusicPlayerManager;
 import com.earnest.model.WechatShare;
 
 import com.earnest.model.entities.Song;
+import com.earnest.services.ImgDownload;
 import com.earnest.services.PhoneService;
 import com.earnest.services.PlayerService;
 import com.earnest.ui.adapter.BaseFragment;
@@ -59,6 +63,11 @@ import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -623,6 +632,15 @@ public class MainActivity extends AppCompatActivity {
                 iv_bottomPlayerImg.setImageBitmap(bitmap);
             }
 
+            try {
+                ImgDownload.saveFile(bitmap,song.getTitle());
+                Log.d("yzp","aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+            }catch (IOException e){
+                e.printStackTrace();
+                Log.d("yzp","bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
+            }
+
+
         }
 
         if (MusicPlayerManager.getPlayer().getMediaPlayer().isPlaying()) {
@@ -648,7 +666,6 @@ public class MainActivity extends AppCompatActivity {
 
         return art != null ? BitmapFactory.decodeByteArray(art,0,art.length) : null;
     }
-
 
 
 }
