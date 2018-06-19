@@ -54,6 +54,7 @@ import com.earnest.ui.home.menuFragments.FindFragment;
 import com.earnest.ui.home.menuFragments.PlayFragment;
 import com.earnest.ui.home.menuFragments.VideoFragment;
 import com.earnest.ui.musicPlayer.MusicPlayerActivity;
+import com.earnest.ui.search.SearchActivity;
 import com.earnest.ui.widget.RoundImageView;
 import com.earnest.ui.search.SearchResultActivity;
 import com.earnest.utils.MusicUtils;
@@ -243,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
         ivMenuSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, SearchResultActivity.class));
+                startActivity(new Intent(MainActivity.this,SearchResultActivity.class));
             }
         });
 
