@@ -26,8 +26,10 @@ import android.widget.Toast;
 import com.earnest.R;
 
 import com.earnest.model.entities.Song;
+import com.earnest.services.ImgDownload;
 import com.earnest.ui.utils.DisplayUtil;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,7 +88,7 @@ public class DiscView extends RelativeLayout {
         /*用于更新标题栏变化*/
         public void onMusicInfoChanged(String musicName, String musicAuthor);
         /*用于更新背景图片*/
-        public void onMusicPicChanged(int musicPicRes);
+        public void onMusicPicChanged(String musicPicRes);
         /*用于更新音乐播放状态*/
         public void onMusicChanged(MusicChangedStatus musicChangedStatus);
     }
@@ -319,7 +321,7 @@ public class DiscView extends RelativeLayout {
      * 得到唱盘图片
      * 唱盘图片由空心圆盘及音乐专辑图片“合成”得到
      */
-    private Drawable getDiscDrawable(int musicPicRes) {
+    private Drawable getDiscDrawable(String musicPicRes) {
         int discSize = (int) (mScreenWidth * DisplayUtil.SCALE_DISC_SIZE);
         int musicPicSize = (int) (mScreenWidth * DisplayUtil.SCALE_MUSIC_PIC_SIZE);
 
@@ -348,11 +350,12 @@ public class DiscView extends RelativeLayout {
         return layerDrawable;
     }
 
-    private Bitmap getMusicPicBitmap(int musicPicSize, int musicPicRes) {
+    private Bitmap getMusicPicBitmap(int musicPicSize, String musicPicRes) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
 
-        BitmapFactory.decodeResource(getResources(),musicPicRes,options);
+        //BitmapFactory.decodeResource(getResources(),musicPicRes,options);
+        BitmapFactory.decodeFile(musicPicRes,options);
         int imageWidth = options.outWidth;
 
         int sample = imageWidth / musicPicSize;
@@ -366,7 +369,7 @@ public class DiscView extends RelativeLayout {
         //设置图片解码格式
         options.inPreferredConfig = Bitmap.Config.RGB_565;
 
-        return Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),
+        return Bitmap.createScaledBitmap(BitmapFactory.decodeFile(
                 musicPicRes, options), musicPicSize, musicPicSize, true);
     }
 
@@ -384,8 +387,12 @@ public class DiscView extends RelativeLayout {
                     mVpContain, false);
 
             ImageView disc = (ImageView) discLayout.findViewById(R.id.ivDisc);
-            //disc.setImageDrawable(getDiscDrawable(song.getMusicPicRes()));
-            disc.setImageDrawable(getDiscDrawable(R.drawable.timg));
+
+            String add = ImgDownload.dir + song.getTitle() + ".jpg";
+            if(!fileIsExists(add))
+                add = ImgDownload.dir + "123.jpg";
+            disc.setImageDrawable(getDiscDrawable(add));
+            //disc.setImageDrawable(getDiscDrawable(R.drawable.timg));
 
             mDiscAnimators.add(getDiscObjectAnimator(disc, i++));
             mDiscLayouts.add(discLayout);
@@ -394,9 +401,12 @@ public class DiscView extends RelativeLayout {
 
         Song song = mSongs.get(0);
         if (mIPlayInfo != null) {
+            String add = ImgDownload.dir + song.getTitle() + ".jpg";
+            if(!fileIsExists(add))
+                add = ImgDownload.dir + "123.jpg";
             mIPlayInfo.onMusicInfoChanged(song.getTitle(), song.getSinger());
-            //mIPlayInfo.onMusicPicChanged(song.getMusicPicRes());
-            mIPlayInfo.onMusicPicChanged(R.drawable.timg);
+            mIPlayInfo.onMusicPicChanged(add);
+            //mIPlayInfo.onMusicPicChanged(R.drawable.timg);
         }
     }
 
@@ -483,9 +493,13 @@ public class DiscView extends RelativeLayout {
 
     public void notifyMusicPicChanged(int position) {
         if (mIPlayInfo != null) {
+
             Song song = mSongs.get(position);
-            //mIPlayInfo.onMusicPicChanged(song.getMusicPicRes());
-            mIPlayInfo.onMusicPicChanged(R.drawable.timg);
+            String add = ImgDownload.dir + song.getTitle() + ".jpg";
+            if(!fileIsExists(add))
+                add = ImgDownload.dir + "123.jpg";
+            mIPlayInfo.onMusicPicChanged(add);
+            //mIPlayInfo.onMusicPicChanged(R.drawable.timg);
         }
     }
 
@@ -573,5 +587,24 @@ public class DiscView extends RelativeLayout {
         public boolean isViewFromObject(View view, Object object) {
             return view == object;
         }
+    }
+
+    public boolean fileIsExists(String strFile)
+    {
+        try
+        {
+            File f=new File(strFile);
+            if(!f.exists())
+            {
+                return false;
+            }
+
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+
+        return true;
     }
 }

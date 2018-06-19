@@ -684,8 +684,8 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
     }
 
     @Override
-    public void onMusicPicChanged(int musicPicRes) {
-        //try2UpdateMusicPicBackground(musicPicRes);
+    public void onMusicPicChanged(String musicPicRes) {
+        try2UpdateMusicPicBackground(musicPicRes);
     }
 
     @Override

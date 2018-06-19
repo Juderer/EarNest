@@ -142,6 +142,10 @@ public class MainActivity extends AppCompatActivity {
             ActivityCompat.requestPermissions(MainActivity.this,new String[] {Manifest.permission.READ_EXTERNAL_STORAGE} , 1);
         }
 
+        if(!fileIsExists(ImgDownload.dir + "123.jpg")){
+            ImgDownload.donwloadImg("123.jpg", "http://p1.music.126.net/oVXzCQedSvymDwtwZIEcQg==/18980869230880322.jpg");
+        }
+
         //hr:开始服务
         startService(new Intent(this, PlayerService.class));
         startService(new Intent(this, PhoneService.class));
@@ -753,5 +757,24 @@ public class MainActivity extends AppCompatActivity {
         byte[] art = mediaMetadataRetriever.getEmbeddedPicture();
 
         return art != null ? BitmapFactory.decodeByteArray(art,0,art.length) : null;
+    }
+
+    public boolean fileIsExists(String strFile)
+    {
+        try
+        {
+            File f=new File(strFile);
+            if(!f.exists())
+            {
+                return false;
+            }
+
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+
+        return true;
     }
 }
