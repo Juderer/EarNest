@@ -29,16 +29,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.earnest.R;
-import com.earnest.event.PlayEvent;
 import com.earnest.model.entities.Item_Song;
-import com.earnest.model.entities.Song;
-import com.earnest.services.PlayerService;
 import com.earnest.ui.home.MainActivity;
 import com.earnest.ui.musicPlayer.MusicPlayerActivity;
-import com.earnest.ui.musicPlayer.OnlineMusic;
-import com.earnest.utils.MusicUtils;
 
-import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
