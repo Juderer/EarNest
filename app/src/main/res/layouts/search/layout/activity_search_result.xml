@@ -20,11 +20,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/iv_searchResult_microphone"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_search_microphone"/>
 
             <EditText
                 android:id="@+id/et_searchResult_input"
@@ -32,8 +27,7 @@
                 android:layout_height="40dp"
                 android:layout_centerVertical="true"
                 android:hint="林俊杰"
-                android:maxLines="1"
-                android:layout_toRightOf="@id/iv_searchResult_microphone"/>
+                android:maxLines="1"/>
 
             <ImageView
                 android:id="@+id/iv_searchResult_search"

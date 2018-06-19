@@ -289,21 +289,27 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
         ivPlayLast.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switchMusic();
-                //hr:event播放控制
-                playEvent = new PlayEvent();
-                playEvent.setAction(PlayEvent.Action.PREVIOUS);
-                playEvent.setQueue(queue);
-                EventBus.getDefault().post(playEvent);
-                switch (currState){
-                    case IDLE:
-                        currState=PAUSE;
-                        break;
-                    case START:
-                        currState=PAUSE;
-                        break;
-                    case PAUSE:
-                        break;
+
+                if((MusicPlayerManager.getPlayer().getQueue())!=null&&!(MusicPlayerManager.getPlayer().getQueue()).isEmpty()) {
+                    switchMusic();
+                    //hr:event播放控制
+                    playEvent = new PlayEvent();
+                    playEvent.setAction(PlayEvent.Action.PREVIOUS);
+                    playEvent.setQueue(queue);
+                    EventBus.getDefault().post(playEvent);
+                    switch (currState){
+                        case IDLE:
+                            currState=PAUSE;
+                            break;
+                        case START:
+                            currState=PAUSE;
+                            break;
+                        case PAUSE:
+                            break;
+                    }
+                }else{
+                    Log.d("rr","yi");
+                    Toast.makeText(getApplicationContext(),"当前为试听歌曲，无法跳转上一首，请先在列表中选择歌曲",Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -325,22 +331,36 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
                 break;
             case PAUSE:
                 pauseMusic();
-                //hr:event播放控制
-                playEvent = new PlayEvent();
-                playEvent.setAction(PlayEvent.Action.STOP);
-                EventBus.getDefault().post(playEvent);
-                //进度条相关
-                playPositon=MusicPlayerManager.getPlayer().getCurrentPosition();
-                timer.purge();
+                if(  (MusicPlayerManager.getPlayer().getQueue())!=null&&!(MusicPlayerManager.getPlayer().getQueue()).isEmpty()  ){
+                    //hr:event播放控制
+                    playEvent = new PlayEvent();
+                    playEvent.setAction(PlayEvent.Action.STOP);
+                    EventBus.getDefault().post(playEvent);
+                    //进度条相关
+                    playPositon=MusicPlayerManager.getPlayer().getCurrentPosition();
+                    timer.purge();
+                }else{
+                    playEvent = new PlayEvent();
+                    playEvent.setAction(PlayEvent.Action.STOP);
+                    EventBus.getDefault().post(playEvent);
+                }
+
                 break;
             case START:
                 playMusic();
-                //hr:event播放控制
-                playEvent = new PlayEvent();
-                playEvent.setAction(PlayEvent.Action.RESUME);
-                playEvent.setQueue(queue);
-                playEvent.setSeekTo(playPositon);
-                EventBus.getDefault().post(playEvent);
+                if(  (MusicPlayerManager.getPlayer().getQueue())!=null&&!(MusicPlayerManager.getPlayer().getQueue()).isEmpty()  ){
+                    //hr:event播放控制
+                    playEvent = new PlayEvent();
+                    playEvent.setAction(PlayEvent.Action.RESUME);
+                    playEvent.setQueue(queue);
+                    playEvent.setSeekTo(playPositon);
+                    EventBus.getDefault().post(playEvent);
+                }else{
+                    playEvent = new PlayEvent();
+                    playEvent.setAction(PlayEvent.Action.RESUME);
+                    playEvent.setTestNet(PlayEvent.TestNet.NET);
+                    EventBus.getDefault().post(playEvent);
+                }
 
         }
 
@@ -369,20 +389,25 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
         ivPlayNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switchMusic();
-                //hr:event播放控制
-                playEvent = new PlayEvent();
-                playEvent.setAction(PlayEvent.Action.NEXT);
-                EventBus.getDefault().post(playEvent);
-                switch (currState){
-                    case IDLE:
-                        currState=PAUSE;
-                        break;
-                    case START:
-                        currState=PAUSE;
-                        break;
-                    case PAUSE:
-                        break;
+
+                if((MusicPlayerManager.getPlayer().getQueue())!=null&&!(MusicPlayerManager.getPlayer().getQueue()).isEmpty()) {
+                    //hr:event播放控制
+                    switchMusic();
+                    playEvent = new PlayEvent();
+                    playEvent.setAction(PlayEvent.Action.NEXT);
+                    EventBus.getDefault().post(playEvent);
+                    switch (currState){
+                        case IDLE:
+                            currState=PAUSE;
+                            break;
+                        case START:
+                            currState=PAUSE;
+                            break;
+                        case PAUSE:
+                            break;
+                    }
+                }else{
+                    Toast.makeText(getApplicationContext(),"当前为试听歌曲，无法跳转下一首，请先在列表中选择歌曲",Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -662,20 +687,27 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
     //hr:接收过来的MessageEvent 解决获取不到MusicPlayermanager queue
     @Subscribe
     public void onEvent(MessageEvent mMessageEvent) {
-        int i= MusicPlayerManager.getPlayer().getQueue().size();
-        currPosition=MusicPlayerManager.getPlayer().getCurrentMusicIndex();
-        Song song = MusicPlayerManager.getPlayer().getQueue().get(currPosition);
-        tvTitle.setText(song.getTitle());
-        tvArtist.setText(song.getSinger());
-        tvDuration.setText(MusicUtils.formatTime(song.getDuration()));
-        seek_bar.setProgress(MusicPlayerManager.getPlayer().getCurrentPosition());//设置当前进度为0
-        seek_bar.setMax((int)song.getDuration());//设置进度条最大值为MP3总时间
+        if(  (MusicPlayerManager.getPlayer().getQueue())!=null&&!(MusicPlayerManager.getPlayer().getQueue()).isEmpty()  ){
+            int i= MusicPlayerManager.getPlayer().getQueue().size();
+            currPosition=MusicPlayerManager.getPlayer().getCurrentMusicIndex();
+            Song song = MusicPlayerManager.getPlayer().getQueue().get(currPosition);
+            tvTitle.setText(song.getTitle());
+            tvArtist.setText(song.getSinger());
+            tvDuration.setText(MusicUtils.formatTime(song.getDuration()));
+            seek_bar.setProgress(MusicPlayerManager.getPlayer().getCurrentPosition());//设置当前进度为0
+            seek_bar.setMax((int)song.getDuration());//设置进度条最大值为MP3总时间
 
-        if (MusicPlayerManager.getPlayer().getMediaPlayer().isPlaying()) {
-            playMusic();
-        } else {
-            pauseMusic();
+            if (MusicPlayerManager.getPlayer().getMediaPlayer().isPlaying()) {
+                playMusic();
+            } else {
+                pauseMusic();
+            }
+        }else{
+            ivPlay.setImageResource(R.drawable.ic_play);
+            currState = IDLE;
+
         }
+
     }
 
     //hr:每次进入界面获取一次音乐信息
