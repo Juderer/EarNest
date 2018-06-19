@@ -58,6 +58,10 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
     //zsl: 微信分享
     private WechatShare wechatShare;
 
+    //收藏歌单
+    public static List<Song> favoriateSongList = new ArrayList<>();
+
+
     //hr:event声明和list声明
     PlayEvent playEvent;
     private List<Song> queue;
@@ -142,6 +146,8 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
         //hr:导入本地音乐数据
         queue = new ArrayList<>();
         queue=MusicUtils.getLocalMusicData(this);
+
+
     }
 
     /////初始化UI
@@ -223,6 +229,15 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
         ivFavoriate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ivFavoriate.setImageResource(R.drawable.ic_favorite_yes);
+                Song song = MusicPlayerManager.getPlayer().getQueue().get(MusicPlayerManager.getPlayer().getCurrentMusicIndex());
+                System.out.println(song.getTitle());
+                if (favoriateSongList.size() == 0){
+                    favoriateSongList.add(song);
+                }else {
+                    if (!favoriateSongList.contains(song))
+                        favoriateSongList.add(song);
+                }
 
             }
         });
