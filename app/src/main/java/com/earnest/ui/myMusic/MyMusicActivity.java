@@ -32,6 +32,7 @@ import com.earnest.event.PlayEvent;
 import com.earnest.manager.MusicPlayerManager;
 import com.earnest.model.entities.Item_Song;
 import com.earnest.model.entities.Song;
+import com.earnest.services.PlayerService;
 import com.earnest.ui.musicPlayer.MusicPlayerActivity;
 import com.earnest.utils.MusicUtils;
 
@@ -110,13 +111,11 @@ public class MyMusicActivity extends AppCompatActivity {
         if (myMusiclabel.equals("本地音乐")){
             /* 歌曲列表适配 */
             myMusicList= MusicUtils.getLocalMusicData(this);
-        }else if (myMusiclabel.equals("我的收藏")){
+        }else if (myMusiclabel.equals("我的收藏")) {
             myMusicList = MusicPlayerActivity.favoriateSongList;
-        }else {
-
+        }else if (myMusiclabel.equals("最近播放")) {
+            myMusicList = PlayerService.recentPlayedSongList;
         }
-
-
 
         final List<Map<String,Object>> listItems = new ArrayList<Map<String,Object>>();
         for(int i=0;i<myMusicList.size();i++){
@@ -192,7 +191,9 @@ public class MyMusicActivity extends AppCompatActivity {
         btn_RecentMusic_deleteAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                PlayerService.recentPlayedSongList.clear();
+                myMusicList.clear();
+                finish();
             }
         });
 
