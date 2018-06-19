@@ -59,12 +59,7 @@ import static com.earnest.ui.search.SearchResultActivity.currNetMusicName;
 import static com.earnest.ui.widget.DiscView.DURATION_NEEDLE_ANIAMTOR;
 
 
-<<<<<<< HEAD
-public class MusicPlayerActivity extends AppCompatActivity implements DiscView.IPlayInfo {
-=======
-
 public class MusicPlayerActivity extends AppCompatActivity implements DiscView.IPlayInfo{
->>>>>>> 51f168b1729f2a6fa167baedde04e639f734bb70
 
     //zsl: 微信分享
     private WechatShare wechatShare;
@@ -627,9 +622,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
             tvArtist.setText(song.getSinger());
             tvDuration.setText(MusicUtils.formatTime(song.getDuration()));
             seek_bar.setProgress(MusicPlayerManager.getPlayer().getCurrentPosition());//设置当前进度为0
-<<<<<<< HEAD
             seek_bar.setMax((int) song.getDuration());//设置进度条最大值为MP3总时间
-=======
             seek_bar.setMax((int)song.getDuration());//设置进度条最大值为MP3总时间
         }else {
 
@@ -643,8 +636,6 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
                     currState=START;
                 }
             }
-
->>>>>>> 51f168b1729f2a6fa167baedde04e639f734bb70
         }
 
 
