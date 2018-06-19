@@ -2,6 +2,7 @@ package com.earnest.manager;
 
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.util.Log;
 
 import com.earnest.event.MessageEvent;
@@ -30,6 +31,11 @@ public class MusicPlayerManager implements MediaPlayer.OnCompletionListener {
     private int mQueueIndex;
     private PlayMode mPlayMode;
 
+    //hr:网络音乐试听
+    private Uri mUri;
+
+
+
     private enum PlayMode {
         LOOP, RANDOM, REPEAT
     }
@@ -50,6 +56,7 @@ public class MusicPlayerManager implements MediaPlayer.OnCompletionListener {
         mQueue = new ArrayList<>();
         mQueueIndex = 0;
 
+        mUri=null;
         mPlayMode = PlayMode.LOOP;
     }
 
@@ -65,14 +72,19 @@ public class MusicPlayerManager implements MediaPlayer.OnCompletionListener {
         play(getNowPlaying());
     }
 
+    public void setUri(Context context,Uri uri) {
+        mContext=context;
+        mUri=uri;
+        playNetMusic(mContext,mUri);
+    }
+
     //hr:618
     public List<Song> getQueue() {
         return mQueue;
     }
 
-    public void play(Song song) {
+    public void playNetMusic(Context context,Uri uri) {
         try {
-            //以下为解决mediaPlayer (-38,0)的问题 参考简书
             if(mMediaPlayer!=null){
                 mMediaPlayer.setOnCompletionListener(null);
                 mMediaPlayer.setOnPreparedListener(null);
@@ -83,20 +95,55 @@ public class MusicPlayerManager implements MediaPlayer.OnCompletionListener {
             mMediaPlayer= new ManagedMediaPlayer();
             mMediaPlayer.setOnCompletionListener(this);
             mMediaPlayer.reset();
-            mMediaPlayer.setDataSource(song.getFileUrl());
+            mMediaPlayer.setDataSource(context,mUri);
             mMediaPlayer.prepareAsync();
             mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
                     mMediaPlayer.start();
                     Log.d("hr01-3",String.valueOf(mQueueIndex));
-                    EventBus.getDefault().post(mMessageEvent);
+                    //EventBus.getDefault().post(mMessageEvent);
                 }
             });
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+    }
+
+    public void play(Song song) {
+       if(song==null){
+           Log.d("","jj");
+           EventBus.getDefault().post(mMessageEvent);
+       }else {
+           try {
+               //以下为解决mediaPlayer (-38,0)的问题 参考简书
+               if (mMediaPlayer != null) {
+                   mMediaPlayer.setOnCompletionListener(null);
+                   mMediaPlayer.setOnPreparedListener(null);
+                   mMediaPlayer.reset();
+                   mMediaPlayer.release();
+                   mMediaPlayer = null;
+               }
+               mMediaPlayer = new ManagedMediaPlayer();
+               mMediaPlayer.setOnCompletionListener(this);
+               mMediaPlayer.reset();
+               mMediaPlayer.setDataSource(song.getFileUrl());
+               mMediaPlayer.prepareAsync();
+               mMediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                   @Override
+                   public void onPrepared(MediaPlayer mp) {
+                       mMediaPlayer.start();
+                       Log.d("hr01-3", String.valueOf(mQueueIndex));
+                       EventBus.getDefault().post(mMessageEvent);
+                   }
+               });
+
+           } catch (IOException e) {
+               e.printStackTrace();
+           }
+       }
 
     }
 
@@ -126,7 +173,6 @@ public class MusicPlayerManager implements MediaPlayer.OnCompletionListener {
         if (mQueue.isEmpty()) {
             return null;
         }
-        //Log.d("hr01-2",String.valueOf(mQueueIndex));
         return mQueue.get(mQueueIndex);
     }
 

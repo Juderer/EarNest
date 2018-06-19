@@ -53,14 +53,25 @@ public class PlayerService extends Service {
     public void onEvent(PlayEvent playEvent) {
         switch (playEvent.getAction()) {
             case PLAY:
-                MusicPlayerManager.getPlayer().setQueue(playEvent.getQueue(), playEvent.getMusicIndex());
+                if(playEvent.getTestNet()== PlayEvent.TestNet.NET){
+                    MusicPlayerManager.getPlayer().setUri(getApplicationContext(),playEvent.getNetSongUri());
+                }else{
+                    MusicPlayerManager.getPlayer().setQueue(playEvent.getQueue(), playEvent.getMusicIndex());
+                }
+
                 break;
             case STOP:
+
                 MusicPlayerManager.getPlayer().pause();
+
                 break;
             case RESUME:
-                MusicPlayerManager.getPlayer().seekTo(playEvent.getSeekTo());
+                if(playEvent.getTestNet()== PlayEvent.TestNet.NET){
+                }else{
+                    MusicPlayerManager.getPlayer().seekTo(playEvent.getSeekTo());
+                }
                 MusicPlayerManager.getPlayer().resume();
+
                 break;
             case NEXT:
                 MusicPlayerManager.getPlayer().next();
