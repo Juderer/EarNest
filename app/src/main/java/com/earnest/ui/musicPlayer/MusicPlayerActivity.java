@@ -762,7 +762,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
         }
     }
 
-
+    ///////////////////////DiscView/////////////////////
     @Override
     public void onMusicInfoChanged(String musicName, String musicAuthor) {
         tvTitle.setText(musicName);
