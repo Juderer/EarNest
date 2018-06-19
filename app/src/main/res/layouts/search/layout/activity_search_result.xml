@@ -28,10 +28,11 @@
 
             <EditText
                 android:id="@+id/et_searchResult_input"
-                android:layout_width="250dp"
+                android:layout_width="230dp"
                 android:layout_height="40dp"
                 android:layout_centerVertical="true"
                 android:hint="林俊杰"
+                android:maxLines="1"
                 android:layout_toRightOf="@id/iv_searchResult_microphone"/>
 
             <ImageView

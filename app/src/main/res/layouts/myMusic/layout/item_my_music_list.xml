@@ -17,6 +17,7 @@
             android:layout_height="wrap_content"
             android:text="musicName"
             android:textSize="20sp"
+            android:textColor="@color/black"
             android:layout_marginTop="10dp"/>
 
         <TextView
