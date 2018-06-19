@@ -48,7 +48,7 @@ public class OnlineSong extends Song {
 
 
     public void makeBitmap(String address) {
-        ImgDownload.donwloadImg(id, address);
+        ImgDownload.donwloadImg(getTitle(), address);
     }
 
 }
