@@ -51,10 +51,20 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+
+import static com.earnest.ui.home.MainActivity.currState;
+import static com.earnest.ui.search.SearchResultActivity.currNetMusicArtist;
+import static com.earnest.ui.search.SearchResultActivity.currNetMusicName;
+
 import static com.earnest.ui.widget.DiscView.DURATION_NEEDLE_ANIAMTOR;
 
 
+<<<<<<< HEAD
 public class MusicPlayerActivity extends AppCompatActivity implements DiscView.IPlayInfo {
+=======
+
+public class MusicPlayerActivity extends AppCompatActivity implements DiscView.IPlayInfo{
+>>>>>>> 51f168b1729f2a6fa167baedde04e639f734bb70
 
     //zsl: 微信分享
     private WechatShare wechatShare;
@@ -102,8 +112,8 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
     private static final int IDLE = 0;
     private static final int PAUSE = 1;
     private static final int START = 2;
-    private int currState = IDLE;
-    //private boolean isPlaying = false;
+   // private int currState = IDLE;
+
 
     //功能栏
     ImageView ivFavoriate;
@@ -281,7 +291,6 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
             public void onStopTrackingTouch(SeekBar seekBar) {
                 isSeekBarChanging = false;
                 MusicPlayerManager.getPlayer().seekTo(seekBar.getProgress());//???直接调用
-
             }
         });
         //控制栏
@@ -314,6 +323,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
                 mDisc.playOrPause();
             }
         });
+
 
 
         ivPlayNext.setOnClickListener(new View.OnClickListener() {
@@ -617,8 +627,27 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
             tvArtist.setText(song.getSinger());
             tvDuration.setText(MusicUtils.formatTime(song.getDuration()));
             seek_bar.setProgress(MusicPlayerManager.getPlayer().getCurrentPosition());//设置当前进度为0
+<<<<<<< HEAD
             seek_bar.setMax((int) song.getDuration());//设置进度条最大值为MP3总时间
+=======
+            seek_bar.setMax((int)song.getDuration());//设置进度条最大值为MP3总时间
+        }else {
+
+            if (MusicPlayerManager.getPlayer().getMediaPlayer().isPlaying()) {
+                tvTitle.setText(currNetMusicName);
+                tvArtist.setText(currNetMusicArtist);
+
+            } else {
+                if(currState==IDLE){
+                }else {
+                    currState=START;
+                }
+            }
+
+>>>>>>> 51f168b1729f2a6fa167baedde04e639f734bb70
         }
+
+
 
         if (MusicPlayerManager.getPlayer().getMediaPlayer().isPlaying()) {
             ivPlay.setImageResource(R.drawable.ic_pause);

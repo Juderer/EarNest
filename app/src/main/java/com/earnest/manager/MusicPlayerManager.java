@@ -73,6 +73,7 @@ public class MusicPlayerManager implements MediaPlayer.OnCompletionListener {
     }
 
     public void setUri(Context context,Uri uri) {
+        Log.d("1","进入setUri");
         mContext=context;
         mUri=uri;
         playNetMusic(mContext,mUri);
@@ -84,6 +85,7 @@ public class MusicPlayerManager implements MediaPlayer.OnCompletionListener {
     }
 
     public void playNetMusic(Context context,Uri uri) {
+        Log.d("2","进入playNetMusic");
         try {
             if(mMediaPlayer!=null){
                 mMediaPlayer.setOnCompletionListener(null);
@@ -101,8 +103,8 @@ public class MusicPlayerManager implements MediaPlayer.OnCompletionListener {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
                     mMediaPlayer.start();
-                    Log.d("hr01-3",String.valueOf(mQueueIndex));
-                    //EventBus.getDefault().post(mMessageEvent);
+                    Log.d("3","mediaplayer启动");
+                    EventBus.getDefault().post(mMessageEvent);
                 }
             });
 

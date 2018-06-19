@@ -75,11 +75,8 @@ public class PlayerService extends Service {
                 MusicPlayerManager.getPlayer().pause();
                 break;
             case RESUME:
-
-                if(playEvent.getTestNet()== PlayEvent.TestNet.NET){
-                }else{
-                    MusicPlayerManager.getPlayer().seekTo(playEvent.getSeekTo());
-                }
+                   // MusicPlayerManager.getPlayer().seekTo(playEvent.getSeekTo());
+                    MusicPlayerManager.getPlayer().resume();
 
                 //zsl: 更新通知
                 NotificationCompat.Builder rNotifyBuilder = new NotificationCompat.Builder(this)

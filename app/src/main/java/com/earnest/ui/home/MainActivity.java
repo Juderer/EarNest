@@ -70,6 +70,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.earnest.ui.search.SearchResultActivity.currNetMusicName;
+
 public class MainActivity extends AppCompatActivity {
 
     int REQUEST_READ_PHONE_STATE  = 0;
@@ -98,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int IDLE = 0;
     private static final int PAUSE = 1;
     private static final int START = 2;
-    private int currState = IDLE;
+    public  static int currState = IDLE;
     private int playMode = 0; //顺序播放
 
     //hr:底部音乐栏信息
@@ -676,18 +678,29 @@ public class MainActivity extends AppCompatActivity {
     //hr:接收MessageEvent 解决获取不到MusicPlayermanager queue
     @Subscribe
     public void onEvent(MessageEvent mMessageEvent) {
-        int i=MusicPlayerManager.getPlayer().getCurrentMusicIndex();
-        Log.d("56",String.valueOf(i));
-        Song song= MusicPlayerManager.getPlayer().getQueue().get(i);
-        tv_bottomPlayerMusicName.setText(song.getTitle());
-        boolean j=MusicPlayerManager.getPlayer().getMediaPlayer().isPlaying();
-        if (j) {
+        //if 当前播放为本地音乐 else为网络音乐点击播放
+        if(  (MusicPlayerManager.getPlayer().getQueue())!=null&&!(MusicPlayerManager.getPlayer().getQueue()).isEmpty()  ){
+
+            int currPosition=MusicPlayerManager.getPlayer().getCurrentMusicIndex();
+            Song song = MusicPlayerManager.getPlayer().getQueue().get(currPosition);
+            tv_bottomPlayerMusicName.setText(song.getTitle());
+            //tv_bottomPlayerLyrics.setText();
+            if (MusicPlayerManager.getPlayer().getMediaPlayer().isPlaying()) {
+                ivBottomPlay.setImageResource(R.drawable.bottomplayerplay);
+                currState=PAUSE;
+            } else {
+                ivBottomPlay.setImageResource(R.drawable.bottomplayerpause);
+                currState=START;
+            }
+        }else{
+
             ivBottomPlay.setImageResource(R.drawable.bottomplayerplay);
-            currState=PAUSE;
-        } else {
-            ivBottomPlay.setImageResource(R.drawable.bottomplayerpause);
-            currState=START;
+            tv_bottomPlayerMusicName.setText(currNetMusicName);
+            currState = PAUSE;
         }
+
+
+
     }
 
     //hr:想要在返回这个界面时获取新的歌曲信息
