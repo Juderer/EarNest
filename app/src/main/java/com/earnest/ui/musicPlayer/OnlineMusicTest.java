@@ -1,7 +1,6 @@
 package com.earnest.ui.musicPlayer;
 
 import android.os.AsyncTask;
-import android.widget.ListView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,12 +23,12 @@ import java.util.Map;
  * Created by Administrator on 2018/6/19.
  */
 
-public class OnlineMusic {
-    private static OnlineMusic instance;
+public class OnlineMusicTest {
+    private static OnlineMusicTest instance;
 
-    public static  OnlineMusic getInstance() {
+    public static OnlineMusicTest getInstance() {
         if(instance == null) {
-            instance = new OnlineMusic();
+            instance = new OnlineMusicTest();
         }
         return  instance;
     }

@@ -45,6 +45,11 @@
             android:enabled="true"
             android:exported="true" />
 
+        <service
+            android:name=".services.PhoneService"
+            android:enabled="true"
+            android:exported="true" />
+
         <activity android:name=".ui.search.SearchActivity" />
         <activity android:name=".ui.search.SearchResultActivity" />
         <activity android:name=".ui.musicPlayer.RemarkActivity"></activity>

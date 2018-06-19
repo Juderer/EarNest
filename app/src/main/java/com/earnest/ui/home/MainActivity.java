@@ -1,6 +1,9 @@
 package com.earnest.ui.home;
 
 import android.Manifest;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -39,6 +42,7 @@ import com.earnest.model.WechatShare;
 import com.earnest.model.entities.Item_Song;
 
 import com.earnest.model.entities.Song;
+import com.earnest.services.PhoneService;
 import com.earnest.services.PlayerService;
 import com.earnest.ui.adapter.BaseFragment;
 import com.earnest.ui.adapter.MainPagerAdapter;
@@ -61,6 +65,9 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     int REQUEST_READ_PHONE_STATE  = 0;
+
+    //zsl: 通知
+    public static NotificationManager mNotifyMgr;
 
     //顶部标题栏
     ImageView ivMenuMy;
@@ -114,6 +121,9 @@ public class MainActivity extends AppCompatActivity {
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
 
+        //zsl: 关闭开始界面
+        //StartActivity.instance.finish();
+
         //hr:动态申请权限
         if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(MainActivity.this,new String[] {Manifest.permission.READ_EXTERNAL_STORAGE} , 1);
@@ -121,6 +131,7 @@ public class MainActivity extends AppCompatActivity {
 
         //hr:开始服务
         startService(new Intent(this, PlayerService.class));
+        startService(new Intent(this, PhoneService.class));
         //hr:订阅传过来的MessageEvent以改变音乐信息
         EventBus.getDefault().register(this);
 
@@ -131,12 +142,22 @@ public class MainActivity extends AppCompatActivity {
 
         initUIControls();
 
-
-
         //hr:导入音乐列表 这里为本地音乐数据,在初识列表里没有音乐时使用
         queue = new ArrayList<>();
         queue= MusicUtils.getLocalMusicData(this);
 
+        //zsl: 设置notification
+        mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        PendingIntent contentIntent = PendingIntent.getActivity( this, 0, new Intent(this, MainActivity.class), 0);
+
+        Notification myNotification = new Notification.Builder(this)
+                .setSmallIcon(R.drawable.ic_blackground)
+                .setContentTitle("耳窝APP")
+                .setContentText("激情世界杯，耳窝伴左右")
+                .setContentIntent(contentIntent)
+                .build();
+
+        mNotifyMgr.notify(1, myNotification);
     }
 
     /////初始化UI
