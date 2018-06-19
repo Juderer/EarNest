@@ -44,7 +44,11 @@ import com.earnest.manager.MusicPlayerManager;
 import com.earnest.model.WechatShare;
 
 import com.earnest.model.entities.Song;
+<<<<<<< HEAD
 import com.earnest.services.ImgDonwload;
+=======
+import com.earnest.services.PhoneService;
+>>>>>>> 131d73fecba727418093c9a7ee1da5012b866482
 import com.earnest.services.PlayerService;
 import com.earnest.ui.adapter.BaseFragment;
 import com.earnest.ui.adapter.MainPagerAdapter;
@@ -53,7 +57,11 @@ import com.earnest.ui.home.menuFragments.PlayFragment;
 import com.earnest.ui.home.menuFragments.VideoFragment;
 import com.earnest.ui.musicPlayer.MusicPlayerActivity;
 import com.earnest.ui.search.SearchActivity;
+<<<<<<< HEAD
 import com.earnest.ui.widget.RoundImageView;
+=======
+import com.earnest.ui.search.SearchResultActivity;
+>>>>>>> 131d73fecba727418093c9a7ee1da5012b866482
 import com.earnest.utils.MusicUtils;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 
@@ -137,6 +145,7 @@ public class MainActivity extends AppCompatActivity {
 
         //hr:开始服务
         startService(new Intent(this, PlayerService.class));
+        startService(new Intent(this, PhoneService.class));
         //hr:订阅传过来的MessageEvent以改变音乐信息
         EventBus.getDefault().register(this);
 
@@ -237,7 +246,7 @@ public class MainActivity extends AppCompatActivity {
         ivMenuSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, SearchActivity.class));
+                startActivity(new Intent(MainActivity.this, SearchResultActivity.class));
             }
         });
 

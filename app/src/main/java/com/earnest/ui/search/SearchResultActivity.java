@@ -29,10 +29,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.earnest.R;
+import com.earnest.event.PlayEvent;
 import com.earnest.model.entities.Item_Song;
 import com.earnest.ui.home.MainActivity;
 import com.earnest.ui.musicPlayer.MusicPlayerActivity;
 
+import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,6 +53,8 @@ import java.util.List;
 import java.util.Map;
 
 public class SearchResultActivity extends AppCompatActivity {
+    //hr:
+    PlayEvent playEvent=new PlayEvent();
 
     private ListView lv_searchResult;
     private ImageView iv_searchResult_search;
@@ -71,6 +75,9 @@ public class SearchResultActivity extends AppCompatActivity {
     private ImageView ivBottomPlay;  //底栏播放暂停按钮
     private boolean isChanged = false; //暂停状态
     private int playMode = 0; //顺序播放
+    //hr:底部音乐栏播放信息
+    private TextView tv_bottomPlayerMusicName;
+    private TextView tv_bottomPlayerLyrics;//歌词？
 
     /* 底部音乐列表*/
     private View searchResult_bottomMusicPlayer;
@@ -135,24 +142,30 @@ public class SearchResultActivity extends AppCompatActivity {
                         netMusicList.get(p);
                         picUrlMap.get(p);
                         Uri uri1 = Uri.parse(netMusicList.get(p).get("audio").toString());
-                        MediaPlayer mediaPlayer = new MediaPlayer();
-                        try {
-                            mediaPlayer.setDataSource(getApplicationContext(), uri1);
-                            mediaPlayer.prepareAsync();
-                            mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+                        playEvent.setAction(PlayEvent.Action.PLAY);
+                        playEvent.setTestNet(PlayEvent.TestNet.NET);
+                        playEvent.setNetSongUri(uri1);
+                        EventBus.getDefault().post(playEvent);
+                        tv_bottomPlayerMusicName.setText("正在缓冲...");
 
-                                @Override
-                                public void onPrepared(MediaPlayer mp) {
-                                    // TODO Auto-generated method stub
-                                    Log.e("MusicReceiver", "a");
-                                    mp.start();
-                                }
-                            });
-                        } catch (Exception e) {
-                            // TODO Auto-generated catch block
-                            e.printStackTrace();
-                            Toast.makeText(getApplicationContext(), "222", Toast.LENGTH_SHORT).show();
-                        }
+//                        MediaPlayer mediaPlayer = new MediaPlayer();
+//                        try {
+//                            mediaPlayer.setDataSource(getApplicationContext(), uri1);
+//                            mediaPlayer.prepareAsync();
+//                            mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+//
+//                                @Override
+//                                public void onPrepared(MediaPlayer mp) {
+//                                    // TODO Auto-generated method stub
+//                                    Log.e("MusicReceiver", "a");
+//                                    mp.start();
+//                                }
+//                            });
+//                        } catch (Exception e) {
+//                            // TODO Auto-generated catch block
+//                            e.printStackTrace();
+//                            Toast.makeText(getApplicationContext(), "222", Toast.LENGTH_SHORT).show();
+//                        }
                     }
                 });
                 return view;
@@ -172,6 +185,9 @@ public class SearchResultActivity extends AppCompatActivity {
         searchResult_bottomMusicPlayer = (View)findViewById(R.id.searchResult_bottomMusicPlayer);
         ivBottomPlay = (ImageView)searchResult_bottomMusicPlayer.findViewById(R.id.iv_bottomPlayerPlay);
         ivBottomPlayerList = (ImageView) searchResult_bottomMusicPlayer.findViewById(R.id.iv_bottomPlayerList);
+        //底部播放栏音乐信息
+        tv_bottomPlayerMusicName=(TextView)findViewById(R.id.tv_bottomPlayerMusicName);
+        tv_bottomPlayerLyrics=(TextView)findViewById(R.id.tv_bottomPlayerLyrics);
 
         //设置监听事件
         setUIControlsOnClick();

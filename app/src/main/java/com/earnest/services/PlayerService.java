@@ -55,6 +55,13 @@ public class PlayerService extends Service {
     public void onEvent(PlayEvent playEvent) {
         switch (playEvent.getAction()) {
             case PLAY:
+
+                if(playEvent.getTestNet()== PlayEvent.TestNet.NET){
+                    MusicPlayerManager.getPlayer().setUri(getApplicationContext(),playEvent.getNetSongUri());
+                }else{
+                    MusicPlayerManager.getPlayer().setQueue(playEvent.getQueue(), playEvent.getMusicIndex());
+                }
+
                 //zsl: 更新通知
                 NotificationCompat.Builder pNotifyBuilder = new NotificationCompat.Builder(this)
                         .setContentTitle("耳窝APP")
@@ -62,19 +69,18 @@ public class PlayerService extends Service {
                         .setSmallIcon(R.drawable.ic_blackground);
                 MainActivity.mNotifyMgr.notify(1, pNotifyBuilder.build());
 
-                MusicPlayerManager.getPlayer().setQueue(playEvent.getQueue(), playEvent.getMusicIndex());
                 break;
-            case STOP:
-                //zsl: 更新通知
-                NotificationCompat.Builder sNotifyBuilder = new NotificationCompat.Builder(this)
-                        .setContentTitle("耳窝APP")
-                        .setContentText("音乐播放停止 ... ...")
-                        .setSmallIcon(R.drawable.ic_blackground);
-                MainActivity.mNotifyMgr.notify(1, sNotifyBuilder.build());
 
+            case STOP:
                 MusicPlayerManager.getPlayer().pause();
                 break;
             case RESUME:
+
+                if(playEvent.getTestNet()== PlayEvent.TestNet.NET){
+                }else{
+                    MusicPlayerManager.getPlayer().seekTo(playEvent.getSeekTo());
+                }
+
                 //zsl: 更新通知
                 NotificationCompat.Builder rNotifyBuilder = new NotificationCompat.Builder(this)
                         .setContentTitle("耳窝APP")
@@ -82,8 +88,8 @@ public class PlayerService extends Service {
                         .setSmallIcon(R.drawable.ic_blackground);
                 MainActivity.mNotifyMgr.notify(1, rNotifyBuilder.build());
 
-                MusicPlayerManager.getPlayer().seekTo(playEvent.getSeekTo());
                 MusicPlayerManager.getPlayer().resume();
+
                 break;
             case NEXT:
                 MusicPlayerManager.getPlayer().next();
