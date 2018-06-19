@@ -9,6 +9,9 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -39,9 +42,9 @@ import com.earnest.event.MessageEvent;
 import com.earnest.event.PlayEvent;
 import com.earnest.manager.MusicPlayerManager;
 import com.earnest.model.WechatShare;
-import com.earnest.model.entities.Item_Song;
 
 import com.earnest.model.entities.Song;
+import com.earnest.services.ImgDonwload;
 import com.earnest.services.PlayerService;
 import com.earnest.ui.adapter.BaseFragment;
 import com.earnest.ui.adapter.MainPagerAdapter;
@@ -50,13 +53,18 @@ import com.earnest.ui.home.menuFragments.PlayFragment;
 import com.earnest.ui.home.menuFragments.VideoFragment;
 import com.earnest.ui.musicPlayer.MusicPlayerActivity;
 import com.earnest.ui.search.SearchActivity;
+import com.earnest.ui.widget.RoundImageView;
 import com.earnest.utils.MusicUtils;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
-import org.w3c.dom.Text;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URI;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -527,6 +535,8 @@ public class MainActivity extends AppCompatActivity {
         RelativeLayout re_personalsetting_help = (RelativeLayout)popupWindowView.findViewById(R.id.re_personalsetting_help);
         RelativeLayout re_personalsetting_about = (RelativeLayout)popupWindowView.findViewById(R.id.re_personalsetting_about);
         RelativeLayout re_personalsetting_exit = (RelativeLayout)popupWindowView.findViewById(R.id.re_personalsetting_exit);
+
+        final RoundImageView iv_personalsetting_headimg = (RoundImageView) popupWindowView.findViewById(R.id.iv_personalsetting_headimg);
 
         /*我的设置——分享*/
         re_personalsetting_share.setOnClickListener(new View.OnClickListener() {
