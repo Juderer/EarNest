@@ -108,8 +108,8 @@ public class SearchResultActivity extends AppCompatActivity {
     private ImageView iv_bottomPlayerDeleteAll;
 
     //搜索结果 - - 测试
-    private String[] searchResultMusicNames={"醉赤壁","醉赤壁","醉赤壁"};
-    private  String[] searchResultMusicSingers={"林俊杰","林俊杰","林俊杰"};
+    private String[] searchResultMusicNames={""};
+    private  String[] searchResultMusicSingers={""};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -241,7 +241,7 @@ public class SearchResultActivity extends AppCompatActivity {
         tv_searchResult_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(SearchResultActivity.this,MainActivity.class));
+                finish();
             }
         });
 
