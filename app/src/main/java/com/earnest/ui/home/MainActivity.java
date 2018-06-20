@@ -148,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
 
         //hr:开始服务
         startService(new Intent(this, PlayerService.class));
-        startService(new Intent(this, PhoneService.class));
+        //startService(new Intent(this, PhoneService.class));
         //hr:订阅传过来的MessageEvent以改变音乐信息
         EventBus.getDefault().register(this);
 
@@ -718,20 +718,22 @@ public class MainActivity extends AppCompatActivity {
 
             //显示歌曲对应图片
             Bitmap bitmap = getAlbumBitmapDrawavle(song.getFileUrl());
+            Log.d("08",song.getFileUrl());
             if(bitmap == null){
+                Log.d("09",song.getFileUrl());
                 iv_bottomPlayerImg.setImageResource(R.drawable.ic_default_song_music);
             }else {
+                Log.d("10",song.getFileUrl());
                 iv_bottomPlayerImg.setImageBitmap(bitmap);
-            }
 
-            try {
-                ImgDownload.saveFile(bitmap,song.getTitle());
-                Log.d("yzp","aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-            }catch (IOException e){
-                e.printStackTrace();
-                Log.d("yzp","bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
+                try {
+                    ImgDownload.saveFile(bitmap,song.getTitle());
+                    Log.d("yzp","aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+                }catch (IOException e){
+                    e.printStackTrace();
+                    Log.d("yzp","bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
+                }
             }
-
 
         }
 

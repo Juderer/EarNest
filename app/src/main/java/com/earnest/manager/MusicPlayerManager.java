@@ -159,7 +159,6 @@ public class MusicPlayerManager implements MediaPlayer.OnCompletionListener {
 
     public void next() {
         play(getNextSong());
-        //EventBus.getDefault().post(mMessageEvent);
     }
 
     public void previous() {

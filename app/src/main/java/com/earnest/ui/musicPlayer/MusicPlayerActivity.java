@@ -59,7 +59,7 @@ import static com.earnest.ui.search.SearchResultActivity.currNetMusicName;
 import static com.earnest.ui.widget.DiscView.DURATION_NEEDLE_ANIAMTOR;
 
 
-public class MusicPlayerActivity extends AppCompatActivity implements DiscView.IPlayInfo{
+public class MusicPlayerActivity extends AppCompatActivity implements DiscView.IPlayInfo {
 
     //zsl: 微信分享
     private WechatShare wechatShare;
@@ -605,7 +605,6 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
         } else {
             ivPlay.setImageResource(R.drawable.ic_play);
             currState = IDLE;
-
         }
 
     }
@@ -616,14 +615,14 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
         super.onResume();
         if ((MusicPlayerManager.getPlayer().getQueue()) != null && !(MusicPlayerManager.getPlayer().getQueue()).isEmpty()) {
             int i = MusicPlayerManager.getPlayer().getCurrentMusicIndex();
-            Log.d("hr01-4", String.valueOf(i));
             Song song = MusicPlayerManager.getPlayer().getQueue().get(i);
             tvTitle.setText(song.getTitle());
             tvArtist.setText(song.getSinger());
             tvDuration.setText(MusicUtils.formatTime(song.getDuration()));
             seek_bar.setProgress(MusicPlayerManager.getPlayer().getCurrentPosition());//设置当前进度为0
-            seek_bar.setMax((int) song.getDuration());//设置进度条最大值为MP3总时间
             seek_bar.setMax((int)song.getDuration());//设置进度条最大值为MP3总时间
+
+
         }else {
 
             if (MusicPlayerManager.getPlayer().getMediaPlayer().isPlaying()) {
@@ -638,11 +637,10 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
             }
         }
 
-
-
         if (MusicPlayerManager.getPlayer().getMediaPlayer().isPlaying()) {
             ivPlay.setImageResource(R.drawable.ic_pause);
             currState = PAUSE;
+            Log.d("09","  currState = PAUSE;");
         } else {
             if (currState == IDLE) {
             } else {
@@ -650,6 +648,10 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
                 currState = START;
             }
         }
+
+
+
+
 
     }
 
@@ -685,29 +687,34 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
 
     @Override
     public void onMusicPicChanged(String musicPicRes) {
-        try2UpdateMusicPicBackground(musicPicRes);
+
     }
 
     @Override
     public void onMusicChanged(DiscView.MusicChangedStatus musicChangedStatus) {
         switch (musicChangedStatus) {
             case PLAY: {
+                Log.d("07","play()");
                 play();
                 break;
             }
             case PAUSE: {
+                Log.d("07","pause(");
                 pause();
                 break;
             }
             case NEXT: {
                 next();
+                Log.d("07","next();");
                 break;
             }
             case LAST: {
+                Log.d("07"," last();");
                 last();
                 break;
             }
             case STOP: {
+                Log.d("07","stop();");
                 stop();
                 break;
             }
@@ -752,13 +759,14 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
         if(currState == PAUSE) {
             ivPlay.setImageResource(R.drawable.ic_play);
             currState = START;
+            Log.d("10","currState = START;");
             if ((MusicPlayerManager.getPlayer().getQueue()) != null && !(MusicPlayerManager.getPlayer().getQueue()).isEmpty()) {
                 //hr:event播放控制
                 playEvent = new PlayEvent();
                 playEvent.setAction(PlayEvent.Action.STOP);
                 EventBus.getDefault().post(playEvent);
                 //进度条相关
-                playPositon = MusicPlayerManager.getPlayer().getCurrentPosition();
+                //playPositon = MusicPlayerManager.getPlayer().getCurrentPosition();
                 timer.purge();
             } else {
                 playEvent = new PlayEvent();
@@ -789,7 +797,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
         if ((MusicPlayerManager.getPlayer().getQueue()) != null && !(MusicPlayerManager.getPlayer().getQueue()).isEmpty()) {
             //hr:event播放控制
             ivPlay.setImageResource(R.drawable.ic_pause);
-            currState = PAUSE;
+            //currState = PAUSE;
             //根据音乐图片制作毛玻璃背景效果，并通过一个单独的线程进行切换显示
             //try2UpdateMusicPicBackground(R.drawable.timg);
 
@@ -804,6 +812,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
                     currState = PAUSE;
                     break;
                 case PAUSE:
+                    currState = START;
                     break;
             }
         } else {
@@ -840,6 +849,7 @@ public class MusicPlayerActivity extends AppCompatActivity implements DiscView.I
                     currState = PAUSE;
                     break;
                 case PAUSE:
+                    currState = START;
                     break;
             }
         } else {

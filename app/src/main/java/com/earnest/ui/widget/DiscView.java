@@ -14,6 +14,7 @@ import android.support.v4.graphics.drawable.RoundedBitmapDrawableFactory;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -429,6 +430,7 @@ public class DiscView extends RelativeLayout {
         /*唱针处于远端时，直接播放动画*/
         if (needleAnimatorStatus == NeedleAnimatorStatus.IN_FAR_END) {
             mNeedleAnimator.start();
+            Log.d("05","playAnimator() mNeedleAnimator.start();");
         }
         /*唱针处于往远端移动时，设置标记，等动画结束后再播放动画*/
         else if (needleAnimatorStatus == NeedleAnimatorStatus.TO_FAR_END) {
@@ -510,6 +512,7 @@ public class DiscView extends RelativeLayout {
     }
 
     private void play() {
+        Log.d("04","play() playAnimator();");
         playAnimator();
     }
 
@@ -525,8 +528,10 @@ public class DiscView extends RelativeLayout {
 
     public void playOrPause() {
         if (musicStatus == MusicStatus.PLAY) {
+            Log.d("02","musicStatus == MusicStatus.PLAY");
             pause();
         } else {
+            Log.d("03","musicStatus !== MusicStatus.PLAY");
             play();
         }
     }
