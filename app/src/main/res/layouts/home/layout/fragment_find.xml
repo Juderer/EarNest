@@ -1,11 +1,12 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.earnest.ui.home.menuFragments.FindFragment">
+    tools:context="com.earnest.ui.home.menuFragments.FindFragment"
+    android:background="@color/app.color.background">
 
     <!-- TODO: Update blank fragment layout -->
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -17,12 +18,237 @@
             android:src="@drawable/personalsettingbackground"
             android:scaleType="fitXY"/>
 
-        <TextView
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/re_find_recommand_music_list"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="推荐歌曲"
-            android:textSize="20sp"
-            android:layout_below="@id/iv_headimg"/>
+            android:layout_below="@id/iv_headimg">
+
+            <TextView
+                android:id="@+id/tv_recommand_music_list_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="推荐歌单"
+                android:textSize="20sp"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/black"/>
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="19dp"
+                android:layout_toRightOf="@id/tv_recommand_music_list_label"
+                android:layout_marginLeft="5dp"
+                android:src="@drawable/ic_right"/>
+
+            <ImageView
+                android:id="@+id/iv_album1"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="28dp"
+                android:src="@drawable/huayu"
+                android:layout_below="@id/tv_recommand_music_list_label"
+                android:layout_marginTop="15dp"/>
+
+            <TextView
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:text="华语速报新歌"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:layout_below="@id/iv_album1"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="28dp"/>
+
+            <ImageView
+                android:id="@+id/iv_album2"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/zhiyu"
+                android:layout_below="@id/tv_recommand_music_list_label"
+                android:layout_marginTop="15dp"/>
+
+            <TextView
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:text="【治愈】系列"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:layout_below="@id/iv_album2"
+                android:layout_marginTop="10dp"
+                android:layout_centerHorizontal="true"/>
+
+            <ImageView
+                android:id="@+id/iv_album3"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="28dp"
+                android:src="@drawable/yingwen"
+                android:layout_below="@id/tv_recommand_music_list_label"
+                android:layout_marginTop="15dp"/>
+
+            <TextView
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:text="英文歌|百听不厌"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:layout_below="@id/iv_album3"
+                android:layout_marginTop="10dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="28dp"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/re_find_recommand_music"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/re_find_recommand_music_list"
+            android:layout_marginTop="5dp">
+
+            <TextView
+                android:id="@+id/tv_recommand_music_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="好歌推荐"
+                android:textSize="20sp"
+                android:layout_marginTop="15dp"
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/black"/>
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginTop="19dp"
+                android:layout_toRightOf="@id/tv_recommand_music_label"
+                android:layout_marginLeft="5dp"
+                android:src="@drawable/ic_right"/>
+
+            <ImageView
+                android:id="@+id/iv_song1"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_below="@id/tv_recommand_music_label"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/yingwen"/>
+
+            <LinearLayout
+                android:id="@+id/ll_song1"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:orientation="vertical"
+                android:layout_toRightOf="@id/iv_song1"
+                android:layout_below="@id/tv_recommand_music_label"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="New Day"
+                    android:textSize="20sp"
+                    android:layout_marginTop="2dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Alice Keys"
+                    android:textSize="15sp"
+                    android:layout_marginTop="5dp"/>
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="25dp"
+                android:layout_toLeftOf="@id/imgbtn_action1"
+                android:src="@drawable/ic_mv"
+                android:layout_below="@id/tv_recommand_music_label" />
+
+            <ImageButton
+                android:id="@+id/imgbtn_action1"
+                android:layout_width="30dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="5dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_my_music_list_item_action"
+                android:background="#00000000"
+                android:layout_below="@id/tv_recommand_music_label" />
+
+            <TextView
+                android:id="@+id/tv_divider"
+                android:layout_width="310dp"
+                android:layout_height="0.5dp"
+                android:layout_below="@id/ll_song1"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="8dp"
+                android:background="#bcb8b8"/>
+
+
+            <ImageView
+                android:id="@+id/iv_song2"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_below="@id/tv_divider"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/timg"/>
+
+            <LinearLayout
+                android:id="@+id/ll_song2"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:orientation="vertical"
+                android:layout_toRightOf="@id/iv_song2"
+                android:layout_below="@id/tv_divider"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="醉赤壁"
+                    android:textSize="20sp"
+                    android:layout_marginTop="2dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="林俊杰"
+                    android:textSize="15sp"
+                    android:layout_marginTop="5dp"/>
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="25dp"
+                android:layout_toLeftOf="@id/imgbtn_action2"
+                android:src="@drawable/ic_mv"
+                android:layout_below="@id/tv_divider" />
+
+            <ImageButton
+                android:id="@+id/imgbtn_action2"
+                android:layout_width="30dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="5dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_my_music_list_item_action"
+                android:background="#00000000"
+                android:layout_below="@id/tv_divider" />
+
+        </RelativeLayout>
+
     </RelativeLayout>
 
-</FrameLayout>
+</ScrollView>
+
+

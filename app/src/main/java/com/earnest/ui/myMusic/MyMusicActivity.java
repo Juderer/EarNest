@@ -74,20 +74,6 @@ public class MyMusicActivity extends AppCompatActivity {
     TextView tv_myMusicHeadLabel;
     Button btn_RecentMusic_deleteAll;
 
-    ///底部音乐栏部分
-    private ImageView ivBottomPlay;  //底栏播放暂停按钮
-    private boolean isChanged = false; //暂停状态
-    private int playMode = 0; //顺序播放
-
-    /* 底部音乐列表*/
-    private View my_music_bottomMusicPlayer;
-    private ImageView ivBottomPlayerList;
-    private List<Song> list = new ArrayList<>();
-    private AlertDialog.Builder bottomListBuilder;
-    private AlertDialog bottomAlertDialog;
-    private ImageView iv_bottomPlayerMode;
-    private ImageView iv_bottomPlayerDeleteAll;
-
     Handler mHandler=new Handler();
 
     @Override
@@ -225,47 +211,12 @@ public class MyMusicActivity extends AppCompatActivity {
         iv_myMusicPlayAll = (ImageView)findViewById(R.id.iv_myMusicPlayAll);
         tv_myMusicPlayAll = (TextView)findViewById(R.id.tv_myMusicPlayAll);
 
-        //底部播放栏部分
-       // my_music_bottomMusicPlayer = (View)findViewById(R.id.my_music_bottomMusicPlayer);
-       // ivBottomPlay = (ImageView)my_music_bottomMusicPlayer.findViewById(R.id.iv_bottomPlayerPlay);
-       // ivBottomPlayerList = (ImageView) my_music_bottomMusicPlayer.findViewById(R.id.iv_bottomPlayerList);
-
         //设置监听事件
         setUIControlsOnClick();
     }
 
     private void setUIControlsOnClick() {
-        //底部播放栏部分
-        /* 点击底部播放器转换至播放界面 */
-//        my_music_bottomMusicPlayer.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startActivity(new Intent(MyMusicActivity.this,MusicPlayerActivity.class));
-//            }
-//        });
 
-//        /* 底栏播放按钮 */
-//        ivBottomPlay.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (isChanged) {
-//                    //点击播放
-//                    ivBottomPlay.setImageResource(R.drawable.bottomplayerpause);
-//                } else {
-//                    //点击暂停
-//                    ivBottomPlay.setImageResource(R.drawable.bottomplayerplay);
-//                }
-//                isChanged = !isChanged;
-//            }
-//        });
-//
-//        /* 底栏歌曲列表按钮*/
-//        ivBottomPlayerList.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                showBottomMusicList();
-//            }
-//        });
     }
 
     protected void showMoreAction(){
@@ -335,158 +286,6 @@ public class MyMusicActivity extends AppCompatActivity {
         myMusicAlertDialog.getWindow().setAttributes(layoutParams);
         myMusicAlertDialog.getWindow().setGravity(Gravity.BOTTOM);
         myMusicAlertDialog.getWindow().setWindowAnimations(R.style.BottomDialogAnimation);
-    }
-
-    //底部音乐列表初始化数据
-    private List<Song> initData() {
-        List<Song> slist = new ArrayList<>();
-        slist=MusicUtils.getLocalMusicData(this);
-
-        return slist;
-    }
-
-    /* 底部歌曲列表显示*/
-    protected void showBottomMusicList() {
-        //list .addAll(staticLocalMusicList);
-        Log.d("90",String.valueOf(list.size()));
-        Context context = MyMusicActivity.this;
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);
-        View layout = inflater.inflate(R.layout.bottom_music_list, null);
-        ListView bottomListView = (ListView) layout.findViewById(R.id.lv_bottomMusicListview);
-        BottomMusicListAdapter adapter = new BottomMusicListAdapter(context, list);
-        bottomListView.setAdapter(adapter);
-
-        //点击列表中某一歌曲--播放歌曲
-        bottomListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View arg1, int positon, long id) {
-
-                //在这里面就是执行点击后要进行的操作
-
-
-            }
-        });
-
-        bottomListBuilder = new AlertDialog.Builder(new ContextThemeWrapper(context, R.style.BottomAlertDialog));
-        bottomListBuilder.setView(layout);
-        bottomAlertDialog = bottomListBuilder.create();
-
-        /* 更换播放模式 */
-        iv_bottomPlayerMode = (ImageView)layout.findViewById(R.id.iv_bottomPlayerMode);
-        iv_bottomPlayerMode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(playMode == 0){
-                    iv_bottomPlayerMode.setImageResource(R.drawable.bottom_music_list_play_mode_shuffle);
-                    playMode = 1;
-                }else if(playMode == 1){
-                    iv_bottomPlayerMode.setImageResource(R.drawable.bottom_music_list_play_mode_loop);
-                    playMode = 2;
-                }else if(playMode == 2){
-                    iv_bottomPlayerMode.setImageResource(R.drawable.bottom_music_list_play_mode_list);
-                    playMode = 0;
-                }
-            }
-        });
-
-        /* 清空列表*/
-        iv_bottomPlayerDeleteAll = (ImageView)layout.findViewById(R.id.iv_bottomPlayerDeleteAll);
-        iv_bottomPlayerDeleteAll.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
-        /*  关闭歌曲列表 */
-        Button btnBottomMusicListClose = (Button)layout.findViewById(R.id.btn_bottomMusicListClose);
-        btnBottomMusicListClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                bottomAlertDialog.dismiss();
-            }
-        });
-
-
-
-        //显示
-        bottomAlertDialog.show();
-
-        //设置大小、位置
-        WindowManager.LayoutParams layoutParams = bottomAlertDialog.getWindow().getAttributes();
-        bottomAlertDialog.getWindow().getDecorView().setPadding(0, 0, 0, 0);
-        layoutParams.width = WindowManager.LayoutParams.MATCH_PARENT;
-        layoutParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        bottomAlertDialog.getWindow().setAttributes(layoutParams);
-        bottomAlertDialog.getWindow().setGravity(Gravity.BOTTOM);
-        bottomAlertDialog.getWindow().setWindowAnimations(R.style.BottomDialogAnimation);
-
-    }
-
-    //底部音乐列表的适配器
-    class BottomMusicListAdapter extends BaseAdapter {
-        private List<Song> mlist = new ArrayList<>();
-        private Context mContext;
-
-        public BottomMusicListAdapter(Context context, List<Song> list) {
-            this.mContext = context;
-            this.mlist = list;
-        }
-
-        @Override
-        public int getCount() {
-            return mlist.size();
-        }
-
-        @Override
-        public Song getItem(int position) {
-            return mlist.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            BottomMusicListAdapter.Songs songs = null;
-            if (convertView == null) {
-                LayoutInflater inflater = LayoutInflater.from(mContext);
-                convertView = inflater.inflate(R.layout.item_bottom_music_list_item, null);
-
-                songs = new BottomMusicListAdapter.Songs();
-                songs.num = (TextView) convertView.findViewById(R.id.tv_bottomMusicListItemNumber);
-                songs.musicname = (TextView) convertView.findViewById(R.id.tv_bottomMusicListItemMusicName);
-                songs.singer = (TextView) convertView.findViewById(R.id.tv_bottomMusicListItemMusicSinger);
-                songs.delete = (ImageView) convertView.findViewById(R.id.iv_bottomMusicListItemDelete);
-
-                convertView.setTag(songs);
-            } else {
-                songs = (BottomMusicListAdapter.Songs) convertView.getTag();
-            }
-
-            songs.num.setText(String.valueOf(position+1));
-            songs.musicname.setText(list.get(position).getTitle());
-            songs.singer.setText(list.get(position).getSinger());
-
-            //点击回收箱按钮从列表中删除歌曲
-            songs.delete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                }
-            });
-            return convertView;
-        }
-
-        class Songs {
-            TextView num;
-            TextView musicname;
-            TextView singer;
-            ImageView delete;
-        }
-
     }
 
 }
