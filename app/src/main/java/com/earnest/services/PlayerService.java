@@ -31,6 +31,9 @@ public class PlayerService extends Service {
 
     List<Song> mSongList=new ArrayList<>();
 
+    // 最近播放列表
+    public static List<Song> recentPlayedSongList = new ArrayList<>();
+
     @Override
     public IBinder onBind(Intent intent) {
         throw new UnsupportedOperationException("Not yet implemented");
@@ -60,6 +63,11 @@ public class PlayerService extends Service {
                     MusicPlayerManager.getPlayer().setUri(getApplicationContext(),playEvent.getNetSongUri());
                 }else{
                     MusicPlayerManager.getPlayer().setQueue(playEvent.getQueue(), playEvent.getMusicIndex());
+                }
+
+                Song song = MusicPlayerManager.getPlayer().getQueue().get(MusicPlayerManager.getPlayer().getCurrentMusicIndex());
+                if (!recentPlayedSongList.contains(song)) {
+                    recentPlayedSongList.add(song);
                 }
 
                 //zsl: 更新通知

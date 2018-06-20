@@ -241,7 +241,8 @@ public class SearchResultActivity extends AppCompatActivity {
         tv_searchResult_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(SearchResultActivity.this,MainActivity.class));
+//                startActivity(new Intent(SearchResultActivity.this,MainActivity.class));
+                finish();
             }
         });
 
